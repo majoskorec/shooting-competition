@@ -11,8 +11,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionTypeRepository::class)]
-#[ORM\Table(name: 'competition_types')]
-#[ORM\UniqueConstraint(name: 'uniq_competition_type_code', columns: ['code'])]
+#[ORM\Table(name: 'competition_type')]
+#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['name'])]
 class CompetitionType
 {
     #[ORM\Id]

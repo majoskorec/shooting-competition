@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionRepository::class)]
-#[ORM\Table(name: 'competitions')]
+#[ORM\Table(name: 'competition')]
 class Competition
 {
     #[ORM\Id]
@@ -22,9 +22,7 @@ class Competition
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(
-        inversedBy: 'competitions',
-    )]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(
         nullable: false,
         onDelete: 'RESTRICT',

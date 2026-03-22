@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<CompetitionEntry>
  */
-class CompetitionEntryRepository extends ServiceEntityRepository
+final class CompetitionEntryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

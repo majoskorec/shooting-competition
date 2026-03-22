@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TargetResultRepository::class)]
-#[ORM\Table(name: 'target_results')]
+#[ORM\Table(name: 'target_result')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_entry_id', 'target_name'])]
 class TargetResult
 {

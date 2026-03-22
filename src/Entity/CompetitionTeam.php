@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionTeamRepository::class)]
-#[ORM\Table(name: 'competition_teams')]
+#[ORM\Table(name: 'competition_team')]
 #[ORM\UniqueConstraint(name: 'uniq_competition_team_name', columns: ['competition_id', 'name'])]
 class CompetitionTeam
 {

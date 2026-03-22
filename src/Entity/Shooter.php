@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShooterRepository::class)]
-#[ORM\Table(name: 'shooters')]
+#[ORM\Table(name: 'shooter')]
 class Shooter
 {
     #[ORM\Id]

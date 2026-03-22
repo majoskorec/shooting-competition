@@ -8,9 +8,12 @@ use App\Entity\CompetitionTypeTarget;
 
 final class TargetSnapshot
 {
+    /**
+     * @param array<int, int> $pointsSchema
+     */
     public function __construct(
         public string $name,
-        public TargetPointsSchema $pointsSchema,
+        public array $pointsSchema,
         public int $displayOrder,
         public int $shotCount,
         public ?int $tieBreakPriority,

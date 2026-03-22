@@ -8,7 +8,7 @@ use App\Repository\CompetitionTypeTargetRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionTypeTargetRepository::class)]
-#[ORM\Table(name: 'competition_type_targets')]
+#[ORM\Table(name: 'competition_type_target')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_type_id', 'target_definition_id', 'display_order'])]
 class CompetitionTypeTarget
 {
@@ -17,12 +17,20 @@ class CompetitionTypeTarget
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'targets')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(
+        inversedBy: 'targets',
+    )]
+    #[ORM\JoinColumn(
+        nullable: false,
+        onDelete: 'CASCADE',
+    )]
     private CompetitionType $competitionType;
 
-    #[ORM\ManyToOne(inversedBy: 'competitionTypeTargets')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(
+        nullable: false,
+        onDelete: 'RESTRICT',
+    )]
     private TargetDefinition $targetDefinition;
 
     #[ORM\Column]

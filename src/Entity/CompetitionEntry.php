@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitionEntryRepository::class)]
-#[ORM\Table(name: 'competition_entries')]
+#[ORM\Table(name: 'competition_entry')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'shooter_id'])]
 class CompetitionEntry
 {
