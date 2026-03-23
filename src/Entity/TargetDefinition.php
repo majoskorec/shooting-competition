@@ -7,11 +7,13 @@ namespace App\Entity;
 use App\Repository\TargetDefinitionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: TargetDefinitionRepository::class)]
 #[ORM\Table(name: 'target_definition')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['name'])]
-class TargetDefinition
+class TargetDefinition implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -50,5 +52,11 @@ class TargetDefinition
     public function setPointsSchema(array $pointsSchema): void
     {
         $this->pointsSchema = $pointsSchema;
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

@@ -9,11 +9,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: CompetitionTypeRepository::class)]
 #[ORM\Table(name: 'competition_type')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['name'])]
-class CompetitionType
+class CompetitionType implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -88,5 +90,11 @@ class CompetitionType
     public function removeTarget(CompetitionTypeTarget $target): void
     {
         $this->targets->removeElement($target);
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

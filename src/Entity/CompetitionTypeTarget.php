@@ -6,11 +6,13 @@ namespace App\Entity;
 
 use App\Repository\CompetitionTypeTargetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: CompetitionTypeTargetRepository::class)]
 #[ORM\Table(name: 'competition_type_target')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_type_id', 'target_definition_id', 'display_order'])]
-class CompetitionTypeTarget
+class CompetitionTypeTarget implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -95,5 +97,11 @@ class CompetitionTypeTarget
     public function setTieBreakPriority(?int $tieBreakPriority): void
     {
         $this->tieBreakPriority = $tieBreakPriority;
+    }
+
+    #[Override]
+    public function __toString()
+    {
+        return sprintf('%s - %d', $this->targetDefinition->getName(), $this->displayOrder);
     }
 }

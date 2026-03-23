@@ -32,5 +32,14 @@ final class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'internal:home');
+
+        $definitions = MenuItem::subMenu('Definitions', 'fa-solid fa-gear');
+        $definitions->setSubItems([
+            MenuItem::linkTo(TargetDefinitionCrudController::class, 'Target Definitions', 'fas fa-bullseye'),
+            MenuItem::linkTo(CompetitionTypeTargetCrudController::class, 'Competition Type Targets', 'fas fa-crosshairs'),
+            MenuItem::linkTo(CompetitionTypeCrudController::class, 'Competition Types', 'fas fa-list'),
+        ]);
+
+        yield $definitions;
     }
 }
