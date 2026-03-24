@@ -56,7 +56,7 @@ final class Presentation extends AbstractController
         $entry->setCompetitionTeam($competitionTeam);
         $entry->setShooter($shooter);
         $entry->setSharedWeaponCode($presentationDto->sharedWeaponCode);
-        $entry->setStatus(CompetitionEntryStatus::Confirmed);
+        $entry->setStatus(CompetitionEntryStatus::Registered);
         $this->entityManager->persist($entry);
 
         $this->entityManager->flush();

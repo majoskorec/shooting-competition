@@ -53,8 +53,14 @@ final class DashboardController extends AbstractDashboardController
         ]);
 
         yield $definitions;
-        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-trophy');
+
         yield MenuItem::linkTo(ShooterCrudController::class, 'Shooters', 'fa-solid fa-person-rifle');
+
+        yield MenuItem::section('Competitions', 'fa-solid fa-chess');
+
+        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-trophy');
+        yield MenuItem::linkTo(CompetitionEntryCrudController::class, 'Competitions Entry', 'fas fa-trophy');
+
 
         $activeCompetitions = $this->competitionRepository->findActive();
         if (count($activeCompetitions) === 0) {
@@ -69,7 +75,7 @@ final class DashboardController extends AbstractDashboardController
                 'Presentation',
                 '',
                 PresentationController::ROUTE_NAME,
-                ['id' => $competition->getId()],
+                ['entityId' => $competition->getId()],
             );
         }
     }

@@ -13,16 +13,28 @@
         />
     </div>
 
+    <hr />
+
     <table class="table">
         <thead>
         <tr>
-            <th></th>
+            <th>Štartovné číslo</th>
+            <th>Strelec</th>
+            <th>Klub / PZ</th>
+            <th>Družstvo</th>
+            <th>Spoločná zbraň</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
-        {% for entry in competition.entries %}
+        {% for competitor in competitors %}
             <tr>
-                <td>{{ dump(entry) }}</td>
+                <td>{{ competitor.startNumber }}</td>
+                <td>{{ competitor.shooter.fullName }}</td>
+                <td>{{ competitor.shooter.club }}</td>
+                <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
+                <td>{{ competitor.sharedWeaponCode }}</td>
+                <td>{{ competitor.status.toSlovak }}</td>
             </tr>
         {% endfor %}
         </tbody>
