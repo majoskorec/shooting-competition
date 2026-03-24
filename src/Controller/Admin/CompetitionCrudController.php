@@ -83,6 +83,8 @@ final class CompetitionCrudController extends AbstractCrudController
 
         yield NumberField::new('teamMemberCount');
 
+        yield NumberField::new('shootersInRound');
+
         yield CodeEditorField::new('targetConfigurationSnapshot', 'Target Configuration Snapshot')
             ->setLanguage('javascript')
             ->setNumOfRows(18)

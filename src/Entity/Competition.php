@@ -79,6 +79,10 @@ class Competition implements Stringable
     #[ORM\Column]
     private int $teamMemberCount;
 
+    #[Assert\GreaterThanOrEqual(1)]
+    #[ORM\Column]
+    private int $shootersInRound;
+
     public function __construct()
     {
         $this->competitors = new ArrayCollection();
@@ -200,6 +204,16 @@ class Competition implements Stringable
     public function setTeamMemberCount(int $teamMemberCount): void
     {
         $this->teamMemberCount = $teamMemberCount;
+    }
+
+    public function getShootersInRound(): int
+    {
+        return $this->shootersInRound;
+    }
+
+    public function setShootersInRound(int $shootersInRound): void
+    {
+        $this->shootersInRound = $shootersInRound;
     }
 
     #[Override]

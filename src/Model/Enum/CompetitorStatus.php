@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace App\Model\Enum;
 
-enum CompetitorStatus: string
+use Override;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+enum CompetitorStatus: string implements TranslatableInterface
 {
     case Pending = 'pending';
     case Registered = 'registered';
     case Withdrawn = 'withdrawn';
     case Disqualified = 'disqualified';
 
-    public function toSlovak(): string
+    #[Override]
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return match ($this) {
-            self::Pending => 'Prihlásený',
-            self::Registered => 'Registrovaný',
-            self::Withdrawn => 'Odsúpený',
-            self::Disqualified => 'Diskvalifikovaný',
-        };
+        $key = sprintf('CompetitorStatus.%s', $this->name);
+
+        return $translator->trans(
+            id: $key,
+            locale: $locale,
+        );
     }
 }

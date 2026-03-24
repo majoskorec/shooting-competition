@@ -1,0 +1,5 @@
+CompetitorStatus:
+    Pending: Prihlásený
+    Registered: Registrovaný
+    Withdrawn: Odsúpený
+    Disqualified: Diskvalifikovaný

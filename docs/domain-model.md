@@ -29,7 +29,6 @@ Primárnym cieľom MVP je pokryť súťaž typu M400.
 Súťaž typu M400 je v tomto projekte modelovaná ako súťaž zložená zo štyroch terčov:
 - líška
 - srnec
-
 - kamzík
 - diviak
 
@@ -40,7 +39,6 @@ Jednotlivé terče môžu mať odlišné bodovacie schémy. Doménový model pre
 Celkové poradie sa určuje na základe súčtu výsledkov zo všetkých povinných terčov. Pri rovnosti bodov rozhoduje vopred definované poradie terčov. Pre M400 je aktuálne poradie tie-breaku definované takto:
 - diviak
 - kamzík
-
 - srnec
 - líška
 
@@ -71,7 +69,6 @@ Definícia terča reprezentuje všeobecný typ terča používaného v súťaži
 Príkladmi definície terča sú najmä:
 - líška
 - srnec
-
 - kamzík
 - diviak
 
@@ -100,7 +97,6 @@ Typ súťaže reprezentuje šablónu formátu, podľa ktorého sa súťaž organ
 Príkladmi typu súťaže sú najmä:
 - M400
 - M800
-
 - G200
 - G400
 
