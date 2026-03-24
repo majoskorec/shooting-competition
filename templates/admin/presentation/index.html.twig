@@ -3,10 +3,28 @@
 {% block main %}
     <h1>Prezentácia: {{ competition.name }}</h1>
     <div>
-        {{ competition.competitionType.name }}
-        {{ competition.competitionStart|date('Y-m-d H:m') }}
+        <a
+            href="{{ path(constant('App\\Controller\\Admin\\DrawController::ROUTE_NAME'), {
+                entityId: competition.id,
+            }) }}"
+            class="btn btn-warning btn-lg"
+        >
+            Rozlosovanie
+        </a>
+    </div>
+    <div>
+        <div>
+            typ súťaže: {{ competition.competitionType.name }}
+        </div>
+        <div>
+            začiatok súťaže: {{ competition.competitionStart|date('Y-m-d H:m') }}
+        </div>
+        <div>
+            prihlásených súťažiacich: {{ competitors|length }}
+        </div>
     </div>
 
+    <hr />
     <div>
         <twig:Presentation
             competition="{{ competition }}"

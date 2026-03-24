@@ -13,7 +13,6 @@ use App\Form\Dto\PresentationDto;
 use App\Form\Type\PresentationDtoType;
 use App\Model\Enum\CompetitorStatus;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGeneratorInterface;
 use Override;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -35,7 +34,6 @@ final class Presentation extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AdminUrlGeneratorInterface $adminUrlGenerator,
     ) {
     }
 
@@ -63,11 +61,9 @@ final class Presentation extends AbstractController
 
         $this->addFlash('success', 'Účastník bol zaregistrovaný');
 
-        $url = $this->adminUrlGenerator->setRoute(PresentationController::ROUTE_NAME, [
+        return $this->redirectToRoute(PresentationController::ROUTE_NAME, [
             'entityId' => $this->competition->getId(),
-        ])->generateUrl();
-
-        return $this->redirect($url);
+        ]);
     }
 
     #[Override]

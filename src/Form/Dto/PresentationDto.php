@@ -21,6 +21,7 @@ final class PresentationDto
         #[Assert\Email]
         public ?string $email = null,
         public ?Shooter $shooter = null,
+        #[Assert\NotBlank(allowNull: true)]
         public ?string $sharedWeaponCode = null,
         public ?string $teamName = null,
         public ?CompetitionTeam $competitionTeam = null,

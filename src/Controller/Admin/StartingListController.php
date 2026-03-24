@@ -15,10 +15,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
 #[AdminRoute('/competition')]
-final class PresentationController extends AbstractController
+final class StartingListController extends AbstractController
 {
     public const string ROUTE_NAME = 'admin_dashboard_' . self::PART_ROUTE_NAME;
-    private const string PART_ROUTE_NAME = 'competition_presentation';
+    private const string PART_ROUTE_NAME = 'competition_staring_list';
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
@@ -26,7 +26,7 @@ final class PresentationController extends AbstractController
     }
 
     #[AdminRoute(
-        path: '/{entityId}/presentation',
+        path: '/{entityId}/staring-list',
         name: self::PART_ROUTE_NAME,
     )]
     public function __invoke(
@@ -40,12 +40,11 @@ final class PresentationController extends AbstractController
             ->leftJoin('c.competitionTeam', 't')
             ->andWhere('c.competition = :competition')
             ->setParameter('competition', $competition)
-            ->addOrderBy('s.lastName', 'ASC')
-            ->addOrderBy('s.firstName', 'ASC')
+            ->addOrderBy('c.startNumber', 'ASC')
             ->getQuery()
             ->getResult();
 
-        return $this->render('admin/presentation/index.html.twig', [
+        return $this->render('admin/stating_list/index.html.twig', [
             'competition' => $competition,
             'competitors' => $competitors,
         ]);

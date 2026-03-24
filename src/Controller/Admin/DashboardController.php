@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\CompetitionType;
+use App\Model\Enum\CompetitionStatus;
 use App\Repository\CompetitionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -58,10 +60,7 @@ final class DashboardController extends AbstractDashboardController
         yield $definitions;
 
         yield MenuItem::linkTo(ShooterCrudController::class, 'Shooters', 'fa-solid fa-person-rifle');
-
-        yield MenuItem::section('Competitions', 'fa-solid fa-trophy');
-
-        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-chess');
+        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fa-solid fa-trophy');
         yield MenuItem::linkTo(CompetitorCrudController::class, 'Competitors', 'fa-solid fa-user');
         yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Teams', 'fa-solid fa-people-group');
 
@@ -76,11 +75,19 @@ final class DashboardController extends AbstractDashboardController
         foreach ($activeCompetitions as $competition) {
             yield MenuItem::section($competition->getName(), 'fa-solid fa-arrows-to-dot');
             yield MenuItem::linkToRoute(
-                'Presentation',
+                'Prezentácia',
                 '',
                 PresentationController::ROUTE_NAME,
                 ['entityId' => $competition->getId()],
             );
+            if ($competition->getStatus() !== CompetitionStatus::Presentation) {
+                yield MenuItem::linkToRoute(
+                    'Štartová listina',
+                    '',
+                    StartingListController::ROUTE_NAME,
+                    ['entityId' => $competition->getId()],
+                );
+            }
         }
     }
 
@@ -91,6 +98,7 @@ final class DashboardController extends AbstractDashboardController
         $crud->setDefaultRowAction(Action::DETAIL);
         $crud->showEntityActionsInlined();
         $crud->renderContentMaximized();
+        $crud->setPaginatorPageSize(200);
 
         return $crud;
     }

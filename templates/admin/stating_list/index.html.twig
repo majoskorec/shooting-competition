@@ -1,0 +1,52 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <h1>
+        Štartová listina {{ competition.name }}
+    </h1>
+
+    <table class="table">
+        <thead>
+        <tr style="white-space: nowrap;">
+            <th>
+                Štartovné číslo
+            </th>
+            <th>
+                Runda
+            </th>
+            <th>
+                Meno
+            </th>
+            <th>
+                Priezvisko
+            </th>
+            <th>
+                Klub / PZ
+            </th>
+            <th>
+                Družstvo
+            </th>
+            <th>
+                Spoločná zbraň
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for competitor in competitors %}
+            <tr class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom' }}">
+                <td style="width: 1%">{{ competitor.startNumber }}</td>
+                <td>{{ roundNumber(competitor.startNumber, competition.shootersInRound) }}</td>
+                <td>{{ competitor.shooter.firstName }}</td>
+                <td>{{ competitor.shooter.lastName }}</td>
+                <td>{{ competitor.shooter.club }}</td>
+                <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
+                <td>{{ competitor.sharedWeaponCode }}</td>
+                <td>{{ competitor.status|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

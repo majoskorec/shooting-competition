@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompetitorRepository::class)]
 #[ORM\Table(name: 'competitor')]
@@ -45,6 +46,7 @@ class Competitor implements Stringable
 //    #[ORM\Column(length: 128, nullable: true)]
 //    private ?string $category = null;
 
+    #[Assert\NotBlank(allowNull: true)]
     #[ORM\Column(length: 128, nullable: true)]
     private ?string $sharedWeaponCode = null;
 

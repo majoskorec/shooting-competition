@@ -25,9 +25,12 @@ final class CompetitionFactory extends PersistentObjectFactory
         return [
             'competitionStart' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'competitionType' => CompetitionTypeFactory::new(),
-            'name' => self::faker()->text(255),
+            'name' => self::faker()->words(3, true),
             'status' => self::faker()->randomElement(CompetitionStatus::cases()),
             'targetConfigurationSnapshot' => [],
+            'teamMemberCount' => self::faker()->randomElement([0, 3, 4]),
+            'shootersInRound' => self::faker()->randomElement([6, 7, 8, 9, 10, 11, 12]),
+            'location' => self::faker()->address,
         ];
     }
 }

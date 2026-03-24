@@ -21,10 +21,10 @@ final class ShooterFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'firstName' => self::faker()->firstName(),
-            'lastName' => self::faker()->lastName(),
+            'firstName' => self::faker()->unique()->firstName(),
+            'lastName' => self::faker()->unique()->lastName(),
             'club' => self::faker()->city(),
-            'email' => self::faker()->email(),
+            'email' => self::faker()->unique()->email(),
         ];
     }
 }
