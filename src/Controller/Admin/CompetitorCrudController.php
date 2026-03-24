@@ -43,12 +43,10 @@ final class CompetitorCrudController extends AbstractCrudController
             ->hideOnForm();
 
         yield AssociationField::new('competition')
-            ->setFormTypeOption('choice_label', 'name')
-            ->hideWhenUpdating();
+            ->setFormTypeOption('choice_label', 'name');
 
         yield AssociationField::new('shooter')
-            ->setFormTypeOption('choice_label', 'fullName')
-            ->hideWhenUpdating();
+            ->setFormTypeOption('choice_label', 'fullName');
 
         yield NumberField::new('startNumber')
             ->setRequired(false);

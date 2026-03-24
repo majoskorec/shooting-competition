@@ -11,10 +11,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CompetitorRepository::class)]
 #[ORM\Table(name: 'competitor')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'shooter_id'])]
+#[UniqueEntity(fields: ['competition', 'shooter'])]
 class Competitor implements Stringable
 {
     #[ORM\Id]

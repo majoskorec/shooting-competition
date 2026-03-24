@@ -24,6 +24,7 @@
             <th>Družstvo</th>
             <th>Spoločná zbraň</th>
             <th>Status</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -35,6 +36,14 @@
                 <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
                 <td>{{ competitor.sharedWeaponCode }}</td>
                 <td>{{ competitor.status.toSlovak }}</td>
+                <td>
+                    <a
+                        href="{{ path('admin_dashboard_competitor_edit', {entityId: competitor.id}) }}"
+                        class="btn btn-warning"
+                    >
+                        uprav
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

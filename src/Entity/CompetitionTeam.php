@@ -70,6 +70,11 @@ class CompetitionTeam implements Stringable
         return $this->members;
     }
 
+    public function choiceLabel(): string
+    {
+        return sprintf('%s [%d]', $this->name, $this->members->count());
+    }
+
     #[Override]
     public function __toString(): string
     {

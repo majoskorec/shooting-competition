@@ -26,12 +26,19 @@
     </div>
     <hr />
     <div class="row">
-        <div class="col-6">
-            {{ form_row(form.teamName) }}
+        {% if this.competition.teamMemberCount > 1 %}
+            <div class="col-6">
+                {{ form_row(form.teamName) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.competitionTeam) }}
+            </div>
+
+    {% else %}
+        <div class="col-12 text-center">
+            Bez Družstiev
         </div>
-        <div class="col-6">
-            {{ form_row(form.competitionTeam) }}
-        </div>
+    {% endif %}
     </div>
 
     {{ form_errors(form) }}

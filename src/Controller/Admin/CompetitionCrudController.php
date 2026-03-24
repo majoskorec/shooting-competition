@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
@@ -80,19 +81,21 @@ final class CompetitionCrudController extends AbstractCrudController
         yield ChoiceField::new('status')
             ->setChoices(CompetitionStatus::cases());
 
-        if (Crud::PAGE_NEW !== $pageName) {
-            yield CodeEditorField::new('targetConfigurationSnapshot', 'Target Configuration Snapshot')
-                ->setLanguage('javascript')
-                ->setNumOfRows(18)
-                ->setFormType(JsonCodeEditorType::class)
-                ->formatValue(static function (mixed $value): string {
-                    if (!is_array($value)) {
-                        return '';
-                    }
+        yield NumberField::new('teamMemberCount');
 
-                    return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-                });
-        }
+        yield CodeEditorField::new('targetConfigurationSnapshot', 'Target Configuration Snapshot')
+            ->setLanguage('javascript')
+            ->setNumOfRows(18)
+            ->setFormType(JsonCodeEditorType::class)
+            ->hideWhenCreating()
+            ->formatValue(static function (mixed $value): string {
+                if (!is_array($value)) {
+                    return '';
+                }
+
+                return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+            });
+
     }
 
     #[Override]

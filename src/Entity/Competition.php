@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompetitionRepository::class)]
 #[ORM\Table(name: 'competition')]
@@ -70,6 +71,13 @@ class Competition implements Stringable
         orphanRemoval: true,
     )]
     private Collection $competitors;
+
+    #[Assert\AtLeastOneOf([
+        new Assert\EqualTo(0),
+        new Assert\GreaterThanOrEqual(2),
+    ])]
+    #[ORM\Column]
+    private int $teamMemberCount;
 
     public function __construct()
     {
@@ -182,6 +190,16 @@ class Competition implements Stringable
     public function removeCompetitor(Competitor $competitor): void
     {
         $this->competitors->removeElement($competitor);
+    }
+
+    public function getTeamMemberCount(): int
+    {
+        return $this->teamMemberCount;
+    }
+
+    public function setTeamMemberCount(int $teamMemberCount): void
+    {
+        $this->teamMemberCount = $teamMemberCount;
     }
 
     #[Override]

@@ -64,7 +64,7 @@ final class Presentation extends AbstractController
         $this->addFlash('success', 'Účastník bol zaregistrovaný');
 
         $url = $this->adminUrlGenerator->setRoute(PresentationController::ROUTE_NAME, [
-            'id' => $this->competition->getId(),
+            'entityId' => $this->competition->getId(),
         ])->generateUrl();
 
         return $this->redirect($url);
@@ -98,7 +98,6 @@ final class Presentation extends AbstractController
             return null;
         }
 
-        // @todo najprv selectnut ci existuje?
         $competitionTeam = new CompetitionTeam();
         $competitionTeam->setCompetition($this->competition);
         $competitionTeam->setName($presentationDto->teamName);

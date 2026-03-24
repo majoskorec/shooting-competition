@@ -37,8 +37,11 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('Shooting Competition');
+        $dashboard = Dashboard::new();
+        $dashboard->setTitle('Shooting Competition');
+        $dashboard->renderContentMaximized();
+
+        return $dashboard;
     }
 
     public function configureMenuItems(): iterable
@@ -56,10 +59,11 @@ final class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkTo(ShooterCrudController::class, 'Shooters', 'fa-solid fa-person-rifle');
 
-        yield MenuItem::section('Competitions', 'fa-solid fa-chess');
+        yield MenuItem::section('Competitions', 'fa-solid fa-trophy');
 
-        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-trophy');
-        yield MenuItem::linkTo(CompetitorCrudController::class, 'Competitors', 'fas fa-trophy');
+        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-chess');
+        yield MenuItem::linkTo(CompetitorCrudController::class, 'Competitors', 'fa-solid fa-user');
+        yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Teams', 'fa-solid fa-people-group');
 
 
         $activeCompetitions = $this->competitionRepository->findActive();
@@ -85,6 +89,8 @@ final class DashboardController extends AbstractDashboardController
     {
         $crud = parent::configureCrud();
         $crud->setDefaultRowAction(Action::DETAIL);
+        $crud->showEntityActionsInlined();
+        $crud->renderContentMaximized();
 
         return $crud;
     }

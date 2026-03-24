@@ -30,6 +30,7 @@ final class PresentationDtoType extends AbstractType
         $lastName = trim($options['last_name_filter'] ?? '');
         $teamName = trim($options['team_name_filter'] ?? '');
         $competition = $options['competition'];
+        assert($competition instanceof Competition);
 
         $builder->add('firstName', TextType::class, [
             'label' => 'First Name',
@@ -80,35 +81,40 @@ final class PresentationDtoType extends AbstractType
             'label' => 'Zdielaná zbraň',
             'required' => false,
         ]);
-        $builder->add('teamName', TextType::class, [
-            'label' => 'Družstvo',
-            'required' => false,
-        ]);
-        $builder->add('competitionTeam', EntityType::class, [
-            'class' => CompetitionTeam::class,
-            'placeholder' => 'Vyber družstvo',
-            'required' => false,
-            'attr' => [
-                'size' => 5,
-            ],
-            'query_builder' => function (CompetitionTeamRepository $repo) use ($teamName, $competition) {
-                $qb = $repo->createQueryBuilder('t');
-                $qb = $qb->orderBy('t.name', 'ASC');
-                $qb = $qb->andWhere('t.competition = :competition');
-                $qb = $qb->setParameter('competition', $competition);
 
-                if ($teamName !== '') {
-                    $qb = $qb->andWhere('t.name LIKE :teamName');
-                    $qb = $qb->setParameter('teamName', '%' . $teamName . '%');
-                }
+        if ($competition->getTeamMemberCount() > 1) {
+            $builder->add('teamName', TextType::class, [
+                'label' => 'Družstvo',
+                'required' => false,
+            ]);
 
-                if ($teamName === '') {
-                    $qb = $qb->andWhere('1 = 0');
-                }
+            $builder->add('competitionTeam', EntityType::class, [
+                'class' => CompetitionTeam::class,
+                'placeholder' => 'Vyber družstvo',
+                'choice_label' => 'choiceLabel',
+                'required' => false,
+                'attr' => [
+                    'size' => 5,
+                ],
+                'query_builder' => function (CompetitionTeamRepository $repo) use ($teamName, $competition) {
+                    $qb = $repo->createQueryBuilder('t');
+                    $qb = $qb->orderBy('t.name', 'ASC');
+                    $qb = $qb->andWhere('t.competition = :competition');
+                    $qb = $qb->setParameter('competition', $competition);
 
-                return $qb;
-            },
-        ]);
+                    if ($teamName !== '') {
+                        $qb = $qb->andWhere('t.name LIKE :teamName');
+                        $qb = $qb->setParameter('teamName', '%' . $teamName . '%');
+                    }
+
+                    if ($teamName === '') {
+                        $qb = $qb->andWhere('1 = 0');
+                    }
+
+                    return $qb;
+                },
+            ]);
+        }
     }
 
     #[Override]
