@@ -7,6 +7,7 @@ namespace App\Story;
 use App\Entity\Competitor;
 use App\Model\Enum\CompetitionStatus;
 use App\Model\Enum\CompetitorStatus;
+use App\Model\Factory\TargetSnapshotFactory;
 use App\Tests\Factory\CompetitionFactory;
 use App\Tests\Factory\CompetitionTeamFactory;
 use App\Tests\Factory\CompetitionTypeFactory;
@@ -26,6 +27,7 @@ final class RandomCompetitionPresentationStory extends Story
 {
     public function __construct(
         private readonly Randomizer $randomizer,
+        private readonly TargetSnapshotFactory $targetSnapshotFactory,
     ) {
     }
 
@@ -37,6 +39,7 @@ final class RandomCompetitionPresentationStory extends Story
             'competitionStart' => new DatePoint('now'),
             'competitionType' => $competitionType,
             'status' => CompetitionStatus::Presentation,
+            'targetConfigurationSnapshot' => $this->targetSnapshotFactory->createFromCompetitionType($competitionType),
         ]);
 
         $maxTeamMemberCount = $competition->getTeamMemberCount();
