@@ -40,14 +40,14 @@ final class ShooterCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield TextField::new('firstName');
+        yield TextField::new('firstName', 'Meno');
 
-        yield TextField::new('lastName');
+        yield TextField::new('lastName', 'Priezvisko');
 
-        yield TextField::new('club')
+        yield TextField::new('club', 'Klub / PZ')
             ->setRequired(false);
 
-        yield EmailField::new('email')
+        yield EmailField::new('email', 'E-mail')
             ->setRequired(false);
     }
 }

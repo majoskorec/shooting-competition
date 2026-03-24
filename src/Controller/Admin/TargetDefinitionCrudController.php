@@ -22,12 +22,12 @@ final class TargetDefinitionCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Target Definition')
-            ->setEntityLabelInPlural('Target Definitions')
-            ->setPageTitle(Crud::PAGE_INDEX, 'Target Definitions')
-            ->setPageTitle(Crud::PAGE_NEW, 'Create Target Definition')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Edit Target Definition')
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Target Definition Detail');
+            ->setEntityLabelInSingular('Definícia terča')
+            ->setEntityLabelInPlural('Definície terčov')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Definície terčov')
+            ->setPageTitle(Crud::PAGE_NEW, 'Nová definícia terča')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Úprava definície terča')
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Detail definície terča');
     }
 
     public function configureFields(string $pageName): iterable
@@ -35,10 +35,10 @@ final class TargetDefinitionCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield TextField::new('name');
+        yield TextField::new('name', 'Názov');
 
-        yield CollectionField::new('pointsSchema', 'Points Schema')
-            ->setHelp('Ordered list of allowed point values for this target.')
+        yield CollectionField::new('pointsSchema', 'Bodovacia schéma')
+            ->setHelp('Usporiadaný zoznam povolených bodových hodnôt pre tento terč.')
             ->setEntryType(IntegerType::class)
             ->allowAdd()
             ->allowDelete()

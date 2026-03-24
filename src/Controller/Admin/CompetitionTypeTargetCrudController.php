@@ -21,12 +21,12 @@ final class CompetitionTypeTargetCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Competition Type Target')
-            ->setEntityLabelInPlural('Competition Type Targets')
-            ->setPageTitle(Crud::PAGE_INDEX, 'Competition Type Targets')
-            ->setPageTitle(Crud::PAGE_NEW, 'Create Competition Type Target')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Edit Competition Type Target')
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Competition Type Target Detail')
+            ->setEntityLabelInSingular('Terč typu súťaže')
+            ->setEntityLabelInPlural('Terče typov súťaží')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Terče typov súťaží')
+            ->setPageTitle(Crud::PAGE_NEW, 'Nový terč typu súťaže')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Úprava terča typu súťaže')
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Detail terča typu súťaže')
             ->setDefaultSort(['competitionType' => 'ASC', 'displayOrder' => 'ASC']);
     }
 
@@ -35,16 +35,16 @@ final class CompetitionTypeTargetCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield AssociationField::new('competitionType')
+        yield AssociationField::new('competitionType', 'Typ súťaže')
             ->setFormTypeOption('choice_label', 'name');
 
-        yield AssociationField::new('targetDefinition')
+        yield AssociationField::new('targetDefinition', 'Definícia terča')
             ->setFormTypeOption('choice_label', 'name');
 
-        yield IntegerField::new('displayOrder');
-        yield IntegerField::new('shotCount');
+        yield IntegerField::new('displayOrder', 'Poradie zobrazenia');
+        yield IntegerField::new('shotCount', 'Počet rán');
 
-        yield IntegerField::new('tieBreakPriority')
+        yield IntegerField::new('tieBreakPriority', 'Priorita pri rovnosti')
             ->setRequired(false);
     }
 }

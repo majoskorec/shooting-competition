@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompetitionTeam;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -40,15 +45,33 @@ final class CompetitionTeamCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield AssociationField::new('competition')
+        yield AssociationField::new('competition', 'Súťaž')
             ->setFormTypeOption('choice_label', 'name')
             ->hideWhenUpdating();
 
-        yield TextField::new('name');
+        yield TextField::new('name', 'Názov');
 
-        yield AssociationField::new('members')
+        yield AssociationField::new('members', 'Členovia')
             ->onlyOnIndex();
 
-        yield CollectionField::new('members');
+        yield CollectionField::new('members', 'Členovia');
+    }
+
+    #[Override]
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters,
+    ): QueryBuilder {
+        $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb = $qb->join('entity.competition', 'c');
+        $qb = $qb->addSelect('c');
+        $qb = $qb->leftJoin('entity.members', 'm');
+        $qb = $qb->addSelect('m');
+        $qb = $qb->leftJoin('m.shooter', 's');
+        $qb = $qb->addSelect('s');
+
+        return $qb;
     }
 }

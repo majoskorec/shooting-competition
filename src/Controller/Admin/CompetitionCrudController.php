@@ -37,12 +37,12 @@ final class CompetitionCrudController extends AbstractCrudController
     #[Override]
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInSingular('Competition');
-        $crud->setEntityLabelInPlural('Competitions');
-        $crud->setPageTitle(Crud::PAGE_INDEX, 'Competitions');
-        $crud->setPageTitle(Crud::PAGE_NEW, 'Create Competition');
-        $crud->setPageTitle(Crud::PAGE_EDIT, 'Edit Competition');
-        $crud->setPageTitle(Crud::PAGE_DETAIL, 'Competition Detail');
+        $crud->setEntityLabelInSingular('Súťaž');
+        $crud->setEntityLabelInPlural('Súťaže');
+        $crud->setPageTitle(Crud::PAGE_INDEX, 'Súťaže');
+        $crud->setPageTitle(Crud::PAGE_NEW, 'Nová súťaž');
+        $crud->setPageTitle(Crud::PAGE_EDIT, 'Úprava súťaže');
+        $crud->setPageTitle(Crud::PAGE_DETAIL, 'Detail súťaže');
         $crud->setDefaultSort(['competitionStart' => 'DESC']);
 
         return $crud;
@@ -54,13 +54,13 @@ final class CompetitionCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield TextField::new('name');
+        yield TextField::new('name', 'Názov');
 
-        yield AssociationField::new('competitionType')
+        yield AssociationField::new('competitionType', 'Typ súťaže')
             ->setFormTypeOption('choice_label', 'name')
             ->hideWhenUpdating();
 
-        yield DateTimeField::new('competitionStart', 'Competition Start')
+        yield DateTimeField::new('competitionStart', 'Začiatok súťaže')
             ->setFormat('yyyy-MM-dd HH:mm')
             ->setTimezone('Europe/Bratislava')
             ->renderAsNativeWidget()
@@ -68,24 +68,24 @@ final class CompetitionCrudController extends AbstractCrudController
             ->setFormTypeOption('view_timezone', 'Europe/Bratislava')
             ->setFormTypeOption('with_seconds', false);
 
-        yield TextareaField::new('description')
+        yield TextareaField::new('description', 'Popis')
             ->setRequired(false)
             ->hideOnIndex();
 
-        yield TextField::new('location')
+        yield TextField::new('location', 'Miesto')
             ->setRequired(false);
 
-        yield TextField::new('organizer')
+        yield TextField::new('organizer', 'Organizátor')
             ->setRequired(false);
 
-        yield ChoiceField::new('status')
+        yield ChoiceField::new('status', 'Stav')
             ->setChoices(CompetitionStatus::cases());
 
-        yield NumberField::new('teamMemberCount');
+        yield NumberField::new('teamMemberCount', 'Počet členov družstva');
 
-        yield NumberField::new('shootersInRound');
+        yield NumberField::new('shootersInRound', 'Počet strelcov v runde');
 
-        yield CodeEditorField::new('targetConfigurationSnapshot', 'Target Configuration Snapshot')
+        yield CodeEditorField::new('targetConfigurationSnapshot', 'Snapshot konfigurácie terčov')
             ->setLanguage('javascript')
             ->setNumOfRows(18)
             ->setFormType(JsonCodeEditorType::class)

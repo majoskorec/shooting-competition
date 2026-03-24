@@ -33,11 +33,11 @@ final class PresentationDtoType extends AbstractType
         assert($competition instanceof Competition);
 
         $builder->add('firstName', TextType::class, [
-            'label' => 'First Name',
+            'label' => 'Meno',
             'required' => false,
         ]);
         $builder->add('lastName', TextType::class, [
-            'label' => 'Last Name',
+            'label' => 'Priezvisko',
             'required' => false,
         ]);
 
@@ -70,15 +70,15 @@ final class PresentationDtoType extends AbstractType
         ]);
 
         $builder->add('club', TextType::class, [
-            'label' => 'Club',
+            'label' => 'Klub / PZ',
             'required' => false,
         ]);
         $builder->add('email', EmailType::class, [
-            'label' => 'Email',
+            'label' => 'E-mail',
             'required' => false,
         ]);
         $builder->add('sharedWeaponCode', TextType::class, [
-            'label' => 'Zdielaná zbraň',
+            'label' => 'Zdieľaná zbraň',
             'required' => false,
         ]);
 

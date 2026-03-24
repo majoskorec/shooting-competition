@@ -40,7 +40,7 @@ final class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         $dashboard = Dashboard::new();
-        $dashboard->setTitle('Shooting Competition');
+        $dashboard->setTitle('Strelecká súťaž');
         $dashboard->renderContentMaximized();
 
         return $dashboard;
@@ -48,21 +48,21 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'internal:home');
+        yield MenuItem::linkToDashboard('Nástenka', 'internal:home');
 
-        $definitions = MenuItem::subMenu('Definitions', 'fa-solid fa-gear');
+        $definitions = MenuItem::subMenu('Definície', 'fa-solid fa-gear');
         $definitions->setSubItems([
-            MenuItem::linkTo(TargetDefinitionCrudController::class, 'Target Definitions', 'fas fa-bullseye'),
-            MenuItem::linkTo(CompetitionTypeTargetCrudController::class, 'Competition Type Targets', 'fas fa-crosshairs'),
-            MenuItem::linkTo(CompetitionTypeCrudController::class, 'Competition Types', 'fas fa-list'),
+            MenuItem::linkTo(TargetDefinitionCrudController::class, 'Definície terčov', 'fas fa-bullseye'),
+            MenuItem::linkTo(CompetitionTypeTargetCrudController::class, 'Terče typov súťaží', 'fas fa-crosshairs'),
+            MenuItem::linkTo(CompetitionTypeCrudController::class, 'Typy súťaží', 'fas fa-list'),
         ]);
 
         yield $definitions;
 
-        yield MenuItem::linkTo(ShooterCrudController::class, 'Shooters', 'fa-solid fa-person-rifle');
-        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fa-solid fa-trophy');
-        yield MenuItem::linkTo(CompetitorCrudController::class, 'Competitors', 'fa-solid fa-user');
-        yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Teams', 'fa-solid fa-people-group');
+        yield MenuItem::linkTo(ShooterCrudController::class, 'Strelci', 'fa-solid fa-person-rifle');
+        yield MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy');
+        yield MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user');
+        yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group');
 
 
         $activeCompetitions = $this->competitionRepository->findActive();
@@ -70,7 +70,7 @@ final class DashboardController extends AbstractDashboardController
             return;
         }
 
-        yield MenuItem::section('Active Competitions', 'fa-solid fa-chess');
+        yield MenuItem::section('Aktívne súťaže', 'fa-solid fa-chess');
 
         foreach ($activeCompetitions as $competition) {
             yield MenuItem::section($competition->getName(), 'fa-solid fa-arrows-to-dot');

@@ -22,12 +22,12 @@ final class CompetitionTypeCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Competition Type')
-            ->setEntityLabelInPlural('Competition Types')
-            ->setPageTitle(Crud::PAGE_INDEX, 'Competition Types')
-            ->setPageTitle(Crud::PAGE_NEW, 'Create Competition Type')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Edit Competition Type')
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Competition Type Detail');
+            ->setEntityLabelInSingular('Typ súťaže')
+            ->setEntityLabelInPlural('Typy súťaží')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Typy súťaží')
+            ->setPageTitle(Crud::PAGE_NEW, 'Nový typ súťaže')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Úprava typu súťaže')
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Detail typu súťaže');
     }
 
     public function configureFields(string $pageName): iterable
@@ -35,13 +35,13 @@ final class CompetitionTypeCrudController extends AbstractCrudController
         yield IdField::new('id')
             ->hideOnForm();
 
-        yield TextField::new('name');
+        yield TextField::new('name', 'Názov');
 
-        yield TextareaField::new('description')
+        yield TextareaField::new('description', 'Popis')
             ->hideOnIndex()
             ->setRequired(false);
 
-        yield CollectionField::new('targets', 'Targets')
+        yield CollectionField::new('targets', 'Terče')
             ->useEntryCrudForm(CompetitionTypeTargetCrudController::class);
     }
 }
