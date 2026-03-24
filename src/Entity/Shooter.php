@@ -8,10 +8,13 @@ use App\Repository\ShooterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: ShooterRepository::class)]
 #[ORM\Table(name: 'shooter')]
-class Shooter
+#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['last_name', 'first_name'])]
+class Shooter implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -93,5 +96,11 @@ class Shooter
     public function getFullName(): string
     {
         return trim(sprintf('%s %s', $this->firstName, $this->lastName));
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 }

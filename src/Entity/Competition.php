@@ -12,10 +12,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: CompetitionRepository::class)]
 #[ORM\Table(name: 'competition')]
-class Competition
+class Competition implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -139,6 +141,16 @@ class Competition
         $this->status = $status;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
     /** @return array<TargetSnapshot> */
     public function getTargetConfigurationSnapshot(): array
     {
@@ -170,5 +182,11 @@ class Competition
     public function removeEntry(CompetitionEntry $entry): void
     {
         $this->entries->removeElement($entry);
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

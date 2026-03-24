@@ -7,11 +7,13 @@ namespace App\Entity;
 use App\Repository\CompetitionTeamRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: CompetitionTeamRepository::class)]
 #[ORM\Table(name: 'competition_team')]
 #[ORM\UniqueConstraint(name: 'uniq_competition_team_name', columns: ['competition_id', 'name'])]
-class CompetitionTeam
+class CompetitionTeam implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -66,5 +68,11 @@ class CompetitionTeam
     public function getMembers(): Collection
     {
         return $this->members;
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

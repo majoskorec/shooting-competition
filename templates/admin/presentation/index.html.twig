@@ -1,0 +1,30 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <h1>Prezentácia: {{ competition.name }}</h1>
+    <div>
+        {{ competition.competitionType.name }}
+        {{ competition.competitionStart|date('Y-m-d H:m') }}
+    </div>
+
+    <div>
+        <twig:Presentation
+            competition="{{ competition }}"
+        />
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in competition.entries %}
+            <tr>
+                <td>{{ dump(entry) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

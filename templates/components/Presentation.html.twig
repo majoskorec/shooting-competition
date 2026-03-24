@@ -1,0 +1,43 @@
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save',
+            'data-model': 'debounce(100)|*',
+        }
+    }) }}
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.shooter) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {{ form_row(form.club) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.sharedWeaponCode) }}
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.teamName) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.competitionTeam) }}
+        </div>
+    </div>
+
+    {{ form_errors(form) }}
+
+    <button class="btn btn-primary">
+        Ulož
+    </button>
+    {{ form_end(form) }}
+</div>

@@ -11,4 +11,5 @@ enum CompetitionStatus: string
     case InProgress = 'in_progress';
     case ReadyForClosure = 'ready_for_closure';
     case Finalized = 'finalized';
+    case Closed = 'closed';
 }

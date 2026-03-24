@@ -9,11 +9,13 @@ use App\Repository\CompetitionEntryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: CompetitionEntryRepository::class)]
 #[ORM\Table(name: 'competition_entry')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'shooter_id'])]
-class CompetitionEntry
+class CompetitionEntry implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +26,10 @@ class CompetitionEntry
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Competition $competition;
 
-    #[ORM\ManyToOne(inversedBy: 'competitionEntries')]
+    #[ORM\ManyToOne(
+        cascade: ['persist'],
+        inversedBy: 'competitionEntries',
+    )]
     #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
     private Shooter $shooter;
 
@@ -155,5 +160,11 @@ class CompetitionEntry
     public function removeTargetResult(TargetResult $targetResult): void
     {
         $this->targetResults->removeElement($targetResult);
+    }
+
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->shooter->getFullName();
     }
 }

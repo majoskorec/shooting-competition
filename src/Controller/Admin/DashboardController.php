@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Repository\CompetitionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AdminDashboard(
@@ -17,6 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
 final class DashboardController extends AbstractDashboardController
 {
     public const string ROUTE_NAME = 'admin_dashboard';
+
+    public function __construct(
+        private readonly CompetitionRepository $competitionRepository,
+    ) {
+    }
+
 
     public function index(): Response
     {
@@ -41,5 +53,50 @@ final class DashboardController extends AbstractDashboardController
         ]);
 
         yield $definitions;
+        yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-trophy');
+        yield MenuItem::linkTo(ShooterCrudController::class, 'Shooters', 'fa-solid fa-person-rifle');
+
+        $activeCompetitions = $this->competitionRepository->findActive();
+        if (count($activeCompetitions) === 0) {
+            return;
+        }
+
+        yield MenuItem::section('Active Competitions', 'fa-solid fa-chess');
+
+        foreach ($activeCompetitions as $competition) {
+            yield MenuItem::section($competition->getName(), 'fa-solid fa-arrows-to-dot');
+            yield MenuItem::linkToRoute(
+                'Presentation',
+                '',
+                PresentationController::ROUTE_NAME,
+                ['id' => $competition->getId()],
+            );
+        }
+    }
+
+    #[Override]
+    public function configureCrud(): Crud
+    {
+        $crud = parent::configureCrud();
+        $crud->setDefaultRowAction(Action::DETAIL);
+
+        return $crud;
+    }
+
+    #[Override]
+    public function configureActions(): Actions
+    {
+        $actions = parent::configureActions();
+        $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
+
+        return $actions;
+    }
+
+    public function configureAssets(): Assets
+    {
+        $assets = parent::configureAssets();
+        $assets->addAssetMapperEntry('admin');
+
+        return $assets;
     }
 }
