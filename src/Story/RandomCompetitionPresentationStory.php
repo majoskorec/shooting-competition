@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Story;
 
+use App\Entity\CompetitionCategory;
 use App\Entity\Competitor;
 use App\Model\Enum\CompetitionStatus;
 use App\Model\Enum\CompetitorStatus;
 use App\Model\Factory\TargetSnapshotFactory;
+use App\Tests\Factory\CompetitionCategoryFactory;
 use App\Tests\Factory\CompetitionFactory;
 use App\Tests\Factory\CompetitionTeamFactory;
 use App\Tests\Factory\CompetitionTypeFactory;
@@ -42,6 +44,19 @@ final class RandomCompetitionPresentationStory extends Story
             'targetConfigurationSnapshot' => $this->targetSnapshotFactory->createFromCompetitionType($competitionType),
         ]);
 
+        $categoryWomen = CompetitionCategoryFactory::createOne([
+            'competition' => $competition,
+            'name' => 'Ženy',
+        ]);
+        $categorySeniors = CompetitionCategoryFactory::createOne([
+            'competition' => $competition,
+            'name' => 'Seniori',
+        ]);
+        $categoryVeterans = CompetitionCategoryFactory::createOne([
+            'competition' => $competition,
+            'name' => 'Veteráni',
+        ]);
+
         $maxTeamMemberCount = $competition->getTeamMemberCount();
         $shooters = ShooterFactory::all();
         $shooters = $this->randomizer->shuffleArray($shooters);
@@ -54,11 +69,20 @@ final class RandomCompetitionPresentationStory extends Story
                     'competition' => $competition,
                 ]);
             }
+
+            $categories = [
+                faker()->numberBetween(1, 100) > 66 ? $categoryWomen : null,
+                faker()->numberBetween(1, 100) > 66 ? $categorySeniors : null,
+                faker()->numberBetween(1, 100) > 66 ? $categoryVeterans : null,
+            ];
+            $categories = array_filter($categories);
+
             $competitors[] = CompetitorFactory::createOne([
                 'competition' => $competition,
                 'shooter' => $shooter,
                 'status' => CompetitorStatus::Registered,
                 'competitionTeam' => $maxTeamMemberCount === 0 ? null : $competitionTeam,
+                'categories' => $categories,
             ]);
             $teamMemberCount++;
             if ($teamMemberCount === $maxTeamMemberCount) {

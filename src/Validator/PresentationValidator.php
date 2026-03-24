@@ -40,10 +40,26 @@ final class PresentationValidator extends ConstraintValidator
 
         if ($value->shooter === null) {
             $this->validateShooterAlreadyExists($value, $constraint);
+            $this->validateShooterFields($value, $constraint);
         }
 
         if ($value->competitionTeam === null && $value->teamName !== null) {
             $this->validateTeamAlreadyExists($value->teamName, $value->competition, $constraint);
+        }
+    }
+
+    private function validateShooterFields(PresentationDto $value, Presentation $constraint): void
+    {
+        if ($value->firstName === null || trim($value->firstName) === '') {
+            $this->context->buildViolation($constraint->missingValuesMessage)
+                ->atPath('firstName')
+                ->addViolation();
+        }
+
+        if ($value->lastName === null || trim($value->lastName) === '') {
+            $this->context->buildViolation($constraint->missingValuesMessage)
+                ->atPath('lastName')
+                ->addViolation();
         }
     }
 

@@ -51,6 +51,11 @@
             <th>
                 Spoločná zbraň
             </th>
+            {% for category in competition.categories %}
+                <th>
+                    {{ category.name }}
+                </th>
+            {% endfor %}
             <th>
                 Stav
             </th>
@@ -65,6 +70,11 @@
                 <td>{{ competitor.shooter.club }}</td>
                 <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
                 <td>{{ competitor.sharedWeaponCode }}</td>
+                {% for category in competition.categories %}
+                    <td>
+                        {{ competitor.categories.contains(category) ? 'X' : '' }}
+                    </td>
+                {% endfor %}
                 <td>{{ competitor.status|trans }}</td>
                 <td style="width: 1%; white-space: nowrap;">
                     <a

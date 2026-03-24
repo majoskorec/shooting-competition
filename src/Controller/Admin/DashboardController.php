@@ -63,6 +63,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy');
         yield MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user');
         yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group');
+        yield MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people');
 
 
         $activeCompetitions = $this->competitionRepository->findActive();

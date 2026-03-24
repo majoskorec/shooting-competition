@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Dto;
 
 use App\Entity\Competition;
+use App\Entity\CompetitionCategory;
 use App\Entity\CompetitionTeam;
 use App\Entity\Shooter;
 use App\Validator\Presentation;
@@ -13,6 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Presentation]
 final class PresentationDto
 {
+    /**
+     * @param array<CompetitionCategory> $categories
+     */
     public function __construct(
         public Competition $competition,
         public ?string $firstName = null,
@@ -25,6 +29,7 @@ final class PresentationDto
         public ?string $sharedWeaponCode = null,
         public ?string $teamName = null,
         public ?CompetitionTeam $competitionTeam = null,
+        public array $categories = [],
     ) {
     }
 }

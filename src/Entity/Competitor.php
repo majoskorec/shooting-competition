@@ -43,8 +43,12 @@ class Competitor implements Stringable
     #[ORM\Column(nullable: true)]
     private ?int $startNumber = null;
 
-//    #[ORM\Column(length: 128, nullable: true)]
-//    private ?string $category = null;
+    /** @var Collection<int, CompetitionCategory> */
+    #[ORM\ManyToMany(
+        targetEntity: CompetitionCategory::class,
+        mappedBy: 'competitors',
+    )]
+    private Collection $categories;
 
     #[Assert\NotBlank(allowNull: true)]
     #[ORM\Column(length: 128, nullable: true)]
@@ -68,6 +72,7 @@ class Competitor implements Stringable
     public function __construct()
     {
         $this->targetResults = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,19 +156,38 @@ class Competitor implements Stringable
         return $this->targetResults;
     }
 
-    public function addTargetResult(TargetResult $targetResult): self
+    public function addTargetResult(TargetResult $targetResult): void
     {
         if (!$this->targetResults->contains($targetResult)) {
             $this->targetResults->add($targetResult);
             $targetResult->setCompetitor($this);
         }
-
-        return $this;
     }
 
     public function removeTargetResult(TargetResult $targetResult): void
     {
         $this->targetResults->removeElement($targetResult);
+    }
+
+    /** @return Collection<int, CompetitionCategory> */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(CompetitionCategory $category): void
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addCompetitor($this);
+        }
+    }
+
+    public function removeCategory(CompetitionCategory $category): void
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeCompetitor($this);
+        }
     }
 
     #[Override]

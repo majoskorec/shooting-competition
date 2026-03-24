@@ -13,6 +13,7 @@ use App\Repository\ShooterRepository;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,6 +44,7 @@ final class PresentationDtoType extends AbstractType
 
         $builder->add('shooter', EntityType::class, [
             'class' => Shooter::class,
+            'label' => 'Strelec',
             'placeholder' => 'Vyber strelca',
             'required' => false,
             'attr' => [
@@ -81,6 +83,14 @@ final class PresentationDtoType extends AbstractType
             'label' => 'Zdieľaná zbraň',
             'required' => false,
         ]);
+        $builder->add('categories', ChoiceType::class, [
+            'expanded' => true,
+            'multiple' => true,
+            'choices' => $competition->getCategories()->toArray(),
+            'choice_label' => 'name',
+            'label' => 'Kategórie',
+            'required' => false,
+        ]);
 
         if ($competition->getTeamMemberCount() > 1) {
             $builder->add('teamName', TextType::class, [
@@ -90,6 +100,7 @@ final class PresentationDtoType extends AbstractType
 
             $builder->add('competitionTeam', EntityType::class, [
                 'class' => CompetitionTeam::class,
+                'label' => 'Vyber družstvo',
                 'placeholder' => 'Vyber družstvo',
                 'choice_label' => 'choiceLabel',
                 'required' => false,

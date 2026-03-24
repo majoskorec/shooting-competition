@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -64,6 +65,10 @@ final class CompetitorCrudController extends AbstractCrudController
 
         yield NumberField::new('cachedTotalScore', 'Celkové skóre (cache)')
             ->setRequired(false);
+
+        yield AssociationField::new('categories', 'Kategórie')
+            ->autocomplete()
+            ->setFormTypeOption('by_reference', false);
     }
 
     #[Override]
@@ -78,6 +83,8 @@ final class CompetitorCrudController extends AbstractCrudController
         $qb = $qb->addSelect('c');
         $qb = $qb->join('entity.shooter', 's');
         $qb = $qb->addSelect('s');
+        $qb = $qb->leftJoin('entity.categories', 'cat');
+        $qb = $qb->addSelect('cat');
 
         return $qb;
     }

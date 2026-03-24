@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\CompetitionTeamRepository;
+use App\Repository\CompetitionCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
-#[ORM\Entity(repositoryClass: CompetitionTeamRepository::class)]
-#[ORM\Table(name: 'competition_team')]
+#[ORM\Entity(repositoryClass: CompetitionCategoryRepository::class)]
+#[ORM\Table(name: 'competition_category')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'name'])]
-class CompetitionTeam implements Stringable
+class CompetitionCategory implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(
+        targetEntity: Competition::class,
+        inversedBy: 'categories',
+    )]
     #[ORM\JoinColumn(
         nullable: false,
         onDelete: 'CASCADE',
@@ -34,15 +37,15 @@ class CompetitionTeam implements Stringable
     private string $name;
 
     /** @var Collection<int, Competitor> */
-    #[ORM\OneToMany(
+    #[ORM\ManyToMany(
         targetEntity: Competitor::class,
-        mappedBy: 'competitionTeam',
+        inversedBy: 'categories',
     )]
-    private Collection $members;
+    private Collection $competitors;
 
     public function __construct()
     {
-        $this->members = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,14 +74,21 @@ class CompetitionTeam implements Stringable
     }
 
     /** @return Collection<int, Competitor> */
-    public function getMembers(): Collection
+    public function getCompetitors(): Collection
     {
-        return $this->members;
+        return $this->competitors;
     }
 
-    public function choiceLabel(): string
+    public function addCompetitor(Competitor $competitor): void
     {
-        return sprintf('%s [%d]', $this->name, $this->members->count());
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors->add($competitor);
+        }
+    }
+
+    public function removeCompetitor(Competitor $competitor): void
+    {
+        $this->competitors->removeElement($competitor);
     }
 
     #[Override]

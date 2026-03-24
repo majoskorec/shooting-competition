@@ -29,6 +29,11 @@
             <th>
                 Spoločná zbraň
             </th>
+            {% for category in competition.categories %}
+                <th>
+                    {{ category.name }}
+                </th>
+            {% endfor %}
             <th>
                 Stav
             </th>
@@ -36,7 +41,7 @@
         </thead>
         <tbody>
         {% for competitor in competitors %}
-            <tr class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom' }}">
+            <tr class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}">
                 <td style="width: 1%">{{ competitor.startNumber }}</td>
                 <td>{{ roundNumber(competitor.startNumber, competition.shootersInRound) }}</td>
                 <td>{{ competitor.shooter.firstName }}</td>
@@ -44,6 +49,11 @@
                 <td>{{ competitor.shooter.club }}</td>
                 <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
                 <td>{{ competitor.sharedWeaponCode }}</td>
+                {% for category in competition.categories %}
+                    <td>
+                        {{ competitor.categories.contains(category) ? 'X' : '' }}
+                    </td>
+                {% endfor %}
                 <td>{{ competitor.status|trans }}</td>
             </tr>
         {% endfor %}

@@ -72,6 +72,15 @@ class Competition implements Stringable
     )]
     private Collection $competitors;
 
+    /** @var Collection<int, CompetitionCategory> */
+    #[ORM\OneToMany(
+        targetEntity: CompetitionCategory::class,
+        mappedBy: 'competition',
+        cascade: ['persist'],
+        orphanRemoval: true,
+    )]
+    private Collection $categories;
+
     #[Assert\AtLeastOneOf([
         new Assert\EqualTo(0),
         new Assert\GreaterThanOrEqual(2),
@@ -86,6 +95,7 @@ class Competition implements Stringable
     public function __construct()
     {
         $this->competitors = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +204,27 @@ class Competition implements Stringable
     public function removeCompetitor(Competitor $competitor): void
     {
         $this->competitors->removeElement($competitor);
+    }
+
+    /** @return Collection<int, CompetitionCategory> */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(CompetitionCategory $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setCompetition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(CompetitionCategory $category): void
+    {
+        $this->categories->removeElement($category);
     }
 
     public function getTeamMemberCount(): int
