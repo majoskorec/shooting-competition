@@ -62,18 +62,18 @@ class Competition implements Stringable
     #[ORM\Column(type: Types::JSON)]
     private array $targetConfigurationSnapshot = [];
 
-    /** @var Collection<int, CompetitionEntry> */
+    /** @var Collection<int, Competitor> */
     #[ORM\OneToMany(
-        targetEntity: CompetitionEntry::class,
+        targetEntity: Competitor::class,
         mappedBy: 'competition',
         cascade: ['persist'],
         orphanRemoval: true,
     )]
-    private Collection $entries;
+    private Collection $competitors;
 
     public function __construct()
     {
-        $this->entries = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,25 +163,25 @@ class Competition implements Stringable
         $this->targetConfigurationSnapshot = $targetConfigurationSnapshot;
     }
 
-    /** @return Collection<int, CompetitionEntry> */
-    public function getEntries(): Collection
+    /** @return Collection<int, Competitor> */
+    public function getCompetitors(): Collection
     {
-        return $this->entries;
+        return $this->competitors;
     }
 
-    public function addEntry(CompetitionEntry $entry): self
+    public function addCompetitor(Competitor $competitor): self
     {
-        if (!$this->entries->contains($entry)) {
-            $this->entries->add($entry);
-            $entry->setCompetition($this);
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors->add($competitor);
+            $competitor->setCompetition($this);
         }
 
         return $this;
     }
 
-    public function removeEntry(CompetitionEntry $entry): void
+    public function removeCompetitor(Competitor $competitor): void
     {
-        $this->entries->removeElement($entry);
+        $this->competitors->removeElement($competitor);
     }
 
     #[Override]

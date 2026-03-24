@@ -6,12 +6,12 @@ namespace App\Twig\Components;
 
 use App\Controller\Admin\PresentationController;
 use App\Entity\Competition;
-use App\Entity\CompetitionEntry;
 use App\Entity\CompetitionTeam;
+use App\Entity\Competitor;
 use App\Entity\Shooter;
 use App\Form\Dto\PresentationDto;
 use App\Form\Type\PresentationDtoType;
-use App\Model\Enum\CompetitionEntryStatus;
+use App\Model\Enum\CompetitorStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGeneratorInterface;
 use Override;
@@ -51,13 +51,13 @@ final class Presentation extends AbstractController
         $shooter = $this->persistShooter($presentationDto);
         $competitionTeam = $this->persistTeam($presentationDto);
 
-        $entry = new CompetitionEntry();
-        $entry->setCompetition($this->competition);
-        $entry->setCompetitionTeam($competitionTeam);
-        $entry->setShooter($shooter);
-        $entry->setSharedWeaponCode($presentationDto->sharedWeaponCode);
-        $entry->setStatus(CompetitionEntryStatus::Registered);
-        $this->entityManager->persist($entry);
+        $competitor = new Competitor();
+        $competitor->setCompetition($this->competition);
+        $competitor->setCompetitionTeam($competitionTeam);
+        $competitor->setShooter($shooter);
+        $competitor->setSharedWeaponCode($presentationDto->sharedWeaponCode);
+        $competitor->setStatus(CompetitorStatus::Registered);
+        $this->entityManager->persist($competitor);
 
         $this->entityManager->flush();
 

@@ -4,31 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Competition;
-use App\Entity\CompetitionEntry;
-use App\Form\Type\JsonCodeEditorType;
-use App\Model\Enum\CompetitionEntryStatus;
-use App\Model\Enum\CompetitionStatus;
-use App\Model\Factory\TargetSnapshotFactory;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Competitor;
+use App\Model\Enum\CompetitorStatus;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 
-final class CompetitionEntryCrudController extends AbstractCrudController
+final class CompetitorCrudController extends AbstractCrudController
 {
     #[Override]
     public static function getEntityFqcn(): string
     {
-        return CompetitionEntry::class;
+        return Competitor::class;
     }
 
     #[Override]
@@ -65,7 +57,7 @@ final class CompetitionEntryCrudController extends AbstractCrudController
             ->setRequired(false);
 
         yield ChoiceField::new('status')
-            ->setChoices(CompetitionEntryStatus::cases());
+            ->setChoices(CompetitorStatus::cases());
 
         yield NumberField::new('cachedTotalScore')
             ->setRequired(false);

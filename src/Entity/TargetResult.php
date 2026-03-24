@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TargetResultRepository::class)]
 #[ORM\Table(name: 'target_result')]
-#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_entry_id', 'target_name'])]
+#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competitor_id', 'target_name'])]
 class TargetResult
 {
     #[ORM\Id]
@@ -20,7 +20,7 @@ class TargetResult
 
     #[ORM\ManyToOne(inversedBy: 'targetResults')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private CompetitionEntry $competitionEntry;
+    private Competitor $competitor;
 
     #[ORM\Column(length: 255)]
     private string $targetName;
@@ -44,14 +44,14 @@ class TargetResult
         return $this->id;
     }
 
-    public function getCompetitionEntry(): CompetitionEntry
+    public function getCompetitor(): Competitor
     {
-        return $this->competitionEntry;
+        return $this->competitor;
     }
 
-    public function setCompetitionEntry(CompetitionEntry $competitionEntry): void
+    public function setCompetitor(Competitor $competitor): void
     {
-        $this->competitionEntry = $competitionEntry;
+        $this->competitor = $competitor;
     }
 
     public function getTargetName(): string

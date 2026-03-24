@@ -52,7 +52,7 @@ Takto zvolený postup minimalizuje riziko, že sa prezentačné alebo organizač
 
 Perzistenčná vrstva má v MVP kombinovať relačný model pre hlavné doménové entity a štruktúrované JSON polia pre časti konfigurácie, ktoré sú prirodzene snapshotované alebo ktoré by boli v plne normalizovanej podobe zbytočne komplikované.
 
-Relačne majú byť modelované najmä stabilné entity, ktoré majú vlastnú identitu a opakované väzby naprieč systémom, najmä definícia terča, `CompetitionType`, súťaž, strelec, `CompetitionEntry` a `TargetResult`.
+Relačne majú byť modelované najmä stabilné entity, ktoré majú vlastnú identitu a opakované väzby naprieč systémom, najmä definícia terča, `CompetitionType`, súťaž, strelec, `Competitor` a `TargetResult`.
 
 Naopak, časti modelu, ktoré predstavujú snapshot konfigurácie alebo štruktúrovaný rozpis s pevne obmedzeným rozsahom, môžu byť v MVP uložené ako JSON. To sa týka najmä bodovacej schémy terča, snapshotu konfigurácie terčov uloženého pri súťaži a rozpisu zásahov uloženého pri výsledku na terči.
 

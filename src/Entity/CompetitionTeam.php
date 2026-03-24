@@ -32,9 +32,9 @@ class CompetitionTeam implements Stringable
     )]
     private string $name;
 
-    /** @var Collection<int, CompetitionEntry> */
+    /** @var Collection<int, Competitor> */
     #[ORM\OneToMany(
-        targetEntity: CompetitionEntry::class,
+        targetEntity: Competitor::class,
         mappedBy: 'competitionTeam',
     )]
     private Collection $members;
@@ -64,7 +64,7 @@ class CompetitionTeam implements Stringable
         $this->name = $name;
     }
 
-    /** @return Collection<int, CompetitionEntry> */
+    /** @return Collection<int, Competitor> */
     public function getMembers(): Collection
     {
         return $this->members;

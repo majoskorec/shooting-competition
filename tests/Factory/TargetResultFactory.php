@@ -21,7 +21,7 @@ final class TargetResultFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'competitionEntry' => CompetitionEntryFactory::new(),
+            'competitor' => CompetitorFactory::new(),
             'consistent' => self::faker()->boolean(),
             'hitBreakdown' => [],
             'targetName' => self::faker()->text(255),

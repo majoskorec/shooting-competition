@@ -22,7 +22,7 @@ Technická architektúra má uprednostniť jednoduchosť, čitateľnosť a udrž
 
 Systém má byť rozdelený do niekoľkých jasne oddelených vrstiev, z ktorých každá nesie inú zodpovednosť. Cieľom tohto rozdelenia je zabrániť miešaniu doménovej logiky, organizačných workflow, perzistencie a prezentácie výsledkov.
 
-Základ tvorí doménová vrstva, ktorá reprezentuje pojmy a pravidlá systému, najmä súťaž, `CompetitionType`, strelec, `CompetitionEntry`, `TargetResult`, rozpis zásahov a pravidlá výpočtu poradia. Táto vrstva nesmie byť závislá od konkrétneho používateľského rozhrania ani od spôsobu prezentácie výsledkov.
+Základ tvorí doménová vrstva, ktorá reprezentuje pojmy a pravidlá systému, najmä súťaž, `CompetitionType`, strelec, `Competitor`, `TargetResult`, rozpis zásahov a pravidlá výpočtu poradia. Táto vrstva nesmie byť závislá od konkrétneho používateľského rozhrania ani od spôsobu prezentácie výsledkov.
 
 Nad ňou sa nachádza aplikačná vrstva, ktorá orchestruje jednotlivé use-casy systému. Sem patrí vytvorenie súťaže z typu súťaže, uloženie výsledku na terči, kontrola konzistencie vstupov, prepočet subtotalov, výpočet celkových výsledkov, generovanie poradia a vytváranie výsledkových snapshotov.
 

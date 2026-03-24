@@ -340,7 +340,7 @@ Prefer stable terms such as:
 - `TargetDefinition`
 - `CompetitionType`
 - `Competition`
-- `CompetitionEntry`
+- `Competitor`
 - `TargetResult`
 - `RankingSnapshot`
 

@@ -154,7 +154,7 @@ V aktuálnom názvosloví projektu sa pracuje najmä s týmito pojmami:
 - **CompetitionType** — typ súťaže
 - **Competition** — konkrétna súťaž
 - **Shooter** — strelec
-- **CompetitionEntry** — prihlásenie strelca do súťaže
+- **Competitor** — prihlásenie strelca do súťaže
 - **TargetResult** — výsledok strelca na konkrétnom terči
 - **RankingSnapshot** — materializovaný snapshot poradia
 

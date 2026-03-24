@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Entity\Competition;
-use App\Entity\CompetitionEntry;
 use App\Entity\CompetitionTeam;
+use App\Entity\Competitor;
 use App\Entity\Shooter;
 use App\Form\Dto\PresentationDto;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,7 +91,7 @@ final class PresentationValidator extends ConstraintValidator
         Competition $competition,
         Presentation $constraint,
     ): void {
-        $exists = $this->entityManager->getRepository(CompetitionEntry::class)->findOneBy([
+        $exists = $this->entityManager->getRepository(Competitor::class)->findOneBy([
             'shooter' => $shooter,
             'competition' => $competition
         ]);

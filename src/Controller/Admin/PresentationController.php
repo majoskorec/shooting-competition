@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Competition;
-use App\Entity\CompetitionEntry;
+use App\Entity\Competitor;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -33,7 +33,7 @@ final class PresentationController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        $competitors = $this->entityManager->getRepository(CompetitionEntry::class)
+        $competitors = $this->entityManager->getRepository(Competitor::class)
             ->createQueryBuilder('c')
             ->join('c.shooter', 's')
             ->andWhere('c.competition = :competition')

@@ -2,20 +2,20 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\CompetitionEntry;
-use App\Model\Enum\CompetitionEntryStatus;
+use App\Entity\Competitor;
+use App\Model\Enum\CompetitorStatus;
 use Override;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends PersistentObjectFactory<CompetitionEntry>
+ * @extends PersistentObjectFactory<Competitor>
  */
-final class CompetitionEntryFactory extends PersistentObjectFactory
+final class CompetitorFactory extends PersistentObjectFactory
 {
     #[Override]
     public static function class(): string
     {
-        return CompetitionEntry::class;
+        return Competitor::class;
     }
 
     #[Override]
@@ -24,7 +24,7 @@ final class CompetitionEntryFactory extends PersistentObjectFactory
         return [
             'competition' => CompetitionFactory::new(),
             'shooter' => ShooterFactory::new(),
-            'status' => self::faker()->randomElement(CompetitionEntryStatus::cases()),
+            'status' => self::faker()->randomElement(CompetitorStatus::cases()),
         ];
     }
 }

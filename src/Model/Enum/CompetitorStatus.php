@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Enum;
 
-enum CompetitionEntryStatus: string
+enum CompetitorStatus: string
 {
     case Pending = 'pending';
     case Registered = 'registered';

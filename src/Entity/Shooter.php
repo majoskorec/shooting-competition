@@ -33,13 +33,13 @@ class Shooter implements Stringable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
-    /** @var Collection<int, CompetitionEntry> */
-    #[ORM\OneToMany(targetEntity: CompetitionEntry::class, mappedBy: 'shooter')]
-    private Collection $competitionEntries;
+    /** @var Collection<int, Competitor> */
+    #[ORM\OneToMany(targetEntity: Competitor::class, mappedBy: 'shooter')]
+    private Collection $competitors;
 
     public function __construct()
     {
-        $this->competitionEntries = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,10 +87,10 @@ class Shooter implements Stringable
         $this->email = $email;
     }
 
-    /** @return Collection<int, CompetitionEntry> */
-    public function getCompetitionEntries(): Collection
+    /** @return Collection<int, Competitor> */
+    public function getCompetitors(): Collection
     {
-        return $this->competitionEntries;
+        return $this->competitors;
     }
 
     public function getFullName(): string

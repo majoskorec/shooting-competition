@@ -59,7 +59,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Competitions', 'fa-solid fa-chess');
 
         yield MenuItem::linkTo(CompetitionCrudController::class, 'Competitions', 'fas fa-trophy');
-        yield MenuItem::linkTo(CompetitionEntryCrudController::class, 'Competitions Entry', 'fas fa-trophy');
+        yield MenuItem::linkTo(CompetitorCrudController::class, 'Competitors', 'fas fa-trophy');
 
 
         $activeCompetitions = $this->competitionRepository->findActive();

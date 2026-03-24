@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Model\Enum\CompetitionEntryStatus;
-use App\Repository\CompetitionEntryRepository;
+use App\Model\Enum\CompetitorStatus;
+use App\Repository\CompetitorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
-#[ORM\Entity(repositoryClass: CompetitionEntryRepository::class)]
-#[ORM\Table(name: 'competition_entry')]
+#[ORM\Entity(repositoryClass: CompetitorRepository::class)]
+#[ORM\Table(name: 'competitor')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'shooter_id'])]
-class CompetitionEntry implements Stringable
+class Competitor implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'entries')]
+    #[ORM\ManyToOne(inversedBy: 'competitors')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Competition $competition;
 
     #[ORM\ManyToOne(
         cascade: ['persist'],
-        inversedBy: 'competitionEntries',
+        inversedBy: 'competitors',
     )]
     #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
     private Shooter $shooter;
@@ -46,8 +46,8 @@ class CompetitionEntry implements Stringable
     #[ORM\Column(length: 128, nullable: true)]
     private ?string $sharedWeaponCode = null;
 
-    #[ORM\Column(enumType: CompetitionEntryStatus::class)]
-    private CompetitionEntryStatus $status;
+    #[ORM\Column(enumType: CompetitorStatus::class)]
+    private CompetitorStatus $status;
 
     #[ORM\Column(nullable: true)]
     private ?int $cachedTotalScore = null;
@@ -55,7 +55,7 @@ class CompetitionEntry implements Stringable
     /** @var Collection<int, TargetResult> */
     #[ORM\OneToMany(
         targetEntity: TargetResult::class,
-        mappedBy: 'competitionEntry',
+        mappedBy: 'competitor',
         cascade: ['persist'],
         orphanRemoval: true,
     )]
@@ -121,12 +121,12 @@ class CompetitionEntry implements Stringable
         $this->sharedWeaponCode = $sharedWeaponCode;
     }
 
-    public function getStatus(): CompetitionEntryStatus
+    public function getStatus(): CompetitorStatus
     {
         return $this->status;
     }
 
-    public function setStatus(CompetitionEntryStatus $status): void
+    public function setStatus(CompetitorStatus $status): void
     {
         $this->status = $status;
     }
@@ -151,7 +151,7 @@ class CompetitionEntry implements Stringable
     {
         if (!$this->targetResults->contains($targetResult)) {
             $this->targetResults->add($targetResult);
-            $targetResult->setCompetitionEntry($this);
+            $targetResult->setCompetitor($this);
         }
 
         return $this;

@@ -111,7 +111,7 @@ V MVP sa má používať:
 - `competition_types`
 - `competitions`
 - `shooters`
-- `competition_entries`
+- `competitors`
 - `target_results`
 - podľa potreby `ranking_snapshots`
 
