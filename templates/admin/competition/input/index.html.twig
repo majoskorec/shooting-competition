@@ -1,0 +1,146 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <h1>
+        Štartová listina {{ input.competition.name }}
+    </h1>
+
+    <div
+        {{ stimulus_controller('table-column') }}
+    >
+        <button
+            {{ stimulus_action('table-column', 'toggle', 'click') }}
+            class="btn btn-secondary"
+        >
+            Skryť stĺpce
+        </button>
+
+        <table
+            class="table input-table"
+            {{ stimulus_target('table-column', 'table') }}
+        >
+            <thead>
+            <tr>
+                <th colspan="2"></th>
+                <th colspan="2" data-hiddable="true"></th>
+                {% for configuration in input.competition.targetConfigurationSnapshot %}
+                    <th
+                        colspan="{{ configuration.pointsSchema|length + 2 }}"
+                        class="text-center"
+                    >
+                        <div
+                            class="text-truncate"
+                            style="width: {{ (configuration.pointsSchema|length + 1) * 2 + 2.5 }}rem"
+                        >
+                            {{ configuration.name }}
+                        </div>
+                    </th>
+                {% endfor %}
+                <th colspan="{{ input.competition.categories|length + 5 }}" data-hiddable="true"></th>
+            </tr>
+            <tr>
+                <th>
+                    Štartovné číslo
+                </th>
+                <th>
+                    Runda
+                </th>
+                <th data-hiddable="true">
+                    Meno
+                </th>
+                <th data-hiddable="true">
+                    Priezvisko
+                </th>
+                {% for configuration in input.competition.targetConfigurationSnapshotOrdered %}
+                    <th class="text-center fs-50 input-taget-width px-0">
+                        Počet<br>
+                        striel
+                    </th>
+                    {% for points in configuration.pointsSchema %}
+                        <th class="text-center input-taget-width px-0">
+                            {{ points }}
+                        </th>
+                    {% endfor %}
+                    <th class="text-center input-taget-sum ps-0">
+                        Spolu
+                    </th>
+                {% endfor %}
+                <th class="text-center">
+                    Spolu všetko
+                </th>
+                <th data-hiddable="true">
+                    Klub / PZ
+                </th>
+                <th data-hiddable="true">
+                    Družstvo
+                </th>
+                <th data-hiddable="true">
+                    Spoločná zbraň
+                </th>
+                {% for category in input.competition.categories %}
+                    <th data-hiddable="true">
+                        {{ category.name }}
+                    </th>
+                {% endfor %}
+                <th data-hiddable="true">
+                    Stav
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for inputCompetitor in input.inputCompetitors %}
+                <tr
+                    class="{{ lastInRound(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
+                    {{ stimulus_controller('input-total') }}
+                >
+                    <td style="width: 1%">
+                        {{ inputCompetitor.competitor.startNumber }}
+                    </td>
+                    <td style="width: 1%">
+                        {{ roundNumber(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) }}
+                    </td>
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.shooter.firstName }}
+                    </td>
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.shooter.lastName }}
+                    </td>
+                    {% for inputTarget in inputCompetitor.inputTargets %}
+                        <td
+                            colspan="{{ inputTarget.targetResult.hitBreakdown|length + 2 }}"
+                            class="text-center position-relative p-0"
+                        >
+                            <twig:InputTarget
+                                data="{{ inputTarget }}"
+                            />
+                        </td>
+                    {% endfor %}
+                    <td
+                        class="text-center fw-bold"
+                        {{ stimulus_target('input-total', 'grandTotal') }}
+                    >
+                        {{ inputCompetitor.totalScore }}
+                    </td>
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.shooter.club }}
+                    </td>
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.competitionTeam is not null ? inputCompetitor.competitor.competitionTeam.name }}
+                    </td>
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.sharedWeaponCode }}
+                    </td>
+                    {% for category in input.competition.categories %}
+                        <td data-hiddable="true">
+                            {{ inputCompetitor.competitor.categories.contains(category) ? 'X' : '' }}
+                        </td>
+                    {% endfor %}
+                    <td data-hiddable="true">
+                        {{ inputCompetitor.competitor.status|trans }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TargetResultRepository::class)]
 #[ORM\Table(name: 'target_result')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competitor_id', 'target_name'])]
+#[ORM\HasLifecycleCallbacks]
 class TargetResult
 {
     #[ORM\Id]
@@ -106,5 +107,15 @@ class TargetResult
     public function setValidationIssues(?array $validationIssues): void
     {
         $this->validationIssues = $validationIssues;
+    }
+
+    #[ORM\PreFlush]
+    public function preFlush(): void
+    {
+        $subTotal = 0;
+        foreach ($this->hitBreakdown as $points => $hits) {
+            $subTotal += $points * $hits;
+        }
+        $this->subtotal = $subTotal;
     }
 }

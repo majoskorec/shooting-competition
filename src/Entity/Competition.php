@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\Mapping\TargetSnapshotsType;
 use App\Model\Enum\CompetitionStatus;
 use App\Model\TargetSnapshot;
 use App\Repository\CompetitionRepository;
@@ -60,7 +61,7 @@ class Competition implements Stringable
     private CompetitionStatus $status;
 
     /** @var array<TargetSnapshot> */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: TargetSnapshotsType::TYPE)]
     private array $targetConfigurationSnapshot = [];
 
     /** @var Collection<int, Competitor> */
@@ -177,6 +178,19 @@ class Competition implements Stringable
     public function getTargetConfigurationSnapshot(): array
     {
         return $this->targetConfigurationSnapshot;
+    }
+
+    /** @return array<TargetSnapshot> */
+    public function getTargetConfigurationSnapshotOrdered(): array
+    {
+        $result = $this->targetConfigurationSnapshot;
+        uasort(
+            $result,
+            static fn (TargetSnapshot $left, TargetSnapshot $right): int =>
+                $left->displayOrder <=> $right->displayOrder,
+        );
+
+        return $result;
     }
 
     /** @param array<TargetSnapshot> $targetConfigurationSnapshot */

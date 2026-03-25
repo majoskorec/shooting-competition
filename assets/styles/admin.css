@@ -1,0 +1,41 @@
+td.hidden-column, th.hidden-column {
+    display: none;
+}
+
+.fs-50 {
+    font-size: 50%;
+}
+
+.fs-75 {
+    font-size: 75%;
+}
+
+table.input-table {
+    white-space: nowrap;
+
+    .input-taget-width {
+        width: 2rem;
+    }
+
+    .input-taget-sum {
+        width: 2.5rem;
+    }
+
+    input {
+        padding: 2px;
+        background: transparent;
+        text-align: right;
+        border: 1px var(--bs-secondary-border-subtle) solid;
+        border-radius: 2px;
+    }
+
+    input.is-invalid {
+        border-color: var(--bs-form-invalid-border-color);
+    }
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

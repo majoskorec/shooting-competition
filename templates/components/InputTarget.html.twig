@@ -1,0 +1,53 @@
+{% form_theme form _self %}
+
+{%- block form_errors -%}
+    {%- if form.vars.errors|length > 0 -%}
+        <div class="position-absolute top-100 z-3 text-bg-danger text-white p-2 rounded-2">
+            {%- for error in form.vars.errors -%}
+                <div>
+                    {{ error.message }}
+                </div>
+            {%- endfor -%}
+        </div>
+    {%- endif %}
+{%- endblock form_errors %}
+
+<div
+    {{ attributes }}
+    class="d-flex flex-row align-items-center justify-content-center position-absolute h-100 w-100"
+>
+    {{ form_start(form, {
+        attr: {
+            'data-live-action-param': 'save',
+            'data-model': 'debounce(100)|*',
+            'class': 'd-flex flex-row align-items-center justify-content-center',
+        }
+    }) }}
+    <div
+        class="text-center fs-75 {{ not this.isValid ? 'text-danger' }}"
+        style="width: {{ this.itemWidth }}%"
+    >
+        {{ this.shotsCount }}
+    </div>
+    {% for points in this.data.targetResult.hitBreakdown|keys  %}
+        {% set formName = constant('App\\Form\\Type\\InputTargetType::FIELD_PREFIX') ~ points %}
+        {{ form_widget(form[formName], {
+            'attr': {
+                'style': 'width: ' ~ this.itemWidth ~ '%',
+                'tabindex': this.getTabIndex(loop.index0),
+                'class': not this.isValid or form[formName].vars.errors|length > 0 ? 'is-invalid',
+                'data-controller': 'clear-zero-input',
+                'data-action': 'focus->clear-zero-input#clearZeroOnFocus',
+            }
+        }) }}
+
+        {{ form_errors(form[formName]) }}
+    {% endfor %}
+    <div
+        class="text-center flex-fill fw-bolder"
+        {{ stimulus_target('input-total', 'partial') }}
+    >
+        {{ this.data.targetResult.subtotal }}
+    </div>
+    {{ form_end(form) }}
+</div>

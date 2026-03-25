@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Competition\InputController;
 use App\Controller\Admin\Competition\PresentationController;
 use App\Controller\Admin\Competition\StartingListController;
 use App\Controller\Admin\Crud\CompetitionCategoryCrudController;
@@ -95,6 +96,12 @@ final class DashboardController extends AbstractDashboardController
                     'Štartová listina',
                     '',
                     StartingListController::ROUTE_NAME,
+                    ['entityId' => $competition->getId()],
+                );
+                yield MenuItem::linkToRoute(
+                    'Zadávanie výsledkov',
+                    '',
+                    InputController::ROUTE_NAME,
                     ['entityId' => $competition->getId()],
                 );
             }
