@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\Competition;
 
 use App\Entity\Competition;
 use App\Entity\Competitor;
@@ -46,7 +46,7 @@ final class PresentationController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('admin/presentation/index.html.twig', [
+        return $this->render('admin/competition/presentation/index.html.twig', [
             'competition' => $competition,
             'competitors' => $competitors,
         ]);

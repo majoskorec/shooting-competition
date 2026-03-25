@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
-use App\Controller\Admin\PresentationController;
+use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
 use App\Entity\Competitor;

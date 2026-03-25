@@ -4,7 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\CompetitionType;
+use App\Controller\Admin\Competition\PresentationController;
+use App\Controller\Admin\Competition\StartingListController;
+use App\Controller\Admin\Crud\CompetitionCategoryCrudController;
+use App\Controller\Admin\Crud\CompetitionCrudController;
+use App\Controller\Admin\Crud\CompetitionTeamCrudController;
+use App\Controller\Admin\Crud\CompetitionTypeCrudController;
+use App\Controller\Admin\Crud\CompetitionTypeTargetCrudController;
+use App\Controller\Admin\Crud\CompetitorCrudController;
+use App\Controller\Admin\Crud\ShooterCrudController;
+use App\Controller\Admin\Crud\TargetDefinitionCrudController;
 use App\Model\Enum\CompetitionStatus;
 use App\Repository\CompetitionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\Competition;
 
 use App\Draw\DrawService;
 use App\Draw\Exception\StartNumberAssignmentException;

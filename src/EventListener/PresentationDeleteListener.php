@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Controller\Admin\PresentationController;
+use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competitor;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
