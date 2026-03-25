@@ -24,7 +24,7 @@
         }
     }) }}
     <div
-        class="text-center fs-75 {{ not this.isValid ? 'text-danger' }}"
+        class="text-center fs-75 {{ not this.isValid or this.shotsCount == 0 ? 'text-danger' }}"
         style="width: {{ this.itemWidth }}%"
     >
         {{ this.shotsCount }}
@@ -35,7 +35,7 @@
             'attr': {
                 'style': 'width: ' ~ this.itemWidth ~ '%',
                 'tabindex': this.getTabIndex(loop.index0),
-                'class': not this.isValid or form[formName].vars.errors|length > 0 ? 'is-invalid',
+                'class': form[formName].vars.errors|length > 0 ? 'is-invalid',
                 'data-controller': 'clear-zero-input',
                 'data-action': 'focus->clear-zero-input#clearZeroOnFocus',
             }

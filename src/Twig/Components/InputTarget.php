@@ -63,7 +63,7 @@ final class InputTarget extends AbstractController
     public function isValid(): bool
     {
         if ($this->isValid === null) {
-            $this->isValid = in_array($this->getShotsCount(), [$this->data->targetSnapshot->shotCount, 0], true);
+            $this->isValid = $this->getShotsCount() === $this->data->targetSnapshot->shotCount;
         }
 
         return $this->isValid;
