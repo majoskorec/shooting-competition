@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prezentácia{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h2 mt-4 mb-3">
+            Prezentácia - {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
+        </h1>
+
+        <div class="border rounded-4 p-3 bg-white table-responsive mb-3">
+            <table
+                class="table table-striped table-hover table-sm"
+                style="white-space: nowrap;"
+            >
+                <thead>
+                <tr>
+                    <th>
+                        Štartovné číslo
+                    </th>
+                    <th>
+                        Strelec
+                    </th>
+                    <th>
+                        Klub / PZ
+                    </th>
+                    <th>
+                        Družstvo
+                    </th>
+                    <th>
+                        Spoločná zbraň
+                    </th>
+                    {% for category in competition.categories %}
+                        <th>
+                            {{ category.name }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for competitor in competitors %}
+                    <tr>
+                        <th
+                            style="width: 1%"
+                            scope="row"
+                            class="text-center"
+                        >
+                            {{ competitor.startNumber }}
+                        </th>
+                        <td>
+                            {{ competitor.shooter.fullName }}
+                        </td>
+                        <td>
+                            {{ competitor.shooter.club }}
+                        </td>
+                        <td>
+                            {{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}
+                        </td>
+                        <td
+                            class="text-center"
+                            style="width: 1%"
+                        >
+                            {{ competitor.sharedWeaponCode }}
+                        </td>
+                        {% for category in competition.categories %}
+                            <td
+                                class="text-center"
+                                style="width: 1%"
+                            >
+                                {{ competitor.categories.contains(category) ? 'X' : '' }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

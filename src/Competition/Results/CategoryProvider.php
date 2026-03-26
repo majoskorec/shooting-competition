@@ -17,6 +17,11 @@ final class CategoryProvider
     ) {
     }
 
+    public function getPartialResults(Competition $competition): Category
+    {
+        return Category::create($competition->getMainCategoryName(), $this->slugger, CategoryType::PartialResults);
+    }
+
     public function all(Competition $competition): Categories
     {
         $results = [];

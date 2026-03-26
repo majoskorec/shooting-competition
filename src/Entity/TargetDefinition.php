@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TargetDefinitionRepository::class)]
 #[ORM\Table(name: 'target_definition')]
@@ -20,8 +21,15 @@ class TargetDefinition implements Stringable
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     #[ORM\Column(length: 255)]
     private string $name;
+
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 32)]
+    #[ORM\Column(length: 32)]
+    private string $shortName;
 
     /** @var array<int, int> */
     #[ORM\Column(type: Types::JSON)]
@@ -52,6 +60,16 @@ class TargetDefinition implements Stringable
     public function setPointsSchema(array $pointsSchema): void
     {
         $this->pointsSchema = $pointsSchema;
+    }
+
+    public function getShortName(): string
+    {
+        return $this->shortName;
+    }
+
+    public function setShortName(string $shortName): void
+    {
+        $this->shortName = $shortName;
     }
 
     #[Override]

@@ -1,0 +1,37 @@
+{# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
+{% set teamMemberCount = competitors_results_with_rank.competitorResult.competitorSubResults|length %}
+<tr>
+    <th scope="row" rowspan="{{ teamMemberCount }}">
+        {{ competitors_results_with_rank.rank }}
+    </th>
+    <td rowspan="{{ teamMemberCount }}">
+        {{ competitors_results_with_rank.competitorResult.name }}
+    </td>
+    <td>
+        {{ competitors_results_with_rank.competitorResult.competitorSubResults[0].competitor.shooter.fullName }}
+    </td>
+    {% include 'admin/competition/results/_competitor_result_data.html.twig' with {
+        competitor_sub_results: competitors_results_with_rank.competitorResult.competitorSubResults[0],
+        results: results,
+    } %}
+    <td>
+        {{ competitors_results_with_rank.competitorResult.competitorSubResults[0].total }}
+    </td>
+    <td rowspan="{{ teamMemberCount }}">
+        {{ competitors_results_with_rank.competitorResult.finalResult }}
+    </td>
+</tr>
+{% for competitor_sub_results in competitors_results_with_rank.competitorResult.competitorSubResults|slice(1) %}
+    <tr>
+        <td>
+            {{ competitor_sub_results.competitor.shooter.fullName }}
+        </td>
+        {% include 'admin/competition/results/_competitor_result_data.html.twig' with {
+            competitor_sub_results: competitor_sub_results,
+            results: results,
+        } %}
+        <td>
+            {{ competitor_sub_results.total }}
+        </td>
+    </tr>
+{% endfor %}

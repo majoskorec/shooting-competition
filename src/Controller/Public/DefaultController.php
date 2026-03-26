@@ -19,7 +19,6 @@ final class DefaultController extends AbstractController
     ) {
     }
 
-
     #[Route(
         path: '/',
         name: self::ROUTE_NAME,

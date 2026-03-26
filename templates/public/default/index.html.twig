@@ -3,5 +3,155 @@
 {% block title %}Súťaže LM{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <h1 class="h2 mt-4 mb-3">
+            Súťaže LM
+        </h1>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="accordion" id="competitions">
+                    {% for competition in competitions %}
+                        {# @var competition \App\Entity\Competition #}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#competition-{{ competition.id }}"
+                                    aria-expanded="true"
+                                    aria-controls="competition-{{ competition.id }}"
+                                >
+                                    {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }} - {{ competition.status|trans }}
+                                </button>
+                            </h2>
+                            <div
+                                id="competition-{{ competition.id }}"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#competitions"
+                            >
+                                <div class="accordion-body">
+                                    <div class="mb-4">
+                                        <div class="row mb-1">
+                                            <div class="offset-sm-1 col-sm-10">
+                                                <a
+                                                    href="{{ path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+                                                        id: competition.id,
+                                                    }) }}"
+                                                    class="btn btn-primary d-block"
+                                                >
+                                                    Prezentácia
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% if
+                                            competition.status != enum('App\\Competition\\Model\\CompetitionStatus').Finished
+                                            and competition.status != enum('App\\Competition\\Model\\CompetitionStatus').Presentation
+                                        %}
+                                            <div class="row">
+                                                <div class="offset-sm-1 col-sm-10">
+                                                    <a
+                                                        href="{{ path(constant('App\\Controller\\Public\\PartialResultsController::ROUTE_NAME'), {
+                                                            id: competition.id,
+                                                        }) }}"
+                                                        class="btn btn-primary d-block"
+                                                    >
+                                                        Priebežné výsledky
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if competition.status == enum('App\\Competition\\Model\\CompetitionStatus').Finished %}
+                                            <div class="row">
+                                                <div class="offset-sm-1 col-sm-10">
+                                                    <a
+                                                        href="{{ path(constant('App\\Controller\\Public\\ResultsController::ROUTE_NAME'), {
+                                                            id: competition.id,
+                                                        }) }}"
+                                                        class="btn btn-primary d-block"
+                                                    >
+                                                        Výsledky
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-sm-3 text-sm-end text-secondary">
+                                            Začiatok:
+                                        </div>
+                                        <div class="col-sm-9">
+                                            {{ competition.competitionStart|date('d.m.Y H:i') }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3 text-sm-end text-secondary">
+                                            Typ:
+                                        </div>
+                                        <div class="col-sm-9">
+                                            {{ competition.competitionType|trans }}
+                                        </div>
+                                    </div>
+
+                                    {% if competition.organizer %}
+                                        <div class="row">
+                                            <div class="col-sm-3 text-sm-end text-secondary">
+                                                Organizátor:
+                                            </div>
+                                            <div class="col-sm-9">
+                                                {{ competition.organizer }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-sm-3 text-sm-end text-secondary">
+                                            Kategórie:
+                                        </div>
+                                        <div class="col-sm-9">
+                                            {{ competition.mainCategoryName }}<br />
+                                            {% for category in competition.categories %}
+                                                {{ category.name }}<br />
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% if competition.location %}
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3 text-sm-end text-secondary">
+                                                Miesto:
+                                            </div>
+                                            <div class="col-sm-9">
+                                                {{ competition.location }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="offset-sm-1 col-sm-10">
+                                                <iframe
+                                                    loading="lazy"
+                                                    allowfullscreen
+                                                    class="border-0 w-100 h-100"
+                                                    style="min-height: 260px;"
+                                                    src="https://maps.google.com/maps?q={{ competition.location|url_encode }}&z=14&output=embed"
+                                                >
+                                                </iframe>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if competition.description %}
+                                        <div class="row">
+                                            <div class="offset-sm-1 col-sm-10 py-3">
+                                                <p>
+                                                    {{ competition.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

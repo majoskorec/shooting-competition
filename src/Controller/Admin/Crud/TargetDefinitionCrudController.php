@@ -37,6 +37,8 @@ final class TargetDefinitionCrudController extends AbstractCrudController
 
         yield TextField::new('name', 'Názov');
 
+        yield TextField::new('shortName', 'Krátky názov');
+
         yield CollectionField::new('pointsSchema', 'Bodovacia schéma')
             ->setHelp('Usporiadaný zoznam povolených bodových hodnôt pre tento terč.')
             ->setEntryType(IntegerType::class)

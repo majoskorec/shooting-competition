@@ -33,9 +33,15 @@ final class ResultsFactory
 //        $competitors = [$competitors[0], $competitors[1], $competitors[2], $competitors[3]];
 
         $targetPriority = $this->createTargetTieBreakPriority($competition);
-        $competitorSubResults = $this->createCompetitorSubResults($competitors, $targetPriority);
+        $lastTarget = $this->findLastTarget($competition);
+        $competitorSubResults = $this->createCompetitorSubResults(
+            $competitors,
+            $targetPriority,
+            $lastTarget,
+            $category,
+        );
         $competitorResult = $this->createCompetitorResults($competitorSubResults, $category);
-        $competitorResultWithRank = $this->createCompetitorResultWithRank($competitorResult);
+        $competitorResultWithRank = $this->createCompetitorResultWithRank($competitorResult, $category);
 
         return new Results(
             competition: $competition,
@@ -44,22 +50,54 @@ final class ResultsFactory
         );
     }
 
+    private function findLastTarget(Competition $competition): string
+    {
+        $last = null;
+        $targets = $competition->getTargetConfigurationSnapshot();
+        foreach ($targets as $target) {
+            if ($last === null) {
+                $last = $target;
+
+                continue;
+            }
+            if ($last->displayOrder > $target->displayOrder) {
+                continue;
+            }
+
+            $last = $target;
+        }
+
+        return $last?->name ?? throw new RuntimeException('Last target not found');
+    }
+
     /**
      * @param array<CompetitorResult> $competitorResult
      * @return array<CompetitorResultWithRank>
      */
-    private function createCompetitorResultWithRank(array $competitorResult): array
+    private function createCompetitorResultWithRank(array $competitorResult, Category $category): array
     {
-        usort(
-            $competitorResult,
-            static fn (CompetitorResult $left, CompetitorResult $right): int => $right->compare($left),
-        );
+        if ($category->categoryType !== CategoryType::PartialResults) {
+            usort(
+                $competitorResult,
+                static fn (CompetitorResult $left, CompetitorResult $right): int => $right->compare($left),
+            );
+
+            $result = [];
+            foreach ($competitorResult as $index => $competitorResultItem) {
+                $result[] = new CompetitorResultWithRank(
+                    competitorResult: $competitorResultItem,
+                    rank: $index + 1,
+                );
+            }
+
+            return $result;
+        }
 
         $result = [];
-        foreach ($competitorResult as $index => $competitorResultItem) {
+        foreach ($competitorResult as $competitorResultItem) {
             $result[] = new CompetitorResultWithRank(
                 competitorResult: $competitorResultItem,
-                rank: $index + 1,
+                rank: $competitorResultItem->competitorSubResults[0]->competitor->getStartNumber(),
             );
         }
 
@@ -144,13 +182,17 @@ final class ResultsFactory
      * @param TargetTieBreakPriority $targetTieBreakPriority
      * @return array<CompetitorSubResults>
      */
-    private function createCompetitorSubResults(array $competitors, array $targetTieBreakPriority): array
-    {
+    private function createCompetitorSubResults(
+        array $competitors,
+        array $targetTieBreakPriority,
+        string $lastTarget,
+        Category $category,
+    ): array {
         $result = [];
         foreach ($competitors as $competitor) {
             $result[] = new CompetitorSubResults(
                 competitor: $competitor,
-                subResults: $this->createSubResults($competitor, $targetTieBreakPriority),
+                subResults: $this->createSubResults($competitor, $targetTieBreakPriority, $lastTarget, $category),
             );
         }
 
@@ -161,8 +203,12 @@ final class ResultsFactory
      * @param TargetTieBreakPriority $targetTieBreakPriority
      * @return array<SubResult>
      */
-    private function createSubResults(Competitor $competitor, array $targetTieBreakPriority): array
-    {
+    private function createSubResults(
+        Competitor $competitor,
+        array $targetTieBreakPriority,
+        string $lastTarget,
+        Category $category,
+    ): array {
         $result = [];
         foreach ($competitor->getTargetResults() as $targetResult) {
             $targetName = $targetResult->getTargetName();
@@ -171,7 +217,9 @@ final class ResultsFactory
 
             $result[$targetName] = new SubResult(
                 name: $targetName,
-                result: $targetResult->getSubtotal(),
+                result: $category->categoryType === CategoryType::PartialResults && $lastTarget === $targetName
+                    ? 0
+                    : $targetResult->getSubtotal(),
                 tieBreakPriority: $tieBreakPriority,
             );
         }

@@ -11,6 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -49,6 +50,8 @@ final class TargetResultCrudController extends AbstractCrudController
     {
         yield IdField::new('id')
             ->hideOnForm();
+
+        yield TextField::new('competitor.competition', 'Súťaž')->onlyOnIndex();
 
         yield AssociationField::new('competitor', 'Súťažiaci')
             ->setFormTypeOption(
@@ -101,6 +104,14 @@ final class TargetResultCrudController extends AbstractCrudController
         $qb = $qb->addOrderBy('entity.targetName', 'ASC');
 
         return $qb;
+    }
+
+    #[Override]
+    public function configureFilters(Filters $filters): Filters
+    {
+        $filters->add('targetName');
+
+        return $filters;
     }
 
     private function formatJsonValue(mixed $value): string

@@ -1,6 +1,6 @@
 {# @var competitor_sub_results \App\Competition\Results\Model\CompetitorSubResults #}
 {% for target in results.competition.targetConfigurationSnapshotOrdered %}
-    <td class="text-end">
+    <td>
         {{ competitor_sub_results.getSubResult(target.name).result }}
     </td>
 {% endfor %}
