@@ -55,6 +55,7 @@ final class DashboardController extends AbstractDashboardController
         $dashboard = Dashboard::new();
         $dashboard->setTitle('Strelecká súťaž');
         $dashboard->renderContentMaximized();
+        $dashboard->setFaviconPath('favicon.png');
 
         return $dashboard;
     }
