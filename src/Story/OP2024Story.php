@@ -4212,6 +4212,7 @@ final class OP2024Story extends Story
         $this->entityManager->persist($competition);
 
         $veteranCategory = $this->createCategory($competition, 'Veteráni');
+        $seniorCategory = $this->createCategory($competition, 'Seniori');
         $womanCategory = $this->createCategory($competition, 'Ženy');
         $teams = [];
 
@@ -4228,6 +4229,8 @@ final class OP2024Story extends Story
 
             if ($competitorData['veteran']) {
                 $competitor->addCategory($veteranCategory);
+            } else {
+                $competitor->addCategory($seniorCategory);
             }
 
             if ($competitorData['woman']) {
