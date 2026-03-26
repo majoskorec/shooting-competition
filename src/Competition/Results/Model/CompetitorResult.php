@@ -23,7 +23,7 @@ final readonly class CompetitorResult
         $subResults = [...$competitorResult->competitorSubResults, $competitorSubResults];
         usort(
             $subResults,
-            static fn (CompetitorSubResults $left, CompetitorSubResults $right): int => $left->compare($right),
+            static fn (CompetitorSubResults $left, CompetitorSubResults $right): int => $right->compare($left),
         );
 
         return new self(

@@ -30,7 +30,6 @@ final class CompetitionRepository extends ServiceEntityRepository
             CompetitionStatus::Presentation,
             CompetitionStatus::InProgress,
             CompetitionStatus::ReadyForClosure,
-            CompetitionStatus::Finished,
         ]);
 
         return $qb->getQuery()->getResult();

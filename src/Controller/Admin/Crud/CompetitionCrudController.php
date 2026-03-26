@@ -6,9 +6,14 @@ namespace App\Controller\Admin\Crud;
 
 use App\Competition\Model\CompetitionStatus;
 use App\Competition\Target\TargetSnapshotFactory;
+use App\Controller\Admin\Competition\PresentationController;
+use App\Controller\Admin\Competition\ResultsController;
+use App\Controller\Admin\Competition\StartingListController;
 use App\Entity\Competition;
 use App\Form\Type\JsonCodeEditorType;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -48,6 +53,7 @@ final class CompetitionCrudController extends AbstractCrudController
         $crud->setPageTitle(Crud::PAGE_EDIT, 'Úprava súťaže');
         $crud->setPageTitle(Crud::PAGE_DETAIL, 'Detail súťaže');
         $crud->setDefaultSort(['competitionStart' => 'DESC']);
+        $crud->showEntityActionsInlined(false);
 
         return $crud;
     }
@@ -122,5 +128,45 @@ final class CompetitionCrudController extends AbstractCrudController
         }
 
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    #[Override]
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->add(
+            Crud::PAGE_INDEX,
+            Action::new('presentation', 'Prezentácia')
+                ->asTextLink()
+                ->linkToRoute(
+                    PresentationController::ROUTE_NAME,
+                    static fn (Competition $competition): array => [
+                        'entityId' => $competition->getId(),
+                    ],
+                ),
+        );
+        $actions->add(
+            Crud::PAGE_INDEX,
+            Action::new('startingList', 'Štartová listina')
+                ->asTextLink()
+                ->linkToRoute(
+                    StartingListController::ROUTE_NAME,
+                    static fn (Competition $competition): array => [
+                        'entityId' => $competition->getId(),
+                    ],
+                ),
+        );
+        $actions->add(
+            Crud::PAGE_INDEX,
+            Action::new('results', 'Výsledky')
+                ->asTextLink()
+                ->linkToRoute(
+                    ResultsController::ROUTE_NAME,
+                    static fn (Competition $competition): array => [
+                        'entityId' => $competition->getId(),
+                    ],
+                ),
+        );
+
+        return $actions;
     }
 }

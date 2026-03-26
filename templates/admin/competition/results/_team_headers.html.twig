@@ -1,0 +1,20 @@
+<th scope="col">
+    #
+</th>
+<th scope="col">
+    Družstvo
+</th>
+<th scope="col">
+    Strelec
+</th>
+{% for target in results.competition.targetConfigurationSnapshotOrdered %}
+    <th scope="col">
+        {{ target.name }}
+    </th>
+{% endfor %}
+<th scope="col">
+    Strelec spolu
+</th>
+<th scope="col">
+    Spolu
+</th>
