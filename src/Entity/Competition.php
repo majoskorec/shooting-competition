@@ -93,6 +93,10 @@ class Competition implements Stringable
     #[ORM\Column]
     private int $shootersInRound;
 
+    #[Assert\NotBlank]
+    #[ORM\Column]
+    private string $mainCategoryName;
+
     public function __construct()
     {
         $this->competitors = new ArrayCollection();
@@ -259,6 +263,16 @@ class Competition implements Stringable
     public function setShootersInRound(int $shootersInRound): void
     {
         $this->shootersInRound = $shootersInRound;
+    }
+
+    public function getMainCategoryName(): string
+    {
+        return $this->mainCategoryName;
+    }
+
+    public function setMainCategoryName(string $mainCategoryName): void
+    {
+        $this->mainCategoryName = $mainCategoryName;
     }
 
     #[Override]

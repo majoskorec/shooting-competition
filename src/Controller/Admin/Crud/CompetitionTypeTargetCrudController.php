@@ -43,8 +43,6 @@ final class CompetitionTypeTargetCrudController extends AbstractCrudController
 
         yield IntegerField::new('displayOrder', 'Poradie zobrazenia');
         yield IntegerField::new('shotCount', 'Počet rán');
-
-        yield IntegerField::new('tieBreakPriority', 'Priorita pri rovnosti')
-            ->setRequired(false);
+        yield IntegerField::new('tieBreakPriority', 'Priorita pri rovnosti');
     }
 }

@@ -4,31 +4,78 @@
     <span class="fs-75">
         Výsledky:
     </span>
-    {{ competition.name }}
+    {{ results.competition.name }}
+    -
+    {{ results.category.title }}
 {% endblock %}
 
 {% block main %}
     <ul class="nav nav-pills">
-        {% for cat in categories.categories %}
+        {% for category in categories.categories %}
             <li class="nav-item">
                 <a
-                {% if category.slug === cat.slug %}
+                {% if results.category.slug === category.slug %}
                     class="nav-link active"
                     aria-current="page"
                     href="#"
                 {% else %}
                     class="nav-link"
                     href="{{ path(constant('App\\Controller\\Admin\\Competition\\ResultsController::ROUTE_NAME'), {
-                        entityId: competition.id,
-                        categorySlug: cat.slug,
+                        entityId: results.competition.id,
+                        categorySlug: category.slug,
                     }) }}"
                 {% endif %}
                 >
-                    {{ cat.title }}
+                    {{ category.title }}
                 </a>
             </li>
         {% endfor %}
     </ul>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    #
+                </th>
+                <th scope="col">
+                    Meno
+                </th>
+                {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                    <th scope="col">
+                        {{ target.name }}
+                    </th>
+                {% endfor %}
+                <th scope="col">
+                    Spolu
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for competitors_results_with_rank in results.competitorsResultsWithRank %}
+                {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
+                <tr>
+                    <th scope="row">
+                        {{ competitors_results_with_rank.rank }}
+                    </th>
+                    <td>
+                        {{ competitors_results_with_rank.competitorResult.name }}
+                    </td>
+                    {% for competitor_sub_result in competitors_results_with_rank.competitorResult.competitorSubResults %}
+                        {# @var competitor_sub_result \App\Competition\Results\Model\CompetitorSubResults #}
+                        {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                            <td>
+                                {{ competitor_sub_result.getSubResult(target.name).result }}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+                    <td>
+                        {{ competitors_results_with_rank.competitorResult.finalResult }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
 
 {% endblock %}

@@ -12,7 +12,7 @@ final class TargetSnapshot
     public array $pointsSchema;
     public int $displayOrder;
     public int $shotCount;
-    public ?int $tieBreakPriority;
+    public int $tieBreakPriority;
 
     public static function createFromCompetitionTypeTarget(CompetitionTypeTarget $competitionTypeTarget): self
     {

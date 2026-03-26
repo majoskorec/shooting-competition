@@ -79,6 +79,8 @@ final class CompetitionCrudController extends AbstractCrudController
         yield TextField::new('location', 'Miesto')
             ->setRequired(false);
 
+        yield TextField::new('mainCategoryName', 'Názov hlavnej kategórie');
+
         yield TextField::new('organizer', 'Organizátor')
             ->setRequired(false);
 

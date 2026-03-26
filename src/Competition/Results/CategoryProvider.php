@@ -20,8 +20,7 @@ final class CategoryProvider
     public function all(Competition $competition): Categories
     {
         $results = [];
-        // title from $competition
-        $results[] = Category::create('Memoriál', $this->slugger, CategoryType::General);
+        $results[] = Category::create($competition->getMainCategoryName(), $this->slugger, CategoryType::General);
         if ($competition->getTeamMemberCount() > 0) {
             $results[] = Category::create('Družstvá', $this->slugger, CategoryType::Teams);
         }
