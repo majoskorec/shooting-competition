@@ -16,7 +16,10 @@ use App\Controller\Admin\Crud\CompetitionTypeCrudController;
 use App\Controller\Admin\Crud\CompetitionTypeTargetCrudController;
 use App\Controller\Admin\Crud\CompetitorCrudController;
 use App\Controller\Admin\Crud\ShooterCrudController;
+use App\Controller\Admin\Crud\TargetResultCrudController;
 use App\Controller\Admin\Crud\TargetDefinitionCrudController;
+use App\Controller\Admin\Crud\UserCrudController;
+use App\Controller\Public\DefaultController;
 use App\Repository\CompetitionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -29,6 +32,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Override;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AdminDashboard(
     routePath: '/admin',
@@ -41,9 +45,9 @@ final class DashboardController extends AbstractDashboardController
     public function __construct(
         private readonly CompetitionRepository $competitionRepository,
         private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
-
 
     public function index(): Response
     {
@@ -62,6 +66,9 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToUrl('Web', 'fa-solid fa-globe', $this->urlGenerator->generate(DefaultController::ROUTE_NAME))
+            ->setLinkTarget('_blank');
+
         yield MenuItem::linkToDashboard('Nástenka', 'internal:home');
 
         $definitions = MenuItem::subMenu('Definície', 'fa-solid fa-gear');
@@ -76,8 +83,10 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(ShooterCrudController::class, 'Strelci', 'fa-solid fa-person-rifle');
         yield MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy');
         yield MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user');
+        yield MenuItem::linkTo(TargetResultCrudController::class, 'Výsledky na terčoch', 'fa-solid fa-table-cells');
         yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group');
         yield MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people');
+        yield MenuItem::linkTo(UserCrudController::class, 'Používatelia', 'fa-solid fa-users-gear');
 
 
         $activeCompetitions = $this->competitionRepository->findActive();

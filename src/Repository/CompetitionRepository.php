@@ -22,6 +22,24 @@ final class CompetitionRepository extends ServiceEntityRepository
     /**
      * @return array<Competition>
      */
+    public function findPublic(): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb = $qb->andWhere('c.status in (:activeStatuses)');
+        $qb = $qb->setParameter('activeStatuses', [
+            CompetitionStatus::Presentation,
+            CompetitionStatus::InProgress,
+            CompetitionStatus::ReadyForClosure,
+            CompetitionStatus::Finished,
+        ]);
+        $qb = $qb->addOrderBy('c.competitionStart', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return array<Competition>
+     */
     public function findActive(): array
     {
         $qb = $this->createQueryBuilder('c');
@@ -31,6 +49,7 @@ final class CompetitionRepository extends ServiceEntityRepository
             CompetitionStatus::InProgress,
             CompetitionStatus::ReadyForClosure,
         ]);
+        $qb = $qb->addOrderBy('c.competitionStart', 'DESC');
 
         return $qb->getQuery()->getResult();
     }
