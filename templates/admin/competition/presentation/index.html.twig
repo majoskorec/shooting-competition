@@ -1,10 +1,17 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block content_title %}
+    <span class="fs-75">
+        Prezentácia:
+    </span>
+    {{ competition.name }}
+{% endblock %}
+
 {% block main %}
-    <h1>Prezentácia: {{ competition.name }}</h1>
+
     <div>
         <a
-            href="{{ path(constant('App\\Controller\\Admin\\DrawController::ROUTE_NAME'), {
+            href="{{ path(constant('App\\Controller\\Admin\\Competition\\DrawController::ROUTE_NAME'), {
                 entityId: competition.id,
             }) }}"
             class="btn btn-warning btn-lg"

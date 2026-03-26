@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Crud;
 
+use App\Competition\Model\CompetitionStatus;
+use App\Competition\Target\TargetSnapshotFactory;
 use App\Entity\Competition;
 use App\Form\Type\JsonCodeEditorType;
-use App\Model\Enum\CompetitionStatus;
-use App\Model\Factory\TargetSnapshotFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -21,11 +21,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CompetitionCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly TargetSnapshotFactory $snapshotFactory,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -80,7 +83,12 @@ final class CompetitionCrudController extends AbstractCrudController
             ->setRequired(false);
 
         yield ChoiceField::new('status', 'Stav')
-            ->setChoices(CompetitionStatus::cases());
+            ->setFormType(EnumType::class)
+            ->setFormTypeOption('class', CompetitionStatus::class)
+            ->setFormTypeOption(
+                'choice_label',
+                fn (CompetitionStatus $choice): string => $choice->trans($this->translator),
+            );
 
         yield NumberField::new('teamMemberCount', 'Počet členov družstva');
 

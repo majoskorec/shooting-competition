@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Factory;
+namespace App\Competition\Target;
 
+use App\Competition\Target\Model\TargetSnapshot;
 use App\Entity\CompetitionType;
-use App\Model\TargetSnapshot;
 
 final class TargetSnapshotFactory
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Mapping;
 
-use App\Model\TargetSnapshot;
+use App\Competition\Target\Model\TargetSnapshot;
 use Override;
 
 final class TargetSnapshotsType extends JsonObjectType

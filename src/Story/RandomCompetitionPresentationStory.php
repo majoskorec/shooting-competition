@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Story;
 
-use App\Entity\CompetitionCategory;
+use App\Competition\Model\CompetitionStatus;
+use App\Competition\Model\CompetitorStatus;
+use App\Competition\Target\TargetSnapshotFactory;
 use App\Entity\Competitor;
-use App\Model\Enum\CompetitionStatus;
-use App\Model\Enum\CompetitorStatus;
-use App\Model\Factory\TargetSnapshotFactory;
 use App\Tests\Factory\CompetitionCategoryFactory;
 use App\Tests\Factory\CompetitionFactory;
 use App\Tests\Factory\CompetitionTeamFactory;
@@ -20,7 +19,6 @@ use Random\Randomizer;
 use Symfony\Component\Clock\DatePoint;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
-
 use function Zenstruck\Foundry\faker;
 use function Zenstruck\Foundry\Persistence\save;
 

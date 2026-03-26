@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Draw\Model;
+namespace App\Competition\Draw\Model;
 
-use App\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Draw\Exception\StartNumberAssignmentException;
 use App\Entity\Competitor;
 use Random\Randomizer;
 

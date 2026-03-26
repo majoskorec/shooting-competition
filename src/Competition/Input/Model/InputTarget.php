@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Competition\Input\Model;
 
+use App\Competition\Target\Model\TargetSnapshot;
 use App\Entity\TargetResult;
 
 final class InputTarget

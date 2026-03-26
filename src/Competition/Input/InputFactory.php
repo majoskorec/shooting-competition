@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Factory;
+namespace App\Competition\Input;
 
+use App\Competition\Input\Model\Input;
+use App\Competition\Input\Model\InputCompetitor;
+use App\Competition\Input\Model\InputTarget;
+use App\Competition\Target\Model\TargetSnapshot;
 use App\Entity\Competition;
 use App\Entity\Competitor;
 use App\Entity\TargetResult;
-use App\Model\Input;
-use App\Model\InputCompetitor;
-use App\Model\InputTarget;
-use App\Model\TargetSnapshot;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class InputFactory

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Integration\Draw;
+namespace App\Tests\Integration\Competition\Draw;
 
-use App\Draw\DrawService;
-use App\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Draw\DrawService;
+use App\Competition\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
 use App\Entity\Competitor;
 use App\Entity\Shooter;
-use App\Model\Enum\CompetitionStatus;
 use PHPUnit\Framework\TestCase;
 use Random\Randomizer;
 

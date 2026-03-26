@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
+use App\Competition\Model\CompetitorStatus;
 use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
@@ -11,7 +12,6 @@ use App\Entity\Competitor;
 use App\Entity\Shooter;
 use App\Form\Dto\PresentationDto;
 use App\Form\Type\PresentationDtoType;
-use App\Model\Enum\CompetitorStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

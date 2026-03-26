@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Competition\Model\CompetitionStatus;
 use App\Controller\Admin\Competition\InputController;
 use App\Controller\Admin\Competition\PresentationController;
+use App\Controller\Admin\Competition\ResultsController;
 use App\Controller\Admin\Competition\StartingListController;
 use App\Controller\Admin\Crud\CompetitionCategoryCrudController;
 use App\Controller\Admin\Crud\CompetitionCrudController;
@@ -15,7 +17,6 @@ use App\Controller\Admin\Crud\CompetitionTypeTargetCrudController;
 use App\Controller\Admin\Crud\CompetitorCrudController;
 use App\Controller\Admin\Crud\ShooterCrudController;
 use App\Controller\Admin\Crud\TargetDefinitionCrudController;
-use App\Model\Enum\CompetitionStatus;
 use App\Repository\CompetitionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -26,6 +27,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Override;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AdminDashboard(
@@ -38,6 +40,7 @@ final class DashboardController extends AbstractDashboardController
 
     public function __construct(
         private readonly CompetitionRepository $competitionRepository,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -83,6 +86,10 @@ final class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Aktívne súťaže', 'fa-solid fa-chess');
 
+        $request = $this->requestStack->getCurrentRequest();
+        $requestRoute = $request?->attributes->get('_route');
+        $entityId = $request?->attributes->get('entityId');
+
         foreach ($activeCompetitions as $competition) {
             yield MenuItem::section($competition->getName(), 'fa-solid fa-arrows-to-dot');
             yield MenuItem::linkToRoute(
@@ -103,6 +110,18 @@ final class DashboardController extends AbstractDashboardController
                     '',
                     InputController::ROUTE_NAME,
                     ['entityId' => $competition->getId()],
+                );
+                yield MenuItem::linkToRoute(
+                    'Výsledky',
+                    '',
+                    ResultsController::ROUTE_NAME,
+                    [
+                        'entityId' => $competition->getId(),
+                    ],
+                )->setCssClass(
+                    $requestRoute === ResultsController::ROUTE_NAME && (int) $entityId === $competition->getId()
+                        ? 'active'
+                        : '',
                 );
             }
         }

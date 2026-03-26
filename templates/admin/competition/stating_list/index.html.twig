@@ -1,10 +1,13 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block main %}
-    <h1>
-        Štartová listina {{ competition.name }}
-    </h1>
+{% block content_title %}
+    <span class="fs-75">
+        Štartová listina:
+    </span>
+    {{ competition.name }}
+{% endblock %}
 
+{% block main %}
     <table class="table">
         <thead>
         <tr style="white-space: nowrap;">

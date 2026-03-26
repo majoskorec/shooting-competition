@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
-use App\Model\Enum\CompetitionStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,7 +30,7 @@ final class CompetitionRepository extends ServiceEntityRepository
             CompetitionStatus::Presentation,
             CompetitionStatus::InProgress,
             CompetitionStatus::ReadyForClosure,
-            CompetitionStatus::Finalized,
+            CompetitionStatus::Finished,
         ]);
 
         return $qb->getQuery()->getResult();

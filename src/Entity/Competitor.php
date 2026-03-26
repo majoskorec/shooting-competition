@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Model\Enum\CompetitorStatus;
+use App\Competition\Model\CompetitorStatus;
 use App\Repository\CompetitorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

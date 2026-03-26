@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Competition\Model\CompetitionStatus;
+use App\Competition\Target\Model\TargetSnapshot;
 use App\Doctrine\Mapping\TargetSnapshotsType;
-use App\Model\Enum\CompetitionStatus;
-use App\Model\TargetSnapshot;
 use App\Repository\CompetitionRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;

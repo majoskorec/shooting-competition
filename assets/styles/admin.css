@@ -1,15 +1,18 @@
-td.hidden-column, th.hidden-column {
-    display: none;
+/* add active to menu item on `a`. added by route name manually */
+#main-menu .menu .menu-item:has(> a.active) {
+    background: var(--sidebar-menu-active-item-bg);
 }
 
-.fs-50 {
-    font-size: 50%;
+#main-menu .menu .menu-item a.active .menu-item-label {
+    font-weight: 500;
 }
 
-.fs-75 {
-    font-size: 75%;
+#main-menu .menu .menu-item:not(.expanded) a.active .menu-icon,
+#main-menu .menu .menu-item:not(.expanded) a.active {
+    color: var(--sidebar-menu-active-item-color);
 }
 
+/* input table */
 table.input-table {
     white-space: nowrap;
 
@@ -32,6 +35,20 @@ table.input-table {
     input.is-invalid {
         border-color: var(--bs-form-invalid-border-color);
     }
+
+    td.hidden-column, th.hidden-column {
+        display: none;
+    }
+}
+
+/* global classes */
+
+.fs-50 {
+    font-size: 50%;
+}
+
+.fs-75 {
+    font-size: 75%;
 }
 
 .text-truncate {

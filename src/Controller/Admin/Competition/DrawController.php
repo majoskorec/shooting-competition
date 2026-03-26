@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Competition;
 
-use App\Draw\DrawService;
-use App\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Draw\DrawService;
+use App\Competition\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
-use App\Model\Enum\CompetitionStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

@@ -3,3 +3,11 @@ CompetitorStatus:
     Registered: Registrovaný
     Withdrawn: Odsúpený
     Disqualified: Diskvalifikovaný
+
+CompetitionStatus:
+    Draft: Návrh
+    Presentation: Prezentácia
+    InProgress: Prebiehajúca
+    ReadyForClosure: Pripravená k uzatvoreniu
+    Finished: Ukončená
+    Closed: Uzavrená

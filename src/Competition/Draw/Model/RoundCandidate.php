@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Draw\Model;
+namespace App\Competition\Draw\Model;
 
 use Random\Randomizer;
 

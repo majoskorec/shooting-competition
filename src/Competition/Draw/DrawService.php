@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Draw;
+namespace App\Competition\Draw;
 
-use App\Draw\Exception\StartNumberAssignmentException;
-use App\Draw\Model\Rounds;
+use App\Competition\Draw\Exception\StartNumberAssignmentException;
+use App\Competition\Draw\Model\Rounds;
+use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
 use App\Entity\Competitor;
-use App\Model\Enum\CompetitionStatus;
 use Random\Randomizer;
 
 final class DrawService

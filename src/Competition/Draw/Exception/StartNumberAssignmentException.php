@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Draw\Exception;
+namespace App\Competition\Draw\Exception;
 
 use RuntimeException;
 

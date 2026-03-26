@@ -2,8 +2,8 @@
 
 namespace App\Tests\Factory;
 
+use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
-use App\Model\Enum\CompetitionStatus;
 use DateTimeImmutable;
 use Override;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;

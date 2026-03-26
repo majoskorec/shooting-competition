@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
+use App\Competition\Input\Model\InputTarget as InputTargetModel;
 use App\Form\Dto\InputTargetDto;
 use App\Form\Type\InputTargetType;
-use App\Model\InputTarget as InputTargetModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

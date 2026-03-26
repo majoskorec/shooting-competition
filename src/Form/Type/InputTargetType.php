@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Competition\Target\Model\TargetSnapshot;
 use App\Form\Dto\InputTargetDto;
-use App\Model\TargetSnapshot;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;

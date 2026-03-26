@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Crud;
 
+use App\Competition\Model\CompetitorStatus;
 use App\Entity\Competitor;
-use App\Model\Enum\CompetitorStatus;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -19,9 +19,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CompetitorCrudController extends AbstractCrudController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
     #[Override]
     public static function getEntityFqcn(): string
     {
@@ -60,7 +67,12 @@ final class CompetitorCrudController extends AbstractCrudController
             ->setRequired(false);
 
         yield ChoiceField::new('status', 'Stav')
-            ->setChoices(CompetitorStatus::cases());
+            ->setFormType(EnumType::class)
+            ->setFormTypeOption('class', CompetitorStatus::class)
+            ->setFormTypeOption(
+                'choice_label',
+                fn (CompetitorStatus $choice): string => $choice->trans($this->translator),
+            );
 
         yield NumberField::new('cachedTotalScore', 'Celkové skóre (cache)')
             ->setRequired(false);

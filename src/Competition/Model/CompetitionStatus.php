@@ -2,23 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Enum;
+namespace App\Competition\Model;
 
 use Override;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-enum CompetitorStatus: string implements TranslatableInterface
+enum CompetitionStatus: string implements TranslatableInterface
 {
-    case Pending = 'pending';
-    case Registered = 'registered';
-    case Withdrawn = 'withdrawn';
-    case Disqualified = 'disqualified';
+    case Draft = 'draft';
+    case Presentation = 'presentation';
+    case InProgress = 'in_progress';
+    case ReadyForClosure = 'ready_for_closure';
+    case Finished = 'finished';
+    case Closed = 'closed';
 
     #[Override]
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        $key = sprintf('CompetitorStatus.%s', $this->name);
+        $key = sprintf('CompetitionStatus.%s', $this->name);
 
         return $translator->trans(
             id: $key,
