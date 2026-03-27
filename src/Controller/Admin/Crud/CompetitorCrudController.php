@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Crud;
 
 use App\Competition\Model\CompetitorStatus;
+use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competitor;
 use App\Repository\CompetitionCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -21,10 +25,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CompetitorCrudController extends AbstractCrudController
 {
+    private const string SAVE_AND_GO_TO_PRESENTATION = 'saveAndGoToPresentation';
+
     public function __construct(
         private readonly TranslatorInterface $translator,
     ) {
@@ -97,6 +104,30 @@ final class CompetitorCrudController extends AbstractCrudController
     }
 
     #[Override]
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->add(
+            Crud::PAGE_EDIT,
+            Action::new(self::SAVE_AND_GO_TO_PRESENTATION, 'Uložiť a ísť na prezentáciu')
+                ->renderAsButton()
+                ->setHtmlAttributes([
+                    'name' => 'ea[newForm][btn]',
+                    'value' => self::SAVE_AND_GO_TO_PRESENTATION,
+                ])
+                // toto sice ea vyzaduje ale ak som spravne pochopil nikde sa to napouzije
+                ->linkToRoute(
+                    PresentationController::ROUTE_NAME,
+                    static fn  (Competitor $competitor): array => [
+                        'entityId' => $competitor->getId(),
+                    ],
+                )
+                ->asPrimaryAction(),
+        );
+
+        return $actions;
+    }
+
+    #[Override]
     public function createIndexQueryBuilder(
         SearchDto $searchDto,
         EntityDto $entityDto,
@@ -112,5 +143,23 @@ final class CompetitorCrudController extends AbstractCrudController
         $qb = $qb->addSelect('cat');
 
         return $qb;
+    }
+
+    #[Override]
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'] ?? null;
+        if (self::SAVE_AND_GO_TO_PRESENTATION !== $submitButtonName) {
+            return parent::getRedirectResponseAfterSave($context, $action);
+        }
+
+        $competitor = $context->getEntity()->getInstance();
+        if (!$competitor instanceof Competitor) {
+            return parent::getRedirectResponseAfterSave($context, $action);
+        }
+
+        return $this->redirectToRoute(PresentationController::ROUTE_NAME, [
+            'entityId' => $competitor->getCompetition()->getId(),
+        ]);
     }
 }
