@@ -45,7 +45,7 @@ final class PresentationDtoType extends AbstractType
         $builder->add('shooter', EntityType::class, [
             'class' => Shooter::class,
             'label' => 'Strelec',
-            'placeholder' => 'Vyber strelca',
+            'placeholder' => 'Nový strelec',
             'required' => false,
             'attr' => [
                 'size' => 5,
@@ -101,7 +101,7 @@ final class PresentationDtoType extends AbstractType
             $builder->add('competitionTeam', EntityType::class, [
                 'class' => CompetitionTeam::class,
                 'label' => 'Vyber družstvo',
-                'placeholder' => 'Vyber družstvo',
+                'placeholder' => 'Nové družstvo',
                 'choice_label' => 'choiceLabel',
                 'required' => false,
                 'attr' => [
