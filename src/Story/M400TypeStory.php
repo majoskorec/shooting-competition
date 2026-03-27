@@ -25,13 +25,14 @@ final class M400TypeStory extends Story
 
         $foxTarget = TargetDefinitionFactory::createOne([
             'name' => 'Líška - Terč medzinárodný redukovaný na 50m',
+            'shortName' => 'Líška',
             'pointsSchema' => [
-                0,
-                1,
-                3,
-                8,
-                9,
                 10,
+                9,
+                8,
+                3,
+                1,
+                0,
             ],
         ]);
         $foxTypeTarget = CompetitionTypeTargetFactory::createOne([
@@ -45,13 +46,14 @@ final class M400TypeStory extends Story
 
         $roeBuckTarget = TargetDefinitionFactory::createOne([
             'name' => 'Srnec - Terč medzinárodný redukovaný na 50m',
+            'shortName' => 'Srnec',
             'pointsSchema' => [
-                0,
-                1,
-                3,
-                8,
-                9,
                 10,
+                9,
+                8,
+                3,
+                1,
+                0,
             ],
         ]);
         $roeBuckTypeTarget = CompetitionTypeTargetFactory::createOne([
@@ -65,13 +67,14 @@ final class M400TypeStory extends Story
 
         $chamoisTarget = TargetDefinitionFactory::createOne([
             'name' => 'Kamzík - Terč medzinárodný redukovaný na 50m',
+            'shortName' => 'Kamzík',
             'pointsSchema' => [
-                0,
-                1,
-                3,
-                8,
-                9,
                 10,
+                9,
+                8,
+                3,
+                1,
+                0,
             ],
         ]);
         $chamoisTypeTarget = CompetitionTypeTargetFactory::createOne([
@@ -85,13 +88,14 @@ final class M400TypeStory extends Story
 
         $boarTarget = TargetDefinitionFactory::createOne([
             'name' => 'Diviak - Terč medzinárodný redukovaný na 50m',
+            'shortName' => 'Diviak',
             'pointsSchema' => [
-                0,
-                3,
-                5,
-                8,
-                9,
                 10,
+                9,
+                8,
+                5,
+                3,
+                0,
             ],
         ]);
         $boarTypeTarget = CompetitionTypeTargetFactory::createOne([

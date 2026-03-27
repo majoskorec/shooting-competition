@@ -22,6 +22,7 @@ final class TargetDefinitionFactory extends PersistentObjectFactory
     {
         return [
             'name' => self::faker()->unique()->text(255),
+            'shortName' => self::faker()->text(32),
             'pointsSchema' => [],
         ];
     }
