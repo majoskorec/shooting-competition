@@ -41,7 +41,7 @@
 
     <table class="table">
         <thead>
-        <tr style="white-space: nowrap;">
+        <tr class="text-nowrap">
             <th>
                 Štartovné číslo
             </th>
@@ -78,11 +78,11 @@
                 <td>{{ competitor.sharedWeaponCode }}</td>
                 {% for category in competition.categories %}
                     <td>
-                        {{ competitor.categories.contains(category) ? 'X' : '' }}
+                        {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
                     </td>
                 {% endfor %}
                 <td>{{ competitor.status|trans }}</td>
-                <td style="width: 1%; white-space: nowrap;">
+                <td class="text-nowrap min-width">
                     <a
                         href="{{ path('admin_dashboard_competitor_edit', {entityId: competitor.id}) }}"
                         class="btn btn-warning"

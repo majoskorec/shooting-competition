@@ -27,6 +27,10 @@ final class PresentationController extends AbstractController
     )]
     public function index(Competition $competition): Response
     {
+        if (!$competition->getStatus()->isPublished()) {
+            return $this->redirectToRoute(DefaultController::ROUTE_NAME);
+        }
+
         $competitors = $this->entityManager->getRepository(Competitor::class)
             ->createQueryBuilder('c')
             ->select(['c', 's', 't', 'cat'])

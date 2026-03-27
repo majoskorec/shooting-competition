@@ -27,4 +27,20 @@ enum CompetitionStatus: string implements TranslatableInterface
             locale: $locale,
         );
     }
+
+    public function backgroundColor(): string
+    {
+        return match ($this) {
+            self::Presentation, self::InProgress, self::ReadyForClosure => 'text-bg-warning',
+            default => 'text-bg-success',
+        };
+    }
+
+    public function isPublished(): bool
+    {
+        return match ($this) {
+            self::Presentation, self::InProgress, self::ReadyForClosure, self::Finished => true,
+            default => false,
+        };
+    }
 }

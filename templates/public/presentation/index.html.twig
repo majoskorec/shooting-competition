@@ -1,37 +1,158 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prezentácia{% endblock %}
+{% block title %}
+    {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="h2 mt-4 mb-3">
-            Prezentácia - {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
-        </h1>
+    <twig:Menu
+        competition="{{ competition }}"
+    />
+    <div class="container-xxl mt-1">
+        <div class="card mb-2">
+            <div class="card-header">
+                {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
+                <button
+                    class="btn btn-link"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#more-info"
+                    aria-expanded="false"
+                    aria-controls="more-info"
+                >
+                    Viac informácií
+                </button>
+            </div>
+            <div class="card-body collapse" id="more-info">
+                <div class="row">
+                    <div class="col-sm-3 text-sm-end text-secondary">
+                        Začiatok:
+                    </div>
+                    <div class="col-sm-9">
+                        {{ competition.competitionStart|date('d.m.Y H:i') }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 text-sm-end text-secondary">
+                        Typ:
+                    </div>
+                    <div class="col-sm-9">
+                        {{ competition.competitionType|trans }}
+                    </div>
+                </div>
+
+                {% if competition.organizer %}
+                    <div class="row">
+                        <div class="col-sm-3 text-sm-end text-secondary">
+                            Organizátor:
+                        </div>
+                        <div class="col-sm-9">
+                            {{ competition.organizer }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-3 text-sm-end text-secondary">
+                        Kategórie:
+                    </div>
+                    <div class="col-sm-9">
+                        <a
+                            href="{{ path(constant('App\\Controller\\Public\\ResultsController::ROUTE_NAME'), {
+                                id: competition.id,
+                                categorySlug: competition.mainCategoryName|slug,
+                            }) }}"
+                        >
+                            {{ competition.mainCategoryName }}
+                        </a>
+                        <br />
+                        {% for category in competition.categories %}
+                            <a
+                                href="{{ path(constant('App\\Controller\\Public\\ResultsController::ROUTE_NAME'), {
+                                    id: competition.id,
+                                    categorySlug: category.name|slug,
+                                }) }}"
+                            >
+                                {{ category.name }}
+                            </a>
+                            <br />
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if competition.location %}
+                    <div class="row mb-3">
+                        <div class="col-sm-3 text-sm-end text-secondary">
+                            Miesto:
+                        </div>
+                        <div class="col-sm-9">
+                            {{ competition.location }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-sm-1 col-sm-10">
+                            <iframe
+                                loading="lazy"
+                                allowfullscreen
+                                class="border-0 w-100 h-100"
+                                style="min-height: 260px;"
+                                src="https://maps.google.com/maps?q={{ competition.location|url_encode }}&z=14&output=embed"
+                            >
+                            </iframe>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if competition.description %}
+                    <div class="row">
+                        <div class="offset-sm-1 col-sm-10 py-3">
+                            <p>
+                                {{ competition.description }}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
         <div class="border rounded-4 p-3 bg-white table-responsive mb-3">
             <table
-                class="table table-striped table-hover table-sm"
-                style="white-space: nowrap;"
+                class="table table-striped table-hover table-sm text-nowrap"
             >
                 <thead>
-                <tr>
-                    <th>
-                        Štartovné číslo
+                <tr class="align-middle">
+                    <th
+                        class="text-center fs-75"
+                        scope="col"
+                    >
+                        Štartovné<br />
+                        číslo
                     </th>
-                    <th>
+                    <th
+                        scope="col"
+                    >
                         Strelec
                     </th>
-                    <th>
+                    <th
+                        scope="col"
+                    >
                         Klub / PZ
                     </th>
-                    <th>
+                    <th
+                        scope="col"
+                    >
                         Družstvo
                     </th>
-                    <th>
-                        Spoločná zbraň
+                    <th
+                        class="text-center fs-75"
+                        scope="col"
+                    >
+                        Spoločná
+                        <br />
+                        zbraň
                     </th>
                     {% for category in competition.categories %}
-                        <th>
+                        <th
+                            scope="col"
+                            class="text-center"
+                        >
                             {{ category.name }}
                         </th>
                     {% endfor %}
@@ -41,9 +162,8 @@
                 {% for competitor in competitors %}
                     <tr>
                         <th
-                            style="width: 1%"
                             scope="row"
-                            class="text-center"
+                            class="text-center min-width"
                         >
                             {{ competitor.startNumber }}
                         </th>
@@ -57,17 +177,15 @@
                             {{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}
                         </td>
                         <td
-                            class="text-center"
-                            style="width: 1%"
+                            class="text-center min-width"
                         >
                             {{ competitor.sharedWeaponCode }}
                         </td>
                         {% for category in competition.categories %}
                             <td
-                                class="text-center"
-                                style="width: 1%"
+                                class="text-center min-width"
                             >
-                                {{ competitor.categories.contains(category) ? 'X' : '' }}
+                                {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
                             </td>
                         {% endfor %}
                     </tr>

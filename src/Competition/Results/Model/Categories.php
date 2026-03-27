@@ -9,7 +9,7 @@ use RuntimeException;
 final class Categories
 {
     /**
-     * @param list<Category> $categories
+     * @param array<Category> $categories
      */
     public function __construct(
         public array $categories,

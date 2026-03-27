@@ -31,11 +31,11 @@ final class ResultsController extends AbstractController
         Competition $competition,
         ?string $categorySlug = null,
     ): Response {
-        if ($competition->getStatus() !== CompetitionStatus::Finished) {
-            throw $this->createNotFoundException();
+        if (!$competition->getStatus()->isPublished()) {
+            return $this->redirectToRoute(DefaultController::ROUTE_NAME);
         }
 
-        $categories = $this->categoriesProvider->all($competition);
+        $categories = $this->categoriesProvider->allForPublic($competition);
         $category = $categories->getByText($categorySlug ?? '');
         if ($category->slug !== $categorySlug) {
             return $this->redirectToRoute(self::ROUTE_NAME, [
@@ -47,7 +47,6 @@ final class ResultsController extends AbstractController
         $results = $this->resultsFactory->create($competition, $category);
 
         return $this->render('public/results/index.html.twig', [
-            'categories' => $categories,
             'results' => $results,
         ]);
     }

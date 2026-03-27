@@ -12,6 +12,7 @@ final readonly class Category
         public string $title,
         public string $slug,
         public CategoryType $categoryType,
+        public bool $sortByRank
     ) {
     }
 
@@ -19,11 +20,13 @@ final readonly class Category
         string $title,
         SluggerInterface $slugger,
         CategoryType $categoryType,
+        bool $sortByRank,
     ): self {
         return new self(
-            $title,
-            $slugger->slug($title)->lower()->toString(),
-            $categoryType,
+            title: $title,
+            slug: $slugger->slug($title)->lower()->toString(),
+            categoryType: $categoryType,
+            sortByRank: $sortByRank,
         );
     }
 

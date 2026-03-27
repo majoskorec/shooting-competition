@@ -3,11 +3,12 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/config/reference.php
 /config/secrets/prod/prod.decrypt.private.php
+/public/.well-known/appspecific/com.chrome.devtools.json
 /public/bundles/
 /var/
 /vendor/
-/public/.well-known/appspecific/com.chrome.devtools.json
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

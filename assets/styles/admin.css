@@ -56,3 +56,11 @@ table.input-table {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.min-width {
+    width: 1%;
+}

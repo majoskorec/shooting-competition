@@ -38,7 +38,7 @@ final class ResultsController extends AbstractController
         Competition $competition,
         ?string $categorySlug = null,
     ): Response {
-        $categories = $this->categoriesProvider->all($competition);
+        $categories = $this->categoriesProvider->allForAdmin($competition);
         $category = $categories->getByText($categorySlug ?? '');
         if ($category->slug !== $categorySlug) {
             return $this->redirectToRoute(self::ROUTE_NAME, [

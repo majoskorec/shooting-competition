@@ -1,7 +1,14 @@
 {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
 <tr>
-    <th scope="row">
-        {{ competitors_results_with_rank.rank }}
+    <th
+        scope="row"
+        class="min-width text-center"
+    >
+        {% if not results.category.sortByRank %}
+            {{ competitors_results_with_rank.competitorResult.startNumber }}
+        {% else %}
+            {{ competitors_results_with_rank.rank }}
+        {% endif %}
     </th>
     <td>
         {{ competitors_results_with_rank.competitorResult.name }}
@@ -13,4 +20,9 @@
     <td class="text-end">
         {{ competitors_results_with_rank.competitorResult.finalResult }}
     </td>
+    {% if not results.category.sortByRank %}
+        <td class="text-center">
+            {{ competitors_results_with_rank.rank }}
+        </td>
+    {% endif %}
 </tr>

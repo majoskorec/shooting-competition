@@ -41,9 +41,7 @@ final class CompetitorRepository extends ServiceEntityRepository
         }
         $qb = $qb->andWhere('c.competition = :competition');
         $qb = $qb->setParameter('competition', $competition);
-        if ($category->categoryType === CategoryType::PartialResults) {
-            $qb = $qb->addOrderBy('c.startNumber', 'ASC');
-        }
+        $qb = $qb->andWhere('c.startNumber is not null');
 
         return $qb->getQuery()->getResult();
     }

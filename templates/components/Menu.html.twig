@@ -1,0 +1,64 @@
+<nav
+    class="navbar bg-dark border-bottom border-body navbar-expand"
+    data-bs-theme="dark"
+>
+    <div class="container-xxl">
+        <a class="navbar-brand" href="#">
+            <img
+                src="{{ asset('favicon.png') }}"
+                alt="Súťaže"
+                width="30"
+                height="30"
+                class="rounded-2"
+            />
+        </a>
+        <ul class="navbar-nav mb-0">
+            <li class="nav-item">
+                <a
+                    class="nav-link active"
+                    aria-current="page"
+                    href="{{ path(constant('App\\Controller\\Public\\DefaultController::ROUTE_NAME')) }}"
+                >
+                    Súťaže
+                </a>
+            </li>
+        </ul>
+        {% if this.competition is not null %}
+            <span class="navbar-text ps-2">
+                {{ this.competition.name }} - {{ this.competition.competitionStart|date('d.m.Y') }}
+            </span>
+        {% endif %}
+        <div class="d-flex ms-auto ps-2">
+            <a
+                href="{{ path(constant('App\\Controller\\LoginController::ROUTE_NAME')) }}"
+                class="btn btn-outline-light btn-sm"
+            >
+                Admin
+            </a>
+        </div>
+    </div>
+</nav>
+
+{% if this.competition is not null %}
+    <div class="container-xxl mt-1">
+        <nav class="nav nav-pills flex-column flex-md-row">
+            <twig:SubMenuNavItem
+                active="{{ this.category is null }}"
+                url="{{ path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+                    id: this.competition.id,
+                }) }}"
+                label="Prezenácia"
+            />
+            {% for category in this.categories.categories %}
+                <twig:SubMenuNavItem
+                    active="{{ this.category.title|default('') == category.title }}"
+                    url="{{ path(constant('App\\Controller\\Public\\ResultsController::ROUTE_NAME'), {
+                        id: this.competition.id,
+                        categorySlug: category.slug,
+                    }) }}"
+                    label="{{ category.title }}"
+                />
+            {% endfor %}
+        </nav>
+    </div>
+{% endif %}

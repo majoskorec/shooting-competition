@@ -1,6 +1,19 @@
-<th scope="col">
-    #
-</th>
+{% if not results.category.sortByRank %}
+    <th
+        class="text-center fs-75"
+        scope="col"
+    >
+        Štartovné<br />
+        číslo
+    </th>
+{% else %}
+    <th
+        scope="col"
+        class="text-center"
+    >
+        #
+    </th>
+{% endif %}
 <th scope="col">
     Meno
 </th>
@@ -12,3 +25,8 @@
 <th scope="col" class="text-end">
     Spolu
 </th>
+{% if not results.category.sortByRank %}
+    <th scope="col" class="text-center">
+        Poradie
+    </th>
+{% endif %}

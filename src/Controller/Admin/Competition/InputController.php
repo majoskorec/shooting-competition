@@ -34,6 +34,12 @@ final class InputController extends AbstractController
     ): Response {
         $input = $this->inputFactory->createInput($competition);
 
+        // error
+        // existuje sutaziaci co nema statovacie cislo
+        // existuje target result s viac ako povolenymi ranami
+        // warning
+        // nema niekto odstrielane vsetky rany
+
         return $this->render('admin/competition/input/index.html.twig', [
             'input' => $input,
         ]);

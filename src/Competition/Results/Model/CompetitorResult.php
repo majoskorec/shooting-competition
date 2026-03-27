@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
+use http\Exception\RuntimeException;
+
 final readonly class CompetitorResult
 {
     /**
@@ -31,6 +33,15 @@ final readonly class CompetitorResult
             finalResult: $competitorResult->finalResult + $competitorSubResults->total,
             competitorSubResults: $subResults,
         );
+    }
+
+    public function getStartNumber(): int
+    {
+        $first = array_first($this->competitorSubResults)
+            ?? throw new RuntimeException('Competitor result has no sub results');
+        assert($first instanceof CompetitorSubResults);
+
+        return $first->competitor->getStartNumber();
     }
 
     public function compare(self $other): int

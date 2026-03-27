@@ -9,5 +9,4 @@ enum CategoryType
     case General;
     case Teams;
     case Custom;
-    case PartialResults;
 }
