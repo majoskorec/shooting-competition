@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Crud;
 
 use App\Competition\Model\CompetitorStatus;
 use App\Entity\Competitor;
+use App\Repository\CompetitionCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -78,8 +79,21 @@ final class CompetitorCrudController extends AbstractCrudController
             ->setRequired(false);
 
         yield AssociationField::new('categories', 'Kategórie')
-            ->autocomplete()
-            ->setFormTypeOption('by_reference', false);
+            ->setFormTypeOption('by_reference', false)
+            ->setFormTypeOption('choice_label', 'name')
+            ->setFormTypeOption('query_builder', function (CompetitionCategoryRepository $repository): QueryBuilder {
+                $queryBuilder = $repository->createQueryBuilder('category')
+                    ->orderBy('category.name', 'ASC');
+
+                $competitor = $this->getContext()?->getEntity()?->getInstance();
+                if (!$competitor instanceof Competitor) {
+                    return $queryBuilder;
+                }
+
+                return $queryBuilder
+                    ->andWhere('category.competition = :competition')
+                    ->setParameter('competition', $competitor->getCompetition());
+            });
     }
 
     #[Override]
