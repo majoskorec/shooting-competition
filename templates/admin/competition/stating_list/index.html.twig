@@ -10,54 +10,89 @@
 {% block main %}
     <table class="table">
         <thead>
-        <tr class="text-nowrap">
-            <th>
-                Štartovné číslo
+        <tr class="text-nowrap align-middle">
+            <th
+                scope="col"
+                class="text-center fs-75"
+            >
+                Štartovné
+                <br />
+                číslo
             </th>
-            <th>
+            <th
+                scope="col"
+                class="text-center"
+            >
                 Runda
             </th>
-            <th>
+            <th scope="col">
                 Meno
             </th>
-            <th>
+            <th scope="col">
                 Priezvisko
             </th>
-            <th>
+            <th scope="col">
                 Klub / PZ
             </th>
-            <th>
+            <th scope="col">
                 Družstvo
             </th>
-            <th>
+            <th
+                scope="col"
+                class="text-center"
+            >
                 Spoločná zbraň
             </th>
             {% for category in competition.categories %}
-                <th>
+                <th
+                    scope="col"
+                    class="text-center"
+                >
                     {{ category.name }}
                 </th>
             {% endfor %}
-            <th>
+            <th scope="col">
                 Stav
             </th>
         </tr>
         </thead>
         <tbody>
         {% for competitor in competitors %}
-            <tr class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}">
-                <td style="width: 1%">{{ competitor.startNumber }}</td>
-                <td>{{ roundNumber(competitor.startNumber, competition.shootersInRound) }}</td>
-                <td>{{ competitor.shooter.firstName }}</td>
-                <td>{{ competitor.shooter.lastName }}</td>
-                <td>{{ competitor.shooter.club }}</td>
-                <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
-                <td>{{ competitor.sharedWeaponCode }}</td>
+            <tr
+                class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
+            >
+                <th
+                    scope="row"
+                    class="min-width text-center"
+                >
+                    {{ competitor.startNumber }}
+                </th>
+                <td class="text-center min-width">
+                    {{ roundNumber(competitor.startNumber, competition.shootersInRound) }}
+                </td>
+                <td>
+                    {{ competitor.shooter.firstName }}
+                </td>
+                <td>
+                    {{ competitor.shooter.lastName }}
+                </td>
+                <td>
+                    {{ competitor.shooter.club }}
+                </td>
+                <td>
+                    {{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}
+                </td>
+                <td class="text-center min-width">
+                    {{ competitor.sharedWeaponCode }}
+                </td>
                 {% for category in competition.categories %}
-                    <td>
-                        {{ competitor.categories.contains(category) ? 'X' : '' }}
+                    <td class="text-center min-width">
+                        {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
                     </td>
                 {% endfor %}
-                <td>{{ competitor.status|trans }}</td>
+                <td>
+                    {{ competitor.status|trans }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

@@ -13,21 +13,18 @@
             href="{{ path(constant('App\\Controller\\Admin\\Competition\\DrawController::ROUTE_NAME'), {
                 entityId: competition.id,
             }) }}"
-            class="btn btn-warning btn-lg"
+            class="btn btn-warning"
         >
             Rozlosovanie
         </a>
-    </div>
-    <div>
-        <div>
-            typ súťaže: {{ competition.competitionType.name }}
-        </div>
-        <div>
-            začiatok súťaže: {{ competition.competitionStart|date('Y-m-d H:m') }}
-        </div>
-        <div>
-            prihlásených súťažiacich: {{ competitors|length }}
-        </div>
+        <a
+            href="{{ path('admin_dashboard_competition_edit', {
+                entityId: competition.id,
+            }) }}"
+            class="btn btn-primary"
+        >
+            Úprava
+        </a>
     </div>
 
     <hr />
@@ -41,24 +38,37 @@
 
     <table class="table">
         <thead>
-        <tr class="text-nowrap">
-            <th>
-                Štartovné číslo
+        <tr class="text-nowrap align-middle">
+            <th
+                scope="col"
+                class="text-center fs-75"
+            >
+                Štartovné
+                <br />
+                číslo
             </th>
-            <th>
+            <th scope="col">
                 Strelec
             </th>
-            <th>
+            <th scope="col">
                 Klub / PZ
             </th>
-            <th>
+            <th scope="col">
                 Družstvo
             </th>
-            <th>
-                Spoločná zbraň
+            <th
+                scope="col"
+                class="text-center"
+            >
+                Spoločná
+                <br />
+                zbraň
             </th>
             {% for category in competition.categories %}
-                <th>
+                <th
+                    scope="col"
+                    class="text-center"
+                >
                     {{ category.name }}
                 </th>
             {% endfor %}
@@ -71,13 +81,26 @@
         <tbody>
         {% for competitor in competitors %}
             <tr>
-                <td style="width: 1%">{{ competitor.startNumber }}</td>
-                <td>{{ competitor.shooter.fullName }}</td>
-                <td>{{ competitor.shooter.club }}</td>
-                <td>{{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}</td>
-                <td>{{ competitor.sharedWeaponCode }}</td>
+                <th
+                    scope="row"
+                    class="text-center min-width"
+                >
+                    {{ competitor.startNumber }}
+                </th>
+                <td>
+                    {{ competitor.shooter.fullName }}
+                </td>
+                <td>
+                    {{ competitor.shooter.club }}
+                </td>
+                <td>
+                    {{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}
+                </td>
+                <td class="text-center min-width">
+                    {{ competitor.sharedWeaponCode }}
+                </td>
                 {% for category in competition.categories %}
-                    <td>
+                    <td class="text-center min-width">
                         {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
                     </td>
                 {% endfor %}
