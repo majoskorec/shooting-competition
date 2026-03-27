@@ -1,7 +1,10 @@
 {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
 <tr>
-    <th scope="row">
-        {{ competitors_results_with_rank.rank }}
+    <th
+        scope="row"
+        class="text-center min-width"
+    >
+        {{ competitors_results_with_rank.rank|rankIcon }}
     </th>
     <td>
         {{ competitors_results_with_rank.competitorResult.name }}
@@ -10,7 +13,7 @@
         competitor_sub_results: competitors_results_with_rank.competitorResult.competitorSubResults[0],
         results: results,
     } %}
-    <td>
+    <td class="text-end min-width">
         {{ competitors_results_with_rank.competitorResult.finalResult }}
     </td>
 </tr>

@@ -1,4 +1,4 @@
-<th scope="col">
+<th scope="col" class="text-center">
     #
 </th>
 <th scope="col">
@@ -6,7 +6,7 @@
 </th>
 {% for target in results.competition.targetConfigurationSnapshotOrdered %}
     <th scope="col">
-        {{ target.name }}
+        {{ targetShortName(target.name) }}
     </th>
 {% endfor %}
 <th scope="col">

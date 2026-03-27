@@ -6,13 +6,16 @@ namespace App\Twig\Extension;
 
 use App\Entity\TargetDefinition;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\UX\Icons\IconRendererInterface;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
+use Twig\Markup;
 
 final class CompetitionExtension
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly IconRendererInterface $iconRenderer,
     ) {
     }
 
@@ -43,5 +46,16 @@ final class CompetitionExtension
     public function arraySum(array $array): int
     {
         return array_sum($array);
+    }
+
+    #[AsTwigFilter('rankIcon', isSafe: ['html'])]
+    public function rankIcon(int $rank): string
+    {
+        return match ($rank) {
+            1 => sprintf('1. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #d4af37;"])),
+            2 => sprintf('2. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #9aa4b2;"])),
+            3 => sprintf('3. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #b87333;"])),
+            default => (string) $rank,
+        };
     }
 }

@@ -1,8 +1,12 @@
 {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
 {% set teamMemberCount = competitors_results_with_rank.competitorResult.competitorSubResults|length %}
 <tr>
-    <th scope="row" rowspan="{{ teamMemberCount }}">
-        {{ competitors_results_with_rank.rank }}
+    <th
+        scope="row"
+        rowspan="{{ teamMemberCount }}"
+        class="text-center min-width"
+    >
+        {{ competitors_results_with_rank.rank|rankIcon }}
     </th>
     <td rowspan="{{ teamMemberCount }}">
         {{ competitors_results_with_rank.competitorResult.name }}

@@ -1,8 +1,12 @@
 {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
 {% set teamMemberCount = competitors_results_with_rank.competitorResult.competitorSubResults|length %}
 <tr>
-    <th scope="row" rowspan="{{ teamMemberCount }}">
-        {{ competitors_results_with_rank.rank }}
+    <th
+        scope="row"
+        rowspan="{{ teamMemberCount }}"
+        class="min-width text-center"
+    >
+        {{ competitors_results_with_rank.rank|rankIcon }}
     </th>
     <td rowspan="{{ teamMemberCount }}">
         {{ competitors_results_with_rank.competitorResult.name }}
@@ -14,10 +18,13 @@
         competitor_sub_results: competitors_results_with_rank.competitorResult.competitorSubResults[0],
         results: results,
     } %}
-    <td>
+    <td class="text-end min-width">
         {{ competitors_results_with_rank.competitorResult.competitorSubResults[0].total }}
     </td>
-    <td rowspan="{{ teamMemberCount }}">
+    <td
+        rowspan="{{ teamMemberCount }}"
+        class="text-end min-width"
+    >
         {{ competitors_results_with_rank.competitorResult.finalResult }}
     </td>
 </tr>
@@ -30,7 +37,7 @@
             competitor_sub_results: competitor_sub_results,
             results: results,
         } %}
-        <td>
+        <td class="text-end min-width">
             {{ competitor_sub_results.total }}
         </td>
     </tr>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Integration\Competition\Draw;
+namespace App\Tests\Unit\Competition\Draw;
 
 use App\Competition\Draw\DrawService;
 use App\Competition\Draw\Exception\StartNumberAssignmentException;

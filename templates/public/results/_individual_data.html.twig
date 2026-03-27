@@ -7,7 +7,7 @@
         {% if not results.category.sortByRank %}
             {{ competitors_results_with_rank.competitorResult.startNumber }}
         {% else %}
-            {{ competitors_results_with_rank.rank }}
+            {{ competitors_results_with_rank.rank|rankIcon }}
         {% endif %}
     </th>
     <td>
@@ -22,7 +22,7 @@
     </td>
     {% if not results.category.sortByRank %}
         <td class="text-center">
-            {{ competitors_results_with_rank.rank }}
+            {{ competitors_results_with_rank.rank|rankIcon }}
         </td>
     {% endif %}
 </tr>
