@@ -82,9 +82,6 @@ final class CompetitorCrudController extends AbstractCrudController
                 fn (CompetitorStatus $choice): string => $choice->trans($this->translator),
             );
 
-        yield NumberField::new('cachedTotalScore', 'Celkové skóre (cache)')
-            ->setRequired(false);
-
         yield AssociationField::new('categories', 'Kategórie')
             ->setFormTypeOption('by_reference', false)
             ->setFormTypeOption('choice_label', 'name')

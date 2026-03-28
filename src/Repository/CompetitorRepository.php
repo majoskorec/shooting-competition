@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Competition\Model\CompetitorStatus;
 use App\Competition\Results\Model\Category;
 use App\Competition\Results\Model\CategoryType;
 use App\Entity\Competition;
@@ -43,6 +44,8 @@ final class CompetitorRepository extends ServiceEntityRepository
         $qb = $qb->andWhere('c.competition = :competition');
         $qb = $qb->setParameter('competition', $competition);
         $qb = $qb->andWhere('c.startNumber is not null');
+        $qb = $qb->andWhere('c.status = :status');
+        $qb = $qb->setParameter('status', CompetitorStatus::Registered);
 
         return $qb->getQuery()->getResult();
     }

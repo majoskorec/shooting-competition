@@ -36,7 +36,6 @@ final class OP2024Story extends Story
         'lastName' => 'Valíček',
         'club' => 'PZ Grúň',
         'teamName' => 'PZ Grúň',
-        'cachedTotalScore' => 313,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -92,7 +91,6 @@ final class OP2024Story extends Story
         'lastName' => 'Bobula',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 2',
-        'cachedTotalScore' => 358,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -148,7 +146,6 @@ final class OP2024Story extends Story
         'lastName' => 'Gracík',
         'club' => 'Čertovica',
         'teamName' => null,
-        'cachedTotalScore' => 309,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -204,7 +201,6 @@ final class OP2024Story extends Story
         'lastName' => 'Capko',
         'club' => 'PZ Svätojánska Dolina',
         'teamName' => 'PZ Svätojánska Dolina',
-        'cachedTotalScore' => 367,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -260,7 +256,6 @@ final class OP2024Story extends Story
         'lastName' => 'Nagy',
         'club' => 'Siná',
         'teamName' => 'Siná 1',
-        'cachedTotalScore' => 348,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -316,7 +311,6 @@ final class OP2024Story extends Story
         'lastName' => 'Kočtúch',
         'club' => 'PZ Svätojánska Dolina',
         'teamName' => 'PZ Svätojánska Dolina',
-        'cachedTotalScore' => 301,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -372,7 +366,6 @@ final class OP2024Story extends Story
         'lastName' => 'Tretiník',
         'club' => null,
         'teamName' => null,
-        'cachedTotalScore' => 115,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -428,7 +421,6 @@ final class OP2024Story extends Story
         'lastName' => 'Fiačan',
         'club' => 'Siná',
         'teamName' => 'Siná 2',
-        'cachedTotalScore' => 350,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -484,7 +476,6 @@ final class OP2024Story extends Story
         'lastName' => 'Šimanský',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 1',
-        'cachedTotalScore' => 379,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -540,7 +531,6 @@ final class OP2024Story extends Story
         'lastName' => 'Strapoň',
         'club' => 'PSBU Pribylina',
         'teamName' => null,
-        'cachedTotalScore' => 309,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -596,7 +586,6 @@ final class OP2024Story extends Story
         'lastName' => 'Michalíček',
         'club' => 'Kriváň',
         'teamName' => 'Kriváň',
-        'cachedTotalScore' => 184,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -652,7 +641,6 @@ final class OP2024Story extends Story
         'lastName' => 'Polóni',
         'club' => 'Čertovica',
         'teamName' => 'Čertovica',
-        'cachedTotalScore' => 315,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -708,7 +696,6 @@ final class OP2024Story extends Story
         'lastName' => 'Melich',
         'club' => null,
         'teamName' => 'UPS Hybe',
-        'cachedTotalScore' => 360,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -764,7 +751,6 @@ final class OP2024Story extends Story
         'lastName' => 'Bobák',
         'club' => 'Prosečné',
         'teamName' => null,
-        'cachedTotalScore' => 296,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -820,7 +806,6 @@ final class OP2024Story extends Story
         'lastName' => 'Papajová',
         'club' => 'Hradská Hora',
         'teamName' => 'Hradská Hora',
-        'cachedTotalScore' => 216,
         'veteran' => false,
         'woman' => true,
         'targetResults' => [
@@ -876,7 +861,6 @@ final class OP2024Story extends Story
         'lastName' => 'Poliak',
         'club' => 'Chabenec',
         'teamName' => 'Chabenec',
-        'cachedTotalScore' => 339,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -932,7 +916,6 @@ final class OP2024Story extends Story
         'lastName' => 'Janičina',
         'club' => 'PZ Viackov',
         'teamName' => 'PZ Viackov',
-        'cachedTotalScore' => 327,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -985,10 +968,9 @@ final class OP2024Story extends Story
     [
         'startNumber' => 18,
         'firstName' => 'Peter',
-        'lastName' => 'Mrazik',
+        'lastName' => 'Mrázik',
         'club' => 'Chabenec',
         'teamName' => 'Chabenec',
-        'cachedTotalScore' => 257,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1044,7 +1026,6 @@ final class OP2024Story extends Story
         'lastName' => 'Droppa',
         'club' => 'Siná',
         'teamName' => 'Siná 2',
-        'cachedTotalScore' => 352,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1100,7 +1081,6 @@ final class OP2024Story extends Story
         'lastName' => 'Hladký',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 2',
-        'cachedTotalScore' => 256,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1156,7 +1136,6 @@ final class OP2024Story extends Story
         'lastName' => 'Bizub',
         'club' => null,
         'teamName' => 'Stará Dolina',
-        'cachedTotalScore' => 134,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1212,7 +1191,6 @@ final class OP2024Story extends Story
         'lastName' => 'Kočtúch',
         'club' => 'Brtkovica',
         'teamName' => 'Brtkovica',
-        'cachedTotalScore' => 273,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -1264,11 +1242,10 @@ final class OP2024Story extends Story
     ],
     [
         'startNumber' => 23,
-        'firstName' => 'Ľuboš ml.',
-        'lastName' => 'Kočtúch',
+        'firstName' => 'Ľuboš',
+        'lastName' => 'Kočtúch ml.',
         'club' => 'Brtkovica',
         'teamName' => 'Brtkovica',
-        'cachedTotalScore' => 321,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1324,7 +1301,6 @@ final class OP2024Story extends Story
         'lastName' => 'Callo',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 1',
-        'cachedTotalScore' => 242,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1380,7 +1356,6 @@ final class OP2024Story extends Story
         'lastName' => 'Škorupa',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 2',
-        'cachedTotalScore' => 201,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1436,7 +1411,6 @@ final class OP2024Story extends Story
         'lastName' => 'Valach',
         'club' => 'Kriváň',
         'teamName' => null,
-        'cachedTotalScore' => 220,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1492,7 +1466,6 @@ final class OP2024Story extends Story
         'lastName' => 'Lukačko',
         'club' => null,
         'teamName' => null,
-        'cachedTotalScore' => 254,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -1548,7 +1521,6 @@ final class OP2024Story extends Story
         'lastName' => 'Fiedor',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 1',
-        'cachedTotalScore' => 246,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1604,7 +1576,6 @@ final class OP2024Story extends Story
         'lastName' => 'Jaňák',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 2',
-        'cachedTotalScore' => 285,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -1660,7 +1631,6 @@ final class OP2024Story extends Story
         'lastName' => 'Pauko',
         'club' => 'Siná',
         'teamName' => 'Siná 1',
-        'cachedTotalScore' => 390,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -1716,7 +1686,6 @@ final class OP2024Story extends Story
         'lastName' => 'Šramo',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 1',
-        'cachedTotalScore' => 315,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1772,7 +1741,6 @@ final class OP2024Story extends Story
         'lastName' => 'Jurena',
         'club' => 'Kriváň',
         'teamName' => 'Kriváň',
-        'cachedTotalScore' => 290,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1828,7 +1796,6 @@ final class OP2024Story extends Story
         'lastName' => 'Hladký',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 2',
-        'cachedTotalScore' => 301,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1884,7 +1851,6 @@ final class OP2024Story extends Story
         'lastName' => 'Hladký',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 1',
-        'cachedTotalScore' => 339,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1940,7 +1906,6 @@ final class OP2024Story extends Story
         'lastName' => 'Bebko',
         'club' => 'Siná',
         'teamName' => 'Siná 1',
-        'cachedTotalScore' => 393,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -1996,7 +1961,6 @@ final class OP2024Story extends Story
         'lastName' => 'Brezina',
         'club' => 'PZ Grúň',
         'teamName' => 'PZ Grúň',
-        'cachedTotalScore' => 239,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2052,7 +2016,6 @@ final class OP2024Story extends Story
         'lastName' => 'Skaličan',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 1',
-        'cachedTotalScore' => 293,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2108,7 +2071,6 @@ final class OP2024Story extends Story
         'lastName' => 'Hladký',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 1',
-        'cachedTotalScore' => 355,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2160,11 +2122,10 @@ final class OP2024Story extends Story
     ],
     [
         'startNumber' => 39,
-        'firstName' => 'Ľuboš st.',
-        'lastName' => 'Kočtúch',
+        'firstName' => 'Ľuboš',
+        'lastName' => 'Kočtúch st.',
         'club' => 'Brtkovica',
         'teamName' => 'Brtkovica',
-        'cachedTotalScore' => 299,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -2220,7 +2181,6 @@ final class OP2024Story extends Story
         'lastName' => 'Jaňák',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 2',
-        'cachedTotalScore' => 286,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2276,7 +2236,6 @@ final class OP2024Story extends Story
         'lastName' => 'Dermek',
         'club' => 'Baranec',
         'teamName' => 'Baranec',
-        'cachedTotalScore' => 317,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2332,7 +2291,6 @@ final class OP2024Story extends Story
         'lastName' => 'Welnitz',
         'club' => 'Hradská Hora',
         'teamName' => 'Hradská Hora',
-        'cachedTotalScore' => 191,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2388,7 +2346,6 @@ final class OP2024Story extends Story
         'lastName' => 'Michalíček',
         'club' => 'Kriváň',
         'teamName' => null,
-        'cachedTotalScore' => 227,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2444,7 +2401,6 @@ final class OP2024Story extends Story
         'lastName' => 'Uličný',
         'club' => 'Baranec',
         'teamName' => 'Baranec',
-        'cachedTotalScore' => 380,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -2500,7 +2456,6 @@ final class OP2024Story extends Story
         'lastName' => 'Škorupa',
         'club' => 'PZ Belanská',
         'teamName' => null,
-        'cachedTotalScore' => 191,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -2556,7 +2511,6 @@ final class OP2024Story extends Story
         'lastName' => 'Michalíčková',
         'club' => 'Kriváň',
         'teamName' => 'Kriváň',
-        'cachedTotalScore' => 196,
         'veteran' => false,
         'woman' => true,
         'targetResults' => [
@@ -2612,7 +2566,6 @@ final class OP2024Story extends Story
         'lastName' => 'Batiz',
         'club' => 'PZ Poludnica',
         'teamName' => 'PZ Poludnica 1',
-        'cachedTotalScore' => 369,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2668,7 +2621,6 @@ final class OP2024Story extends Story
         'lastName' => 'Šramo',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 2',
-        'cachedTotalScore' => 246,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -2721,10 +2673,9 @@ final class OP2024Story extends Story
     [
         'startNumber' => 49,
         'firstName' => 'František',
-        'lastName' => 'Mrazik',
+        'lastName' => 'Mrázik',
         'club' => 'Chabenec',
         'teamName' => 'Chabenec',
-        'cachedTotalScore' => 324,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2780,7 +2731,6 @@ final class OP2024Story extends Story
         'lastName' => 'Repčík',
         'club' => 'Baníkov',
         'teamName' => 'Baníkov',
-        'cachedTotalScore' => 221,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2836,7 +2786,6 @@ final class OP2024Story extends Story
         'lastName' => 'Volaj',
         'club' => 'PZ Ráztoka',
         'teamName' => null,
-        'cachedTotalScore' => 367,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2892,7 +2841,6 @@ final class OP2024Story extends Story
         'lastName' => 'Kováč',
         'club' => 'PZ Svätojánska Dolina',
         'teamName' => 'PZ Svätojánska Dolina',
-        'cachedTotalScore' => 229,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -2948,7 +2896,6 @@ final class OP2024Story extends Story
         'lastName' => 'Kabát',
         'club' => 'PZ Grúň',
         'teamName' => 'PZ Grúň',
-        'cachedTotalScore' => 350,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3004,7 +2951,6 @@ final class OP2024Story extends Story
         'lastName' => 'Zajden',
         'club' => 'Čertovica',
         'teamName' => 'Čertovica',
-        'cachedTotalScore' => 339,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3060,7 +3006,6 @@ final class OP2024Story extends Story
         'lastName' => 'Staroň',
         'club' => 'Baníkov',
         'teamName' => 'Baníkov',
-        'cachedTotalScore' => 317,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -3116,7 +3061,6 @@ final class OP2024Story extends Story
         'lastName' => 'Richter',
         'club' => 'Baranec',
         'teamName' => 'Baranec',
-        'cachedTotalScore' => 381,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3172,7 +3116,6 @@ final class OP2024Story extends Story
         'lastName' => 'Zvara',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 1',
-        'cachedTotalScore' => 302,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -3228,7 +3171,6 @@ final class OP2024Story extends Story
         'lastName' => 'Bubniak',
         'club' => 'PZ Viackov',
         'teamName' => 'PZ Viackov',
-        'cachedTotalScore' => 216,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3284,7 +3226,6 @@ final class OP2024Story extends Story
         'lastName' => 'Pačesová',
         'club' => 'PZ Belanská',
         'teamName' => 'PZ Belanská 2',
-        'cachedTotalScore' => 269,
         'veteran' => false,
         'woman' => true,
         'targetResults' => [
@@ -3340,7 +3281,6 @@ final class OP2024Story extends Story
         'lastName' => 'Palko',
         'club' => 'Siná',
         'teamName' => 'Siná 2',
-        'cachedTotalScore' => 324,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3396,7 +3336,6 @@ final class OP2024Story extends Story
         'lastName' => 'Čendula',
         'club' => 'PZ Viackov',
         'teamName' => 'PZ Viackov',
-        'cachedTotalScore' => 367,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3452,7 +3391,6 @@ final class OP2024Story extends Story
         'lastName' => 'Repčík',
         'club' => 'Baníkov',
         'teamName' => 'Baníkov',
-        'cachedTotalScore' => 355,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3508,7 +3446,6 @@ final class OP2024Story extends Story
         'lastName' => 'Gracík',
         'club' => 'Čertovica',
         'teamName' => 'Čertovica',
-        'cachedTotalScore' => 337,
         'veteran' => false,
         'woman' => false,
         'targetResults' => [
@@ -3564,7 +3501,6 @@ final class OP2024Story extends Story
         'lastName' => 'Jaňáková',
         'club' => 'PZ Ostrô',
         'teamName' => 'PZ Ostrô 2',
-        'cachedTotalScore' => 299,
         'veteran' => false,
         'woman' => true,
         'targetResults' => [
@@ -3620,7 +3556,6 @@ final class OP2024Story extends Story
         'lastName' => 'Papaj',
         'club' => 'Hradská Hora',
         'teamName' => 'Hradská Hora',
-        'cachedTotalScore' => 341,
         'veteran' => true,
         'woman' => false,
         'targetResults' => [
@@ -3684,7 +3619,7 @@ final class OP2024Story extends Story
 
         $competition = CompetitionFactory::createOne([
             'competitionType' => $competitionType,
-            'name' => 'Majstrovstvá okresu LM',
+            'name' => 'Majstrovstvá okresu 2024',
             'competitionStart' => new DateTimeImmutable('2024-05-18 07:00:00'),
             'location' => 'Strelnica Dovalovo',
             'organizer' => 'OPK LM',
@@ -3708,7 +3643,6 @@ final class OP2024Story extends Story
                 'shooter' => $shooter,
                 'startNumber' => $competitorData['startNumber'],
                 'status' => CompetitorStatus::Registered,
-                'cachedTotalScore' => $competitorData['cachedTotalScore'],
                 'competitionTeam' => $this->getOrCreateTeam($competition, $competitorData['teamName'], $teams),
             ]);
 
@@ -3774,6 +3708,7 @@ final class OP2024Story extends Story
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'club' => $club,
+                'email' => null,
             ]);
         }
 

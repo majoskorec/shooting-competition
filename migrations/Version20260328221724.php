@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260328211352 extends AbstractMigration
+final class Version20260328221724 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -101,7 +101,6 @@ final class Version20260328211352 extends AbstractMigration
               start_number INT DEFAULT NULL,
               shared_weapon_code VARCHAR(128) DEFAULT NULL,
               status VARCHAR(255) NOT NULL,
-              cached_total_score INT DEFAULT NULL,
               competition_id INT NOT NULL,
               shooter_id INT NOT NULL,
               competition_team_id INT DEFAULT NULL,

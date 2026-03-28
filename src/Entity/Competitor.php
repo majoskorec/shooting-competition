@@ -57,9 +57,6 @@ class Competitor implements Stringable
     #[ORM\Column(enumType: CompetitorStatus::class)]
     private CompetitorStatus $status;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $cachedTotalScore = null;
-
     /** @var Collection<int, TargetResult> */
     #[ORM\OneToMany(
         targetEntity: TargetResult::class,
@@ -148,16 +145,6 @@ class Competitor implements Stringable
     public function setStatus(CompetitorStatus $status): void
     {
         $this->status = $status;
-    }
-
-    public function getCachedTotalScore(): ?int
-    {
-        return $this->cachedTotalScore;
-    }
-
-    public function setCachedTotalScore(?int $cachedTotalScore): void
-    {
-        $this->cachedTotalScore = $cachedTotalScore;
     }
 
     /** @return Collection<int, TargetResult> */

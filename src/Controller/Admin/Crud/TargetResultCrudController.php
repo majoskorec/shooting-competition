@@ -16,7 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -74,15 +73,6 @@ final class TargetResultCrudController extends AbstractCrudController
 
         yield NumberField::new('subtotal', 'Subtotal')
             ->hideOnForm();
-
-        yield BooleanField::new('consistent', 'Konzistentný');
-
-        yield CodeEditorField::new('validationIssues', 'Validačné problémy')
-            ->setLanguage('javascript')
-            ->setNumOfRows(8)
-            ->setRequired(false)
-            ->setFormType(JsonCodeEditorType::class)
-            ->formatValue($this->formatJsonValue(...));
     }
 
     #[Override]
