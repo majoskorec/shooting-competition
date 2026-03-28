@@ -18,11 +18,24 @@
     </td>
     <td class="min-width text-end">
         {% if competitors_results_with_rank.competitorResult.juryEntryDto is null %}
-            <button class="btn btn-xs btn-secondary">
+            <button
+                class="btn btn-xs btn-secondary"
+                {{ stimulus_action('results-jury-entry-modal', 'open', 'click') }}
+                data-url="{{ path(constant('App\\Controller\\Admin\\Competition\\JuryEntryModal\\NewController::ROUTE_NAME'), {
+                    categorySlug: results.category.slug,
+                    competitorId: competitors_results_with_rank.competitorResult.competitorSubResults[0].competitor.id,
+                }) }}"
+            >
                 {{ ux_icon('bi:plus-square') }}
             </button>
         {% else %}
-            <button class="btn btn-xs btn-secondary">
+            <button
+                class="btn btn-xs btn-secondary"
+                {{ stimulus_action('results-jury-entry-modal', 'open', 'click') }}
+                data-url="{{ path(constant('App\\Controller\\Admin\\Competition\\JuryEntryModal\\EditController::ROUTE_NAME'), {
+                    juryEntryId: competitors_results_with_rank.competitorResult.juryEntryDto.id,
+                }) }}"
+            >
                 {{ competitors_results_with_rank.competitorResult.juryEntryDto.points }}
                 {{ ux_icon('bi:pencil-square') }}
             </button>

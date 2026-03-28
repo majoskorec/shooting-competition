@@ -1,0 +1,13 @@
+{% extends 'admin/competition/jury_entry_modal/modal.html.twig' %}
+
+{% block title %}
+    Úprava rozstrelu
+{% endblock %}
+
+{% block deleteForm %}
+    {{ form_start(delete_form) }}
+    <button type="submit" class="btn btn-danger">
+        Zmazať
+    </button>
+    {{ form_end(delete_form) }}
+{% endblock %}

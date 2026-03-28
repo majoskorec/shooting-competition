@@ -1,0 +1,55 @@
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div>
+                <h5 class="modal-title mb-1">
+                    {% block title %}{% endblock %}
+                </h5>
+                <div class="text-muted small">
+                    {{ jury_entry.competitor.shooter.fullName }}
+                    •
+                    {{ jury_entry.categoryName }}
+                </div>
+            </div>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
+        </div>
+        <div class="modal-body">
+            {{ form_start(form, {
+                attr: {
+                    'id': 'jury-entry-form',
+                    'data-action': 'submit->results-jury-entry-modal#submit',
+                },
+            }) }}
+            {{ form_row(form.points) }}
+            {{ form_row(form.description) }}
+            {{ form_end(form) }}
+        </div>
+
+        <div class="modal-footer d-flex justify-content-between">
+            {% block deleteForm %}{% endblock %}
+            <div class="d-flex gap-2">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Zavrieť
+                </button>
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    form="jury-entry-form"
+                >
+                    Uložiť
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,13 +9,20 @@ use App\Competition\Results\Model\Categories;
 use App\Competition\Results\Model\Category;
 use App\Competition\Results\Model\CategoryType;
 use App\Entity\Competition;
+use Override;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-final class CategoryProvider
+final class CategoryProvider implements CategorySluggerInterface
 {
     public function __construct(
         private readonly SluggerInterface $slugger,
     ) {
+    }
+
+    #[Override]
+    public function slugCategoryName(string $name): string
+    {
+        return $this->slugger->slug($name)->lower()->toString();
     }
 
     public function allForPublic(Competition $competition): Categories
@@ -25,14 +32,14 @@ final class CategoryProvider
         $results = [];
         $results[] = Category::create(
             title: $competition->getMainCategoryName(),
-            slugger: $this->slugger,
+            slugger: $this,
             categoryType: CategoryType::General,
             sortByRank: $isFinished,
         );
         if ($isFinished && $competition->getTeamMemberCount() > 0) {
             $results[] = Category::create(
                 title: 'Družstvá',
-                slugger: $this->slugger,
+                slugger: $this,
                 categoryType: CategoryType::Teams,
                 sortByRank: $isFinished,
             );
@@ -40,7 +47,7 @@ final class CategoryProvider
         foreach ($competition->getCategories() as $category) {
             $results[] = Category::create(
                 title: $category->getName(),
-                slugger: $this->slugger,
+                slugger: $this,
                 categoryType: CategoryType::Custom,
                 sortByRank: $isFinished,
             );
@@ -54,14 +61,14 @@ final class CategoryProvider
         $results = [];
         $results[] = Category::create(
             title: $competition->getMainCategoryName(),
-            slugger: $this->slugger,
+            slugger: $this,
             categoryType: CategoryType::General,
             sortByRank: true,
         );
         if ($competition->getTeamMemberCount() > 0) {
             $results[] = Category::create(
                 title: 'Družstvá',
-                slugger: $this->slugger,
+                slugger: $this,
                 categoryType: CategoryType::Teams,
                 sortByRank: true,
             );
@@ -69,7 +76,7 @@ final class CategoryProvider
         foreach ($competition->getCategories() as $category) {
             $results[] = Category::create(
                 title: $category->getName(),
-                slugger: $this->slugger,
+                slugger: $this,
                 categoryType: CategoryType::Custom,
                 sortByRank: true,
             );

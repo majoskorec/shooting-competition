@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\JuryEntryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JuryEntryRepository::class)]
 #[ORM\Table(name: 'jury_entry')]
@@ -27,9 +28,11 @@ class JuryEntry
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?CompetitionCategory $category = null;
 
+    #[Assert\NotNull]
     #[ORM\Column]
     private int $points;
 
+    #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -76,5 +79,10 @@ class JuryEntry
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->category?->getName() ?? $this->competitor->getCompetition()->getMainCategoryName();
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
-use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Competition\Results\CategorySluggerInterface;
 
 final readonly class Category
 {
@@ -18,13 +18,13 @@ final readonly class Category
 
     public static function create(
         string $title,
-        SluggerInterface $slugger,
+        CategorySluggerInterface $slugger,
         CategoryType $categoryType,
         bool $sortByRank,
     ): self {
         return new self(
             title: $title,
-            slug: $slugger->slug($title)->lower()->toString(),
+            slug: $slugger->slugCategoryName($title),
             categoryType: $categoryType,
             sortByRank: $sortByRank,
         );
