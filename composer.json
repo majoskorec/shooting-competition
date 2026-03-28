@@ -9,6 +9,7 @@
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.2",
         "easycorp/easyadmin-bundle": "^5.0.2",
+        "endroid/qr-code-bundle": "^6.1",
         "phpdocumentor/reflection-docblock": "^6.0.3",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/asset": "~8.0.6",
@@ -87,6 +88,7 @@
     },
     "config": {
         "allow-plugins": {
+            "endroid/installer": true,
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
             "symfony/flex": true,

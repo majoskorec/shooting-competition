@@ -58,4 +58,12 @@ final class CompetitionExtension
             default => (string) $rank,
         };
     }
+
+    #[AsTwigFilter('checkCircle', isSafe: ['html'])]
+    public function checkCircle(bool $check, string $class = 'text-success', string $style = 'height: 1em;'): string
+    {
+        return $check
+            ? $this->iconRenderer->renderIcon('bi:check-circle-fill', ['class' => $class, 'style' => $style])
+            : '';
+    }
 }

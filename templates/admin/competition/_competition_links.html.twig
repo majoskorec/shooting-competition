@@ -2,7 +2,7 @@
     href="{{ path('admin_dashboard_competition_edit', {
         'entityId': competition.id,
     }) }}"
-    class="btn btn-warning"
+    class="btn btn-danger"
 >
     Upraviť
 </a>
@@ -37,4 +37,12 @@
     class="btn btn-success"
 >
     Výsledky
+</a>
+<a
+    href="{{ path(constant('App\\Controller\\Admin\\Competition\\QrCodeController::ROUTE_NAME'), {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-warning"
+>
+    QR kód
 </a>

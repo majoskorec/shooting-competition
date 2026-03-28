@@ -185,7 +185,7 @@
                             <td
                                 class="text-center min-width"
                             >
-                                {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
+                                {{ competitor.categories.contains(category)|checkCircle }}
                             </td>
                         {% endfor %}
                     </tr>

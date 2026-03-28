@@ -1,0 +1,48 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    {% include 'admin/competition/_competition_content_title.html.twig' with {
+        title: 'QR kód:',
+        competition: competition,
+    } %}
+{% endblock %}
+
+{% block main %}
+    {% set qrData = absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+        id: competition.id,
+    })) %}
+    <div>
+        <a
+            href="{{ path(constant('App\\Controller\\Admin\\Competition\\PrintQrCodeController::ROUTE_NAME'), {
+                entityId: competition.id,
+            }) }}"
+            target="_blank"
+            class="btn btn-primary"
+        >
+            Tlačiť QR kód
+        </a>
+    </div>
+    <div class="text-center p-5">
+        <div class="border border-1" style="width: 297mm; height: 210mm; padding: 25mm;">
+            <div>
+                <h1>
+                    {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
+                </h1>
+            </div>
+            <div>
+                <h2>
+                    {{ absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+                        id: competition.id,
+                    })) }}
+                </h2>
+            </div>
+            <div style="margin-top: 4rem;">
+                <img
+                    src="{{ qr_code_path(qrData) }}"
+                    alt="prezentacia"
+                />
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

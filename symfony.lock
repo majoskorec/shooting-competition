@@ -47,6 +47,9 @@
             "config/routes/easyadmin.yaml"
         ]
     },
+    "endroid/qr-code-bundle": {
+        "version": "6.1.0"
+    },
     "phpunit/phpunit": {
         "version": "13.0",
         "recipe": {

@@ -14,6 +14,7 @@ use App\Entity\CompetitionType;
 use App\Entity\Competitor;
 use App\Entity\Shooter;
 use App\Entity\TargetResult;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use RuntimeException;
@@ -3679,8 +3680,10 @@ final class OP2024Story extends Story
 
         $competition = new Competition();
         $competition->setCompetitionType($competitionType);
-        $competition->setName('OP2024');
-        $competition->setCompetitionStart(new \DateTimeImmutable('2024-05-18 07:00:00'));
+        $competition->setName('Majstrovstvá okresu LM');
+        $competition->setCompetitionStart(new DateTimeImmutable('2024-05-18 07:00:00'));
+        $competition->setLocation('Strelnica Dovalovo');
+        $competition->setOrganizer('OPK LM');
         $competition->setStatus(CompetitionStatus::Finished);
         $competition->setTargetConfigurationSnapshot($this->targetSnapshotFactory->createFromCompetitionType($competitionType));
         $competition->setTeamMemberCount(3);

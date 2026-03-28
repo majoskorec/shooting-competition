@@ -71,8 +71,10 @@
                         Spolu
                     </th>
                 {% endfor %}
-                <th class="text-center">
-                    Spolu všetko
+                <th class="text-center fs-75">
+                    Spolu
+                    <br />
+                    všetko
                 </th>
                 <th data-hiddable="true">
                     Klub / PZ
@@ -80,11 +82,19 @@
                 <th data-hiddable="true">
                     Družstvo
                 </th>
-                <th data-hiddable="true">
-                    Spoločná zbraň
+                <th
+                    data-hiddable="true"
+                    class="fs-75 text-center"
+                >
+                    Spoločná
+                    <br />
+                    zbraň
                 </th>
                 {% for category in input.competition.categories %}
-                    <th data-hiddable="true">
+                    <th
+                        data-hiddable="true"
+                        class="text-center"
+                    >
                         {{ category.name }}
                     </th>
                 {% endfor %}
@@ -133,12 +143,18 @@
                     <td data-hiddable="true">
                         {{ inputCompetitor.competitor.competitionTeam is not null ? inputCompetitor.competitor.competitionTeam.name }}
                     </td>
-                    <td data-hiddable="true">
+                    <td
+                        data-hiddable="true"
+                        class="text-center min-width"
+                    >
                         {{ inputCompetitor.competitor.sharedWeaponCode }}
                     </td>
                     {% for category in input.competition.categories %}
-                        <td data-hiddable="true">
-                            {{ inputCompetitor.competitor.categories.contains(category) ? 'X' : '' }}
+                        <td
+                            data-hiddable="true"
+                            class="text-center min-width"
+                        >
+                            {{ inputCompetitor.competitor.categories.contains(category)|checkCircle }}
                         </td>
                     {% endfor %}
                     <td data-hiddable="true">
