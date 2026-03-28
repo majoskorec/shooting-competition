@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="utf-8">
+    <title>{{ results.competition.name }} - {{ results.category.title }}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #777;
+            padding: 4px 6px;
+        }
+
+        th {
+            font-weight: 700;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th colspan="{{ results.category.categoryType == enum('App\\Competition\\Results\\Model\\CategoryType').Teams ? results.competition.targetConfigurationSnapshotOrdered|length + 5 : results.competition.targetConfigurationSnapshotOrdered|length + 3 }}">
+            {{ results.competition.name }} - {{ results.category.title }}
+        </th>
+    </tr>
+    <tr>
+        {% if results.category.categoryType == enum('App\\Competition\\Results\\Model\\CategoryType').Teams %}
+            <th>#</th>
+            <th>Družstvo</th>
+            <th>Strelec</th>
+            {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                <th>{{ targetShortName(target.name) }}</th>
+            {% endfor %}
+            <th>Strelec spolu</th>
+            <th>Spolu</th>
+        {% else %}
+            <th>#</th>
+            <th>Meno</th>
+            {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                <th>{{ targetShortName(target.name) }}</th>
+            {% endfor %}
+            <th>Spolu</th>
+        {% endif %}
+    </tr>
+    {% for competitors_results_with_rank in results.competitorsResultsWithRank %}
+        {% if results.category.categoryType == enum('App\\Competition\\Results\\Model\\CategoryType').Teams %}
+            {% for competitor_sub_results in competitors_results_with_rank.competitorResult.competitorSubResults %}
+                <tr>
+                    <td>{{ loop.first ? competitors_results_with_rank.rank : '' }}</td>
+                    <td>{{ loop.first ? competitors_results_with_rank.competitorResult.name : '' }}</td>
+                    <td>{{ competitor_sub_results.competitor.shooter.fullName }}</td>
+                    {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                        <td class="text-end">{{ competitor_sub_results.getSubResult(target.name).result }}</td>
+                    {% endfor %}
+                    <td class="text-end">{{ competitor_sub_results.total }}</td>
+                    <td class="text-end">{{ loop.first ? competitors_results_with_rank.competitorResult.finalResult : '' }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% set competitor_sub_results = competitors_results_with_rank.competitorResult.competitorSubResults[0] %}
+            <tr>
+                <td>{{ competitors_results_with_rank.rank }}</td>
+                <td>{{ competitors_results_with_rank.competitorResult.name }}</td>
+                {% for target in results.competition.targetConfigurationSnapshotOrdered %}
+                    <td class="text-end">{{ competitor_sub_results.getSubResult(target.name).result }}</td>
+                {% endfor %}
+                <td class="text-end">{{ competitors_results_with_rank.competitorResult.finalResult }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+</body>
+</html>

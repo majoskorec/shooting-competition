@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Public;
 
-use App\Competition\Model\CompetitionStatus;
 use App\Competition\Results\CategoryProvider;
 use App\Competition\Results\ResultsFactory;
 use App\Entity\Competition;

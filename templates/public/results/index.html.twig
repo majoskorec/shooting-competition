@@ -32,6 +32,24 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {% if
+                results.competition.status == enum('App\\Competition\\Model\\CompetitionStatus').Finished
+                or is_granted('ROLE_ADMIN')
+            %}
+                <div class="text-end">
+                    <a
+                        href="{{ path(constant('App\\Controller\\Public\\ResultsExportController::ROUTE_NAME'), {
+                            entityId: results.competition.id,
+                            categorySlug: results.category.slug,
+                        }) }}"
+                        class="btn btn-link btn-sm"
+                        target="_blank"
+                    >
+                        {{ ux_icon('bi:printer-fill') }}
+                        Stiahnúť xls
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

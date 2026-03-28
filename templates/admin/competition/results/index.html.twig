@@ -9,6 +9,18 @@
 {% endblock %}
 
 {% block main %}
+    <div class="mb-3">
+        <a
+            href="{{ path(constant('App\\Controller\\Public\\ResultsExportController::ROUTE_NAME'), {
+                entityId: results.competition.id,
+                categorySlug: results.category.slug,
+            }) }}"
+            class="btn btn-success"
+        >
+            Export do XLS
+        </a>
+    </div>
+
     <ul class="nav nav-pills">
         {% for category in categories.categories %}
             <li class="nav-item">
