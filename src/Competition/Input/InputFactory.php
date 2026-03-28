@@ -85,7 +85,6 @@ final class InputFactory
         $entity = new TargetResult();
         $entity->setCompetitor($competitor);
         $entity->setTargetName($targetSnapshot->name);
-        $entity->setConsistent(true);
         $entity->setHitBreakdown(array_fill_keys($targetSnapshot->pointsSchema, 0));
         $this->entityManager->persist($entity);
 

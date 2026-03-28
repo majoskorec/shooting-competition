@@ -33,13 +33,6 @@ class TargetResult
     #[ORM\Column(nullable: true)]
     private ?int $subtotal = null;
 
-    #[ORM\Column]
-    private bool $consistent;
-
-    /** @var array<int, string>|null */
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $validationIssues = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -85,28 +78,6 @@ class TargetResult
     public function setSubtotal(?int $subtotal): void
     {
         $this->subtotal = $subtotal;
-    }
-
-    public function isConsistent(): bool
-    {
-        return $this->consistent;
-    }
-
-    public function setConsistent(bool $consistent): void
-    {
-        $this->consistent = $consistent;
-    }
-
-    /** @return array<int, string>|null */
-    public function getValidationIssues(): ?array
-    {
-        return $this->validationIssues;
-    }
-
-    /** @param array<int, string>|null $validationIssues */
-    public function setValidationIssues(?array $validationIssues): void
-    {
-        $this->validationIssues = $validationIssues;
     }
 
     #[ORM\PreFlush]
