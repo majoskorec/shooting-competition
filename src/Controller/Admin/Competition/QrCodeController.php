@@ -26,7 +26,7 @@ final class QrCodeController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        return $this->render('admin/competition/qr-code/index.html.twig', [
+        return $this->render('admin/competition/qr_code/index.html.twig', [
             'competition' => $competition,
         ]);
     }

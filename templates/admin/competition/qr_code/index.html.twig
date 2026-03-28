@@ -13,7 +13,7 @@
     })) %}
     <div>
         <a
-            href="{{ path(constant('App\\Controller\\Admin\\Competition\\PrintQrCodeController::ROUTE_NAME'), {
+            href="{{ path(constant('App\\Controller\\Admin\\Competition\\QrCodePrintController::ROUTE_NAME'), {
                 entityId: competition.id,
             }) }}"
             target="_blank"
@@ -42,7 +42,6 @@
                     alt="prezentacia"
                 />
             </div>
-
         </div>
     </div>
 {% endblock %}

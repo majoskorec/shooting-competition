@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>QR kod</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+    </style>
+</head>
+<body
+    style="text-align: center;"
+>
+<div>
+    <h1>
+        {{ competition.name }} - {{ competition.competitionStart|date('d.m.Y') }}
+    </h1>
+</div>
+<div>
+    <h2>
+        {{ absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+            id: competition.id,
+        })) }}
+    </h2>
+</div>
+<div style="margin-top: 4rem;">
+    <img
+        src="{{ qr_code_path(absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+            id: competition.id,
+        }))) }}"
+        alt="prezentacia"
+    />
+</div>
+<script>
+    window.addEventListener('load', () => {
+        window.print();
+    });
+</script>
+</body>
+</html>

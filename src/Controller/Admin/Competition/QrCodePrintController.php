@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
 #[AdminRoute('/competition')]
-final class PrintQrCodeController extends AbstractController
+final class QrCodePrintController extends AbstractController
 {
     public const string ROUTE_NAME = 'admin_dashboard_' . self::PART_ROUTE_NAME;
     private const string PART_ROUTE_NAME = 'competition_qr_code_print';
@@ -26,7 +26,7 @@ final class PrintQrCodeController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        return $this->render('admin/competition/qr-code-print/index.html.twig', [
+        return $this->render('admin/competition/qr_code_print/index.html.twig', [
             'competition' => $competition,
         ]);
     }
