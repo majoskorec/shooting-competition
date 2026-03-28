@@ -1,10 +1,10 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}
-    <span class="fs-75">
-        Prezentácia:
-    </span>
-    {{ competition.name }}
+    {% include 'admin/competition/_competition_content_title.html.twig' with {
+        title: 'Prezentácia:',
+        competition: competition,
+    } %}
 {% endblock %}
 
 {% block main %}

@@ -1,14 +1,14 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}
-    <span class="fs-75">
-        Štartová listina:
-    </span>
-    {{ competition.name }}
+    {% include 'admin/competition/_competition_content_title.html.twig' with {
+        title: 'Štartová listina:',
+        competition: competition,
+    } %}
 {% endblock %}
 
 {% block main %}
-    <table class="table">
+    <table class="table table-hover table-striped">
         <thead>
         <tr class="text-nowrap align-middle">
             <th
@@ -90,7 +90,7 @@
                         {{ competitor.categories.contains(category) ? ux_icon('bi:check-circle-fill', { class: 'text-success', style: 'height: 1em;' }) }}
                     </td>
                 {% endfor %}
-                <td>
+                <td class="text-center min-width">
                     {{ competitor.status|trans }}
                 </td>
             </tr>

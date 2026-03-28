@@ -20,7 +20,9 @@ use App\Controller\Admin\Crud\TargetResultCrudController;
 use App\Controller\Admin\Crud\TargetDefinitionCrudController;
 use App\Controller\Admin\Crud\UserCrudController;
 use App\Controller\Public\DefaultController;
+use App\Entity\Competition;
 use App\Repository\CompetitionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -46,12 +48,21 @@ final class DashboardController extends AbstractDashboardController
         private readonly CompetitionRepository $competitionRepository,
         private readonly RequestStack $requestStack,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public function index(): Response
     {
-        return $this->render('admin/dashboard/index.html.twig');
+        $competitions = $this->entityManager->getRepository(Competition::class)->findBy(
+            criteria: [],
+            orderBy: ['competitionStart' => 'DESC'],
+            limit: 20,
+        );
+
+        return $this->render('admin/dashboard/index.html.twig', [
+            'competitions' => $competitions,
+        ]);
     }
 
     public function configureDashboard(): Dashboard

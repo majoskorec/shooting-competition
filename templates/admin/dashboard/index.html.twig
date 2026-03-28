@@ -1,18 +1,50 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title %}Admin rozhranie{% endblock %}
+{% block content_title %}
+    Posledné súťaže
+{% endblock %}
 
 {% block main %}
     <div class="content-panel">
-        <div class="content-panel-body">
-            <div class="mb-4">
-                <p class="text-muted mb-1">Prihlásený používateľ</p>
-                <div class="fs-5 fw-semibold">{{ app.user.fullName }}</div>
-            </div>
-
-            <div class="alert alert-success mb-0" role="alert">
-                Prihlásenie cez Symfony Security je aktívne a administrácia beží na rozložení EasyAdminu.
-            </div>
-        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">
+                    Názov
+                </th>
+                <th scope="col">
+                    Dátum
+                </th>
+                <th scope="col">
+                    Typ
+                </th>
+                <th scope="col">
+                    Status
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for competition in competitions %}
+                <tr>
+                    <td>
+                        {{ competition.name }}
+                    </td>
+                    <td>
+                        {{ competition.competitionStart|date('d.m.Y') }}
+                    </td>
+                    <td>
+                        {{ competition.competitionType.name }}
+                    </td>
+                    <td>
+                        {{ competition.status|trans }}
+                    </td>
+                    <td>
+                        {% include 'admin/competition/_competition_links.html.twig' %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

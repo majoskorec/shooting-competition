@@ -1,0 +1,14 @@
+<span class="d-flex flex-row align-items-center">
+    <span class="fs-75 pe-2">
+        {{ title }}
+    </span>
+    <span>
+        {{ competition.name }}
+        {{ subtitle is defined ? ' - ' ~ subtitle }}
+    </span>
+    <span class="ms-auto">
+        {% include 'admin/competition/_competition_links.html.twig' with {
+            competition: competition,
+        } %}
+    </span>
+</span>

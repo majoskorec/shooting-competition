@@ -1,0 +1,40 @@
+<a
+    href="{{ path('admin_dashboard_competition_edit', {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-warning"
+>
+    Upraviť
+</a>
+<a
+    href="{{ path(constant('App\\Controller\\Admin\\Competition\\PresentationController::ROUTE_NAME'), {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-invisible"
+>
+    Prezentácia
+</a>
+<a
+    href="{{ path(constant('App\\Controller\\Admin\\Competition\\StartingListController::ROUTE_NAME'), {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-secondary"
+>
+    Štartovná listina
+</a>
+<a
+    href="{{ path(constant('App\\Controller\\Admin\\Competition\\InputController::ROUTE_NAME'), {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-primary"
+>
+    Zadávanie výsledkov
+</a>
+<a
+    href="{{ path(constant('App\\Controller\\Admin\\Competition\\ResultsController::ROUTE_NAME'), {
+        'entityId': competition.id,
+    }) }}"
+    class="btn btn-success"
+>
+    Výsledky
+</a>
