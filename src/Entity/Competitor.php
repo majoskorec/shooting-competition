@@ -69,10 +69,20 @@ class Competitor implements Stringable
     )]
     private Collection $targetResults;
 
+    /** @var Collection<int, JuryEntry> */
+    #[ORM\OneToMany(
+        targetEntity: JuryEntry::class,
+        mappedBy: 'competitor',
+        cascade: ['persist'],
+        orphanRemoval: true,
+    )]
+    private Collection $juryEntries;
+
     public function __construct()
     {
         $this->targetResults = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->juryEntries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,6 +177,45 @@ class Competitor implements Stringable
     public function removeTargetResult(TargetResult $targetResult): void
     {
         $this->targetResults->removeElement($targetResult);
+    }
+
+    /** @return Collection<int, JuryEntry> */
+    public function getJuryEntries(): Collection
+    {
+        return $this->juryEntries;
+    }
+
+    public function addJuryEntry(JuryEntry $juryEntry): void
+    {
+        if (!$this->juryEntries->contains($juryEntry)) {
+            $this->juryEntries->add($juryEntry);
+            $juryEntry->setCompetitor($this);
+        }
+    }
+
+    public function removeJuryEntry(JuryEntry $juryEntry): void
+    {
+        $this->juryEntries->removeElement($juryEntry);
+    }
+
+    public function findJuryEntriesByCategoryName(string $categoryName): ?JuryEntry
+    {
+        $mainCategoryName = $this->getCompetition()->getMainCategoryName();
+        $isMain = $mainCategoryName === $categoryName;
+        foreach ($this->juryEntries as $juryEntry) {
+            $category = $juryEntry->getCategory();
+            if ($isMain && $category === null) {
+                return $juryEntry;
+            }
+            if ($isMain || $category === null) {
+                continue;
+            }
+            if ($category->getName() === $categoryName) {
+                return $juryEntry;
+            }
+        }
+
+        return null;
     }
 
     /** @return Collection<int, CompetitionCategory> */

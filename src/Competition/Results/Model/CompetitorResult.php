@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
-use http\Exception\RuntimeException;
+use RuntimeException;
 
 final readonly class CompetitorResult
 {
@@ -15,6 +15,7 @@ final readonly class CompetitorResult
         public string $name,
         public int $finalResult,
         public array $competitorSubResults,
+        public ?JuryEntryDto $juryEntryDto,
     ) {
     }
 
@@ -32,6 +33,7 @@ final readonly class CompetitorResult
             name: $competitorResult->name,
             finalResult: $competitorResult->finalResult + $competitorSubResults->total,
             competitorSubResults: $subResults,
+            juryEntryDto: null,
         );
     }
 
@@ -48,6 +50,11 @@ final readonly class CompetitorResult
     {
         if ($this->finalResult !== $other->finalResult) {
             return $this->finalResult <=> $other->finalResult;
+        }
+
+        $juryEntryComparison = JuryEntryDto::compare($this->juryEntryDto, $other->juryEntryDto);
+        if ($juryEntryComparison !== 0) {
+            return $juryEntryComparison;
         }
 
         $thisCompetitorSubResultsComparator = CompetitorSubResultsComparator::create($this->competitorSubResults);

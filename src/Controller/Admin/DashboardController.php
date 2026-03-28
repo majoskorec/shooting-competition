@@ -15,6 +15,7 @@ use App\Controller\Admin\Crud\CompetitionTeamCrudController;
 use App\Controller\Admin\Crud\CompetitionTypeCrudController;
 use App\Controller\Admin\Crud\CompetitionTypeTargetCrudController;
 use App\Controller\Admin\Crud\CompetitorCrudController;
+use App\Controller\Admin\Crud\JuryEntryCrudController;
 use App\Controller\Admin\Crud\ShooterCrudController;
 use App\Controller\Admin\Crud\TargetResultCrudController;
 use App\Controller\Admin\Crud\TargetDefinitionCrudController;
@@ -95,6 +96,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy');
         yield MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user');
         yield MenuItem::linkTo(TargetResultCrudController::class, 'Výsledky na terčoch', 'fa-solid fa-table-cells');
+        yield MenuItem::linkTo(JuryEntryCrudController::class, 'Rozstrely', 'fa-solid fa-scale-balanced');
         yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group');
         yield MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people');
         yield MenuItem::linkTo(UserCrudController::class, 'Používatelia', 'fa-solid fa-users-gear');

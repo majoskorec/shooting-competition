@@ -73,3 +73,9 @@ body[style*="color-scheme: dark"] table.input-table tr:focus-within td {
 .min-width {
     width: 1%;
 }
+
+.btn-xs {
+    block-size: 1.1rem !important;
+    padding-left: .25rem !important;
+    padding-right: .25rem !important;
+}

@@ -16,4 +16,16 @@
     <td class="text-end min-width">
         {{ competitors_results_with_rank.competitorResult.finalResult }}
     </td>
+    <td class="min-width text-end">
+        {% if competitors_results_with_rank.competitorResult.juryEntryDto is null %}
+            <button class="btn btn-xs btn-secondary">
+                {{ ux_icon('bi:plus-square') }}
+            </button>
+        {% else %}
+            <button class="btn btn-xs btn-secondary">
+                {{ competitors_results_with_rank.competitorResult.juryEntryDto.points }}
+                {{ ux_icon('bi:pencil-square') }}
+            </button>
+        {% endif %}
+    </td>
 </tr>

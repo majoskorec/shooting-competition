@@ -24,9 +24,10 @@ final class CompetitorRepository extends ServiceEntityRepository
     public function findForCompetitionAndCategory(Competition $competition, Category $category): array
     {
         $qb = $this->createQueryBuilder('c');
-        $qb = $qb->select(['c', 's', 't', 'r']);
+        $qb = $qb->select(['c', 's', 't', 'r', 'j']);
         $qb = $qb->join('c.shooter', 's');
         $qb = $qb->join('c.targetResults', 'r');
+        $qb = $qb->leftJoin('c.juryEntries', 'j');
         if ($category->categoryType === CategoryType::Teams) {
             $qb = $qb->join('c.competitionTeam', 't');
         }

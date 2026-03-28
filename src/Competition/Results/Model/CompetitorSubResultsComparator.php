@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
-final class CompetitorSubResultsComparator
+final readonly class CompetitorSubResultsComparator
 {
     /**
      * @param array<string, SubResult> $subResults
      */
     private function __construct(
-        private readonly array $subResults,
+        private array $subResults,
     ) {
     }
 

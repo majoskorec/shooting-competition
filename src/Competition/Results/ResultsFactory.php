@@ -9,6 +9,7 @@ use App\Competition\Results\Model\CategoryType;
 use App\Competition\Results\Model\CompetitorResult;
 use App\Competition\Results\Model\CompetitorResultWithRank;
 use App\Competition\Results\Model\CompetitorSubResults;
+use App\Competition\Results\Model\JuryEntryDto;
 use App\Competition\Results\Model\Results;
 use App\Competition\Results\Model\SubResult;
 use App\Entity\Competition;
@@ -32,7 +33,7 @@ final class ResultsFactory
             ->findForCompetitionAndCategory($competition, $category);
 
         $targetPriority = $this->createTargetTieBreakPriority($competition);
-        $competitorSubResults = $this->createCompetitorSubResults($competitors, $targetPriority);
+        $competitorSubResults = $this->createCompetitorSubResults($competitors, $targetPriority, $category);
         $competitorResult = $this->createCompetitorResults($competitorSubResults, $category);
         $competitorResultWithRank = $this->createCompetitorResultWithRank($competitorResult, $category);
 
@@ -116,6 +117,7 @@ final class ResultsFactory
                     name: $team->getName(),
                     finalResult: $competitorSubResult->total,
                     competitorSubResults: [$competitorSubResult],
+                    juryEntryDto: null,
                 );
 
                 continue;
@@ -142,6 +144,7 @@ final class ResultsFactory
                 name: $competitorSubResult->competitor->getShooter()->getFullName(),
                 finalResult: $competitorSubResult->total,
                 competitorSubResults: [$competitorSubResult],
+                juryEntryDto: $competitorSubResult->juryEntryDto,
             );
         }
 
@@ -156,12 +159,15 @@ final class ResultsFactory
     private function createCompetitorSubResults(
         array $competitors,
         array $targetTieBreakPriority,
+        Category $category,
     ): array {
         $result = [];
         foreach ($competitors as $competitor) {
+            $juryEntry = $competitor->findJuryEntriesByCategoryName($category->title);
             $result[] = new CompetitorSubResults(
                 competitor: $competitor,
                 subResults: $this->createSubResults($competitor, $targetTieBreakPriority),
+                juryEntryDto: $juryEntry === null ? null: JuryEntryDto::create($juryEntry),
             );
         }
 

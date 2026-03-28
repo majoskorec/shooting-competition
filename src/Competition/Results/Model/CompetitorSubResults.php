@@ -17,6 +17,7 @@ final readonly class CompetitorSubResults
     public function __construct(
         public Competitor $competitor,
         public array $subResults,
+        public ?JuryEntryDto $juryEntryDto,
     ) {
         $this->total = $this->getTotal();
     }
