@@ -7,7 +7,88 @@
     <style>
         @page {
             size: A4;
+            margin: 8mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #111;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        body {
+            width: 194mm;
+        }
+
+        h1 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+            border: 1px solid #555;
+        }
+
+        thead th {
+            border: 1px solid #555;
+            padding: 2px 1px;
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1.1;
+            text-align: center;
+            vertical-align: middle;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        thead th.fs-75 {
+            font-size: 75%;
+        }
+
+        tbody th,
+        tbody td {
+            border: 1px solid #999;
+            padding: 2px 2px;
+            vertical-align: middle;
+            overflow-wrap: anywhere;
+        }
+
+        tbody th {
+            font-weight: 700;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .round-end th,
+        .round-end td {
+            border-bottom: 2px solid #222;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
     </style>
 </head>
@@ -15,10 +96,10 @@
     <h1>{{ competition.name }}</h1>
     <table>
         <thead>
-        <tr class="text-nowrap align-middle">
+        <tr>
             <th
                 scope="col"
-                class="text-center fs-75"
+                class="text-center mfs-75"
             >
                 Štartovné
                 <br />
@@ -30,28 +111,42 @@
             >
                 Runda
             </th>
-            <th scope="col">
+            <th
+                scope="col"
+                class=""
+            >
                 Meno
             </th>
-            <th scope="col">
+            <th
+                scope="col"
+                class=""
+            >
                 Priezvisko
             </th>
-            <th scope="col">
+            <th
+                scope="col"
+                class=""
+            >
                 Klub / PZ
             </th>
-            <th scope="col">
+            <th
+                scope="col"
+                class=""
+            >
                 Družstvo
             </th>
             <th
                 scope="col"
-                class="text-center"
+                class="text-center fs-75"
             >
-                Spoločná zbraň
+                Spoločná
+                <br />
+                zbraň
             </th>
             {% for category in competition.categories %}
                 <th
                     scope="col"
-                    class="text-center"
+                    class="text-center {{ category.name|length > 10 ? ' fs-75' : '' }}"
                 >
                     {{ category.name }}
                 </th>
@@ -61,15 +156,15 @@
         <tbody>
         {% for competitor in competitors %}
             <tr
-                class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
+                class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'round-end' : '' }}"
             >
                 <th
                     scope="row"
-                    class="min-width text-center"
+                    class="text-center"
                 >
                     {{ competitor.startNumber }}
                 </th>
-                <td class="text-center min-width">
+                <td class="text-center">
                     {{ roundNumber(competitor.startNumber, competition.shootersInRound) }}
                 </td>
                 <td>
@@ -84,11 +179,11 @@
                 <td>
                     {{ competitor.competitionTeam is not null ? competitor.competitionTeam.name }}
                 </td>
-                <td class="text-center min-width">
+                <td class="text-center">
                     {{ competitor.sharedWeaponCode }}
                 </td>
                 {% for category in competition.categories %}
-                    <td class="text-center min-width">
+                    <td class="text-center">
                         {{ competitor.categories.contains(category)|checkCircle }}
                     </td>
                 {% endfor %}
