@@ -22,7 +22,6 @@ final class TargetResultFactory extends PersistentObjectFactory
     {
         return [
             'competitor' => CompetitorFactory::new(),
-            'consistent' => self::faker()->boolean(),
             'hitBreakdown' => [],
             'targetName' => self::faker()->text(255),
         ];

@@ -11,15 +11,20 @@ use App\Entity\Competition;
 use App\Entity\CompetitionCategory;
 use App\Entity\CompetitionTeam;
 use App\Entity\CompetitionType;
-use App\Entity\Competitor;
 use App\Entity\Shooter;
-use App\Entity\TargetResult;
+use App\Tests\Factory\CompetitionCategoryFactory;
+use App\Tests\Factory\CompetitionFactory;
+use App\Tests\Factory\CompetitionTeamFactory;
+use App\Tests\Factory\CompetitionTypeFactory;
+use App\Tests\Factory\CompetitorFactory;
+use App\Tests\Factory\ShooterFactory;
+use App\Tests\Factory\TargetResultFactory;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use RuntimeException;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
+use function Zenstruck\Foundry\Persistence\save;
 
 #[AsFixture(name: 'op2024')]
 final class OP2024Story extends Story
@@ -3668,7 +3673,6 @@ final class OP2024Story extends Story
 ];
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
         private readonly TargetSnapshotFactory $targetSnapshotFactory,
     ) {
     }
@@ -3678,19 +3682,18 @@ final class OP2024Story extends Story
     {
         $competitionType = $this->getOrCreateM400CompetitionType();
 
-        $competition = new Competition();
-        $competition->setCompetitionType($competitionType);
-        $competition->setName('Majstrovstvá okresu LM');
-        $competition->setCompetitionStart(new DateTimeImmutable('2024-05-18 07:00:00'));
-        $competition->setLocation('Strelnica Dovalovo');
-        $competition->setOrganizer('OPK LM');
-        $competition->setStatus(CompetitionStatus::Finished);
-        $competition->setTargetConfigurationSnapshot($this->targetSnapshotFactory->createFromCompetitionType($competitionType));
-        $competition->setTeamMemberCount(3);
-        $competition->setShootersInRound(9);
-        $competition->setMainCategoryName('Memoriál Antona Krištofa');
-
-        $this->entityManager->persist($competition);
+        $competition = CompetitionFactory::createOne([
+            'competitionType' => $competitionType,
+            'name' => 'Majstrovstvá okresu LM',
+            'competitionStart' => new DateTimeImmutable('2024-05-18 07:00:00'),
+            'location' => 'Strelnica Dovalovo',
+            'organizer' => 'OPK LM',
+            'status' => CompetitionStatus::Finished,
+            'targetConfigurationSnapshot' => $this->targetSnapshotFactory->createFromCompetitionType($competitionType),
+            'teamMemberCount' => 3,
+            'shootersInRound' => 9,
+            'mainCategoryName' => 'Memoriál Antona Krištofa',
+        ]);
 
         $veteranCategory = $this->createCategory($competition, 'Veteráni');
         $seniorCategory = $this->createCategory($competition, 'Seniori');
@@ -3700,13 +3703,14 @@ final class OP2024Story extends Story
         foreach (self::COMPETITORS as $competitorData) {
             $shooter = $this->getOrCreateShooter($competitorData['firstName'], $competitorData['lastName'], $competitorData['club']);
 
-            $competitor = new Competitor();
-            $competitor->setCompetition($competition);
-            $competitor->setShooter($shooter);
-            $competitor->setStartNumber($competitorData['startNumber']);
-            $competitor->setStatus(CompetitorStatus::Registered);
-            $competitor->setCachedTotalScore($competitorData['cachedTotalScore']);
-            $competitor->setCompetitionTeam($this->getOrCreateTeam($competition, $competitorData['teamName'], $teams));
+            $competitor = CompetitorFactory::createOne([
+                'competition' => $competition,
+                'shooter' => $shooter,
+                'startNumber' => $competitorData['startNumber'],
+                'status' => CompetitorStatus::Registered,
+                'cachedTotalScore' => $competitorData['cachedTotalScore'],
+                'competitionTeam' => $this->getOrCreateTeam($competition, $competitorData['teamName'], $teams),
+            ]);
 
             if ($competitorData['veteran']) {
                 $competitor->addCategory($veteranCategory);
@@ -3717,35 +3721,32 @@ final class OP2024Story extends Story
             if ($competitorData['woman']) {
                 $competitor->addCategory($womanCategory);
             }
+            save($competitor);
 
             foreach ($competitorData['targetResults'] as $targetResultData) {
-                $targetResult = new TargetResult();
-                $targetResult->setCompetitor($competitor);
-                $targetResult->setTargetName($targetResultData['targetName']);
-                $targetResult->setHitBreakdown($targetResultData['hitBreakdown']);
-                $competitor->addTargetResult($targetResult);
+                TargetResultFactory::createOne([
+                    'competitor' => $competitor,
+                    'targetName' => $targetResultData['targetName'],
+                    'hitBreakdown' => $targetResultData['hitBreakdown'],
+                ]);
             }
 
             $competition->addCompetitor($competitor);
         }
 
-        $this->entityManager->flush();
+        save($competition);
     }
 
     private function getOrCreateM400CompetitionType(): CompetitionType
     {
-        $competitionType = $this->entityManager->getRepository(CompetitionType::class)
-            ->findOneBy(['name' => 'M400']);
-
+        $competitionType = CompetitionTypeFactory::repository()->findOneBy(['name' => 'M400']);
         if ($competitionType instanceof CompetitionType) {
             return $competitionType;
         }
 
         M400TypeStory::load();
 
-        $competitionType = $this->entityManager->getRepository(CompetitionType::class)
-            ->findOneBy(['name' => 'M400']);
-
+        $competitionType = CompetitionTypeFactory::repository()->findOneBy(['name' => 'M400']);
         if (!$competitionType instanceof CompetitionType) {
             throw new RuntimeException('CompetitionType M400 was not created.');
         }
@@ -3755,33 +3756,30 @@ final class OP2024Story extends Story
 
     private function createCategory(Competition $competition, string $name): CompetitionCategory
     {
-        $category = new CompetitionCategory();
-        $category->setCompetition($competition);
-        $category->setName($name);
-
-        $competition->addCategory($category);
-        $this->entityManager->persist($category);
-
-        return $category;
+        return CompetitionCategoryFactory::createOne([
+            'competition' => $competition,
+            'name' => $name,
+        ]);
     }
 
     private function getOrCreateShooter(string $firstName, string $lastName, ?string $club): Shooter
     {
-        $shooter = $this->entityManager->getRepository(Shooter::class)
-            ->findOneBy([
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-            ]);
+        $shooter = ShooterFactory::repository()->findOneBy([
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+        ]);
 
         if (!$shooter instanceof Shooter) {
-            $shooter = new Shooter();
-            $shooter->setFirstName($firstName);
-            $shooter->setLastName($lastName);
-            $this->entityManager->persist($shooter);
+            return ShooterFactory::createOne([
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'club' => $club,
+            ]);
         }
 
         if ($club !== null) {
             $shooter->setClub($club);
+            save($shooter);
         }
 
         return $shooter;
@@ -3801,12 +3799,12 @@ final class OP2024Story extends Story
             return $team;
         }
 
-        $team = new CompetitionTeam();
-        $team->setCompetition($competition);
-        $team->setName($teamName);
+        $team = CompetitionTeamFactory::createOne([
+            'competition' => $competition,
+            'name' => $teamName,
+        ]);
 
         $teams[$teamName] = $team;
-        $this->entityManager->persist($team);
 
         return $team;
     }
