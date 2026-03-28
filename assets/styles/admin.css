@@ -39,6 +39,15 @@ table.input-table {
     td.hidden-column, th.hidden-column {
         display: none;
     }
+
+    tr:focus-within td {
+        background: #9df4a9 !important;
+    }
+}
+
+body[style*="color-scheme: dark"] table.input-table tr:focus-within td {
+    background: #245c2d !important;
+    color: #f5f5f5 !important;
 }
 
 /* global classes */

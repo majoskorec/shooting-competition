@@ -29,7 +29,7 @@
     >
         {{ this.shotsCount }}
     </div>
-    {% for points in this.data.targetResult.hitBreakdown|keys  %}
+    {% for points in this.data.targetSnapshot.pointsSchema  %}
         {% set formName = constant('App\\Form\\Type\\InputTargetType::FIELD_PREFIX') ~ points %}
         {{ form_widget(form[formName], {
             'attr': {

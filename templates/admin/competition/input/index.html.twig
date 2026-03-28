@@ -19,7 +19,7 @@
         </button>
 
         <table
-            class="table input-table"
+            class="table input-table table-striped"
             {{ stimulus_target('table-column', 'table') }}
         >
             <thead>
@@ -39,13 +39,16 @@
                         </div>
                     </th>
                 {% endfor %}
-                <th colspan="{{ input.competition.categories|length + 5 }}" data-hiddable="true"></th>
+                <th></th>
+                <th colspan="{{ input.competition.categories|length + 4 }}" data-hiddable="true"></th>
             </tr>
-            <tr>
-                <th>
-                    Štartovné číslo
+            <tr class="text-nowrap align-middle">
+                <th class="text-center fs-75">
+                    Štartovné
+                    <br />
+                    číslo
                 </th>
-                <th>
+                <th class="text-center">
                     Runda
                 </th>
                 <th data-hiddable="true">
@@ -96,10 +99,10 @@
                     class="{{ lastInRound(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
                     {{ stimulus_controller('input-total') }}
                 >
-                    <td style="width: 1%">
+                    <td class="text-center min-width">
                         {{ inputCompetitor.competitor.startNumber }}
                     </td>
-                    <td style="width: 1%">
+                    <td class="text-center min-width">
                         {{ roundNumber(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) }}
                     </td>
                     <td data-hiddable="true">
