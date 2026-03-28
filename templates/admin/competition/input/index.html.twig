@@ -35,7 +35,7 @@
                             class="text-truncate"
                             style="width: {{ (configuration.pointsSchema|length + 1) * 2 + 2.5 }}rem"
                         >
-                            {{ configuration.name }}
+                            {{ targetShortName(configuration.name) }}
                         </div>
                     </th>
                 {% endfor %}
