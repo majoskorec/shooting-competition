@@ -83,7 +83,7 @@ final class Presentation extends AbstractController
 
             $result[$code][] = $competitor;
         }
-        ksort($result);
+        krsort($result);
 
         return $result;
     }

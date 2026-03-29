@@ -12,13 +12,18 @@ export default class extends Controller {
         'sharedWeaponCode',
         'sharedWeaponsCode',
         'sharedWeapons',
+        'sharedWeaponsList',
+        'sharedWeaponsToggle',
     ]
+
+    expandedSharedWeapons = false
 
     connect() {
         this.toggleShooterNameFields();
         this.toggleTeamNameFields();
         this.syncSharedWeaponCode();
         this.filterSharedWeapons();
+        this.updateSharedWeaponsCollapse();
     }
 
     toggleShooterNameFields() {
@@ -51,7 +56,58 @@ export default class extends Controller {
 
         this.sharedWeaponsTargets.forEach((sharedWeapon) => {
             sharedWeapon.hidden = selectedCode !== '' && sharedWeapon.dataset.sharedWeaponCode !== selectedCode;
+            this.expandedSharedWeapons = false;
         });
+
+        this.updateSharedWeaponsCollapse();
+    }
+
+    toggleSharedWeapons() {
+        this.expandedSharedWeapons = !this.expandedSharedWeapons;
+        this.updateSharedWeaponsCollapse();
+    }
+
+    updateSharedWeaponsCollapse() {
+        if (!this.hasSharedWeaponsListTarget || !this.hasSharedWeaponsToggleTarget) {
+            return;
+        }
+
+        console.log(this.expandedSharedWeapons)
+
+        if (this.expandedSharedWeapons === false) {
+            this.sharedWeaponsListTarget.style.maxHeight = '2rem'
+            this.sharedWeaponsListTarget.style.overflow = 'hidden'
+        } else {
+            this.sharedWeaponsListTarget.style.maxHeight = ''
+            this.sharedWeaponsListTarget.style.overflow = ''
+        }
+
+        const isOverflowing = this.sharedWeaponsListTarget.scrollHeight > this.sharedWeaponsListTarget.clientHeight
+
+        if (isOverflowing) {
+            this.sharedWeaponsToggleTarget.hidden = false
+            this.sharedWeaponsToggleTarget.textContent = 'Zobraziť všetky'
+
+            return;
+        }
+
+        if (isOverflowing === false && this.sharedWeaponsListTarget.style.overflow === '') {
+            this.sharedWeaponsToggleTarget.hidden = false
+            this.sharedWeaponsToggleTarget.textContent = 'Skryť'
+
+            return;
+        }
+
+        this.sharedWeaponsToggleTarget.hidden = true
+    }
+
+    selectSharedWeapon(event) {
+        const code = event.currentTarget.dataset.sharedWeaponCode ?? '';
+
+        this.sharedWeaponCodeTarget.value = code;
+        this.sharedWeaponCodeTarget.dispatchEvent(new Event('input', { bubbles: true }));
+        this.sharedWeaponCodeTarget.dispatchEvent(new Event('change', { bubbles: true }));
+        this.syncSharedWeaponCode();
     }
 
     setTeamFromClub(event) {
