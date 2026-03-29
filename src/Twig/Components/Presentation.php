@@ -32,6 +32,8 @@ final class Presentation extends AbstractController
     #[LiveProp]
     public Competition $competition;
 
+    private ?array $sharedWeapons = null;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
     ) {
@@ -74,6 +76,10 @@ final class Presentation extends AbstractController
      */
     public function getSharedWeapons(): array
     {
+        if ($this->sharedWeapons !== null) {
+            return $this->sharedWeapons;
+        }
+
         $result = [];
         foreach ($this->competition->getCompetitors() as $competitor) {
             $code = $competitor->getSharedWeaponCode();
@@ -84,8 +90,37 @@ final class Presentation extends AbstractController
             $result[$code][] = $competitor;
         }
         krsort($result);
+        $this->sharedWeapons = $result;
 
-        return $result;
+        return $this->sharedWeapons;
+    }
+
+    public function getNewWeaponCode(): string
+    {
+        $lastWeaponCode = array_key_first($this->getSharedWeapons());
+        if ($lastWeaponCode === null) {
+            return 'a';
+        }
+
+        $lastChar = substr($lastWeaponCode, -1);
+        $prefix = substr($lastWeaponCode, 0, -1);
+        if ($lastChar >= 'a' && $lastChar <= 'y') {
+            return $prefix . chr(ord($lastChar) + 1);
+        }
+
+        if ($lastChar === 'z') {
+            return $lastWeaponCode . 'a';
+        }
+
+        if ($lastChar >= '1' && $lastChar <= '8') {
+            return $prefix . ((string) ((int) $lastChar + 1));
+        }
+
+        if ($lastChar === '9') {
+            return $lastWeaponCode . '0';
+        }
+
+        return $lastWeaponCode . 'a';
     }
 
     #[Override]

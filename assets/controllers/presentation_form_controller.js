@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { getComponent } from "@symfony/ux-live-component"
 
 export default class extends Controller {
     static targets = [
@@ -14,11 +15,29 @@ export default class extends Controller {
         'sharedWeapons',
         'sharedWeaponsList',
         'sharedWeaponsToggle',
+        'newWeapon'
     ]
 
     expandedSharedWeapons = false
 
+    async initialize() {
+        this.component = await getComponent(this.element);
+        this.component.on('render:finished', () => {
+            this.refreshUiState();
+        });
+    }
+
     connect() {
+        this.refreshUiState();
+    }
+
+    setNewWeapon() {
+        this.sharedWeaponCodeTarget.value = this.newWeaponTarget.dataset.newWeaponCode;
+        this.sharedWeaponCodeTarget.dispatchEvent(new Event('input', { bubbles: true }));
+        this.sharedWeaponCodeTarget.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    refreshUiState() {
         this.toggleShooterNameFields();
         this.toggleTeamNameFields();
         this.syncSharedWeaponCode();
@@ -72,8 +91,6 @@ export default class extends Controller {
             return;
         }
 
-        console.log(this.expandedSharedWeapons)
-
         if (this.expandedSharedWeapons === false) {
             this.sharedWeaponsListTarget.style.maxHeight = '2rem'
             this.sharedWeaponsListTarget.style.overflow = 'hidden'
@@ -83,7 +100,6 @@ export default class extends Controller {
         }
 
         const isOverflowing = this.sharedWeaponsListTarget.scrollHeight > this.sharedWeaponsListTarget.clientHeight
-
         if (isOverflowing) {
             this.sharedWeaponsToggleTarget.hidden = false
             this.sharedWeaponsToggleTarget.textContent = 'Zobraziť všetky'

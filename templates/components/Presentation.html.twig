@@ -45,12 +45,27 @@
     </div>
     <div class="row">
         <div class="col-md-3 col-xxl-2">
-            {{ form_row(form.sharedWeaponCode, {
-                'attr': {
-                    ...stimulus_action('presentation-form', 'syncSharedWeaponCode', 'keyup'),
-                    ...stimulus_target('presentation-form', 'sharedWeaponCode'),
-                }
-            }) }}
+            {{ form_label(form.sharedWeaponCode) }}
+            <div class="input-group">
+                <button
+                    {{ stimulus_action('presentation-form', 'setNewWeapon') }}
+                    {{ stimulus_target('presentation-form', 'newWeapon') }}
+                    class="btn btn-secondary input-group-button"
+                    data-new-weapon-code="{{ this.newWeaponCode }}"
+                    type="button"
+                >
+                    Nová
+                </button>
+                {{ form_widget(form.sharedWeaponCode, {
+                    'attr': {
+                        ...stimulus_action('presentation-form', 'syncSharedWeaponCode', 'keyup'),
+                        ...stimulus_target('presentation-form', 'sharedWeaponCode'),
+                    }
+                }) }}
+            </div>
+            {{ form_errors(form.sharedWeaponCode) }}
+
+
         </div>
         <div class="col-md-9 col-xxl-10">
             <div class="form-label">
@@ -65,7 +80,7 @@
                 />
                 <button
                     type="button"
-                    class="btn btn-sm btn-secondary px-1"
+                    class="btn btn-sm btn-warning px-1"
                     {{ stimulus_target('presentation-form', 'sharedWeaponsToggle') }}
                     {{ stimulus_action('presentation-form', 'toggleSharedWeapons') }}
                 >
@@ -119,8 +134,8 @@
                                 ...stimulus_target('presentation-form', 'teamName'),
                             }
                         }) }}
-                        {{ form_errors(form.teamName) }}
                     </div>
+                    {{ form_errors(form.teamName) }}
                 </div>
             </div>
             <div class="col-6">
