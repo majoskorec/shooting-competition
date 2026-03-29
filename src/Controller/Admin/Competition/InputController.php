@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Competition;
 
+use App\Competition\Draw\Exception\MissingStartNumberException;
 use App\Competition\Input\InputFactory;
 use App\Entity\Competition;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
@@ -32,7 +33,19 @@ final class InputController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        $input = $this->inputFactory->createInput($competition);
+        try {
+            $input = $this->inputFactory->createInput($competition);
+        } catch (MissingStartNumberException) {
+            $this->addFlash(
+                'error',
+                'Niektorí súťažiaci nemajú pridelené štartovacie číslo. Prosím, opravte to v zozname súťažiacich.',
+            );
+
+            return $this->redirectToRoute(PresentationController::ROUTE_NAME, [
+                'entityId' => $competition->getId(),
+            ]);
+        }
+
 
         // error
         // existuje sutaziaci co nema statovacie cislo

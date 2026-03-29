@@ -4,7 +4,9 @@
     </span>
     <span>
         {{ competition.name }}
-        {{ subtitle is defined ? ' - ' ~ subtitle }}
+    </span>
+    <span class="badge text-bg-warning ms-2">
+        {{ competition.status|trans }}
     </span>
     <span class="ms-auto">
         {% include 'admin/competition/_competition_links.html.twig' with {

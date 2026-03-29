@@ -69,16 +69,16 @@
         <tbody>
         {% for competitor in competitors %}
             <tr
-                class="{{ lastInRound(competitor.startNumber, competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
+                class="{{ lastInRound(competitor.startNumber|default(0), competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
             >
                 <th
                     scope="row"
                     class="min-width text-center"
                 >
-                    {{ competitor.startNumber }}
+                    {{ competitor.startNumber|default('-') }}
                 </th>
                 <td class="text-center min-width">
-                    {{ roundNumber(competitor.startNumber, competition.shootersInRound) }}
+                    {{ roundNumber(competitor.startNumber|default(0), competition.shootersInRound) }}
                 </td>
                 <td>
                     {{ competitor.shooter.firstName }}

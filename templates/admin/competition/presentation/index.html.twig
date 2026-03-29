@@ -9,14 +9,16 @@
 
 {% block main %}
     <div>
-        <a
-            href="{{ path(constant('App\\Controller\\Admin\\Competition\\DrawController::ROUTE_NAME'), {
-                entityId: competition.id,
-            }) }}"
-            class="btn btn-warning"
-        >
-            Rozlosovanie
-        </a>
+        {% if competition.status == enum('App\\Competition\\Model\\CompetitionStatus').Presentation and competition.competitors|length > 1  %}
+            <a
+                href="{{ path(constant('App\\Controller\\Admin\\Competition\\DrawController::ROUTE_NAME'), {
+                    entityId: competition.id,
+                }) }}"
+                class="btn btn-warning"
+            >
+                Rozlosovanie
+            </a>
+        {% endif %}
     </div>
 
     <hr />
@@ -77,7 +79,7 @@
                     scope="row"
                     class="text-center min-width"
                 >
-                    {{ competitor.startNumber }}
+                    {{ competitor.startNumber|default('-') }}
                 </th>
                 <td>
                     {{ competitor.shooter.fullName }}

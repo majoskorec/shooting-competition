@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Input;
 
+use App\Competition\Draw\Exception\MissingStartNumberException;
 use App\Competition\Input\Model\Input;
 use App\Competition\Input\Model\InputCompetitor;
 use App\Competition\Input\Model\InputTarget;
@@ -60,7 +61,7 @@ final class InputFactory
         return InputTarget::create(
             targetSnapshot: $targetSnapshot,
             targetResult: $this->getTargetResult($targetSnapshot, $competitor),
-            competitorStartNumber: $competitor->getStartNumber(),
+            competitorStartNumber: $competitor->getStartNumber() ?? throw new MissingStartNumberException(),
             targetIndex: $targetSnapshot->displayOrder,
             competitionId: $competitor->getCompetition()->getId(),
         );
