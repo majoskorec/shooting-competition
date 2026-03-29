@@ -31,17 +31,57 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             {{ form_row(form.club, {
                 'attr': {
                     ...stimulus_target('presentation-form', 'club'),
                 }
             }) }}
             {{ form_row(form.email) }}
-            {{ form_row(form.sharedWeaponCode) }}
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             {{ form_row(form.categories) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-xxl-2">
+            {{ form_row(form.sharedWeaponCode, {
+                'attr': {
+                    ...stimulus_action('presentation-form', 'syncSharedWeaponCode', 'keyup'),
+                    ...stimulus_target('presentation-form', 'sharedWeaponCode'),
+                }
+            }) }}
+        </div>
+        <div class="col-md-9 col-xxl-10">
+            <div class="form-label">
+                Zdieľané zbrane
+                <input
+                    type="text"
+                    data-live-ignore
+                    class="bg-primary border-0 rounded-2 text-white px-2"
+                    style="width: 2rem;"
+                    {{ stimulus_action('presentation-form', 'filterSharedWeapons', 'keyup') }}
+                    {{ stimulus_target('presentation-form', 'sharedWeaponsCode') }}
+                />
+            </div>
+            <div class="d-flex justify-content-start flex-wrap gap-1">
+            {% for code,competitors in this.sharedWeapons %}
+                <div
+                    class="p-1 border border rounded-2 bg-secondary-subtle"
+                    {{ stimulus_target('presentation-form', 'sharedWeapons') }}
+                    data-shared-weapon-code="{{ code }}"
+                >
+                    <span class="badge text-bg-primary px-2">
+                        {{ code }}
+                    </span>
+                    {% for competitor in competitors %}
+                        <span class="badge text-bg-secondary ms-1">
+                            {{ competitor.shooter.fullName }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </div>
     <hr />
@@ -55,7 +95,7 @@
                         <button
                             {{ stimulus_action('presentation-form', 'setTeamFromClub') }}
                             {{ stimulus_target('presentation-form', 'useClubButton') }}
-                            class="btn btn-secondary"
+                            class="btn btn-secondary input-group-button"
                             type="button"
                         >
                             Použi Klub / PZ

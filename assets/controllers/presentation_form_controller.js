@@ -8,11 +8,17 @@ export default class extends Controller {
         'firstName',
         'lastName',
         'competitionTeam',
-        'useClubButton'
+        'useClubButton',
+        'sharedWeaponCode',
+        'sharedWeaponsCode',
+        'sharedWeapons',
     ]
 
     connect() {
         this.toggleShooterNameFields();
+        this.toggleTeamNameFields();
+        this.syncSharedWeaponCode();
+        this.filterSharedWeapons();
     }
 
     toggleShooterNameFields() {
@@ -24,11 +30,28 @@ export default class extends Controller {
     }
 
     toggleTeamNameFields() {
+        if (!this.hasCompetitionTeamTarget || !this.hasTeamNameTarget || !this.hasUseClubButtonTarget) {
+            return;
+        }
+
         const selectedTeam = this.competitionTeamTarget.querySelector('input[type="radio"]:checked');
         const hasSelectedTeam = selectedTeam !== null && selectedTeam.value.trim() !== '';
 
         this.teamNameTarget.disabled = hasSelectedTeam;
         this.useClubButtonTarget.disabled = hasSelectedTeam;
+    }
+
+    syncSharedWeaponCode() {
+        this.sharedWeaponsCodeTarget.value = this.sharedWeaponCodeTarget.value;
+        this.filterSharedWeapons();
+    }
+
+    filterSharedWeapons() {
+        const selectedCode = this.sharedWeaponsCodeTarget.value.trim();
+
+        this.sharedWeaponsTargets.forEach((sharedWeapon) => {
+            sharedWeapon.hidden = selectedCode !== '' && sharedWeapon.dataset.sharedWeaponCode !== selectedCode;
+        });
     }
 
     setTeamFromClub(event) {

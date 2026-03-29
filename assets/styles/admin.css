@@ -81,6 +81,6 @@ body[style*="color-scheme: dark"] table.input-table tr:focus-within td {
 }
 
 .input-group-button {
-    block-size: 2rem !important;;
-    margin-block-start: 0;
+    block-size: 2.4rem !important;
+    margin-block-start: 0 !important;
 }

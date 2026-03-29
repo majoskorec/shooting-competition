@@ -69,6 +69,25 @@ final class Presentation extends AbstractController
         ]);
     }
 
+    /**
+     * @return array<string, array<Competitor>>
+     */
+    public function getSharedWeapons(): array
+    {
+        $result = [];
+        foreach ($this->competition->getCompetitors() as $competitor) {
+            $code = $competitor->getSharedWeaponCode();
+            if ($code === null) {
+                continue;
+            }
+
+            $result[$code][] = $competitor;
+        }
+        ksort($result);
+
+        return $result;
+    }
+
     #[Override]
     protected function instantiateForm(): FormInterface
     {
