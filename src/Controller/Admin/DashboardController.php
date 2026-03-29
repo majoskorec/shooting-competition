@@ -81,7 +81,7 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Web', 'fa-solid fa-globe', $this->urlGenerator->generate(DefaultController::ROUTE_NAME))
             ->setLinkTarget('_blank');
 
-        yield MenuItem::linkToDashboard('Nástenka', 'internal:home');
+        yield MenuItem::linkToDashboard('Tu začni', 'internal:home');
 
         $definitions = MenuItem::subMenu('Definície', 'fa-solid fa-gear');
         $definitions->setSubItems([
@@ -92,22 +92,24 @@ final class DashboardController extends AbstractDashboardController
 
         yield $definitions;
 
-        yield MenuItem::linkTo(ShooterCrudController::class, 'Strelci', 'fa-solid fa-person-rifle');
-        yield MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy');
-        yield MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user');
-        yield MenuItem::linkTo(TargetResultCrudController::class, 'Výsledky na terčoch', 'fa-solid fa-table-cells');
-        yield MenuItem::linkTo(JuryEntryCrudController::class, 'Rozstrely', 'fa-solid fa-scale-balanced');
-        yield MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group');
-        yield MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people');
-        yield MenuItem::linkTo(UserCrudController::class, 'Používatelia', 'fa-solid fa-users-gear');
+        $competitions = MenuItem::subMenu('Súťaže', 'fa-solid fa-trophy');
+        $competitions->setSubItems([
+            MenuItem::linkTo(CompetitionCrudController::class, 'Súťaže', 'fa-solid fa-trophy'),
+            MenuItem::linkTo(CompetitorCrudController::class, 'Súťažiaci', 'fa-solid fa-user'),
+            MenuItem::linkTo(TargetResultCrudController::class, 'Výsledky na terčoch', 'fa-solid fa-table-cells'),
+            MenuItem::linkTo(JuryEntryCrudController::class, 'Rozstrely', 'fa-solid fa-scale-balanced'),
+            MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group'),
+            MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people'),
+        ]);
 
+        yield $competitions;
+        yield MenuItem::linkTo(ShooterCrudController::class, 'Strelci', 'fa-solid fa-person-rifle');
+        yield MenuItem::linkTo(UserCrudController::class, 'Používatelia', 'fa-solid fa-users-gear');
 
         $activeCompetitions = $this->competitionRepository->findActive();
         if (count($activeCompetitions) === 0) {
             return;
         }
-
-        yield MenuItem::section('Aktívne súťaže', 'fa-solid fa-chess');
 
         $request = $this->requestStack->getCurrentRequest();
         $requestRoute = $request?->attributes->get('_route');

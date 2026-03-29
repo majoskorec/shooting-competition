@@ -115,7 +115,7 @@ final class CompetitorCrudController extends AbstractCrudController
                 ->linkToRoute(
                     PresentationController::ROUTE_NAME,
                     static fn  (Competitor $competitor): array => [
-                        'entityId' => $competitor->getId(),
+                        'entityId' => $competitor->getCompetition()->getId(),
                     ],
                 )
                 ->asPrimaryAction(),

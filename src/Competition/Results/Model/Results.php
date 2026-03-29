@@ -6,6 +6,7 @@ namespace App\Competition\Results\Model;
 
 use App\Entity\Competition;
 
+#[\App\Validator\Results]
 final class Results
 {
     /**

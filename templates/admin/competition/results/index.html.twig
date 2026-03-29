@@ -20,6 +20,14 @@
         </a>
     </div>
 
+    {% if resultConstraints|length > 0 %}
+        {% for constrain in resultConstraints %}
+            <div class="alert alert-{{ constrain.cause|default('danget') }} mb-1 py-1">
+                {{ constrain.message|raw }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <ul class="nav nav-pills">
         {% for category in categories.categories %}
             <li class="nav-item">

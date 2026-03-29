@@ -8,6 +8,14 @@
 {% endblock %}
 
 {% block main %}
+    {% if inputConstraints|length > 0 %}
+        {% for constrain in inputConstraints %}
+            <div class="alert alert-{{ constrain.cause|default('danget') }} mb-1 py-1">
+                {{ constrain.message|raw }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div
         {{ stimulus_controller('table-column') }}
     >

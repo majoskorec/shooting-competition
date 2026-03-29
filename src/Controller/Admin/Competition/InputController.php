@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[AdminRoute('/competition')]
@@ -22,6 +23,7 @@ final class InputController extends AbstractController
 
     public function __construct(
         private readonly InputFactory $inputFactory,
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
@@ -46,15 +48,11 @@ final class InputController extends AbstractController
             ]);
         }
 
-
-        // error
-        // existuje sutaziaci co nema statovacie cislo
-        // existuje target result s viac ako povolenymi ranami
-        // warning
-        // nema niekto odstrielane vsetky rany
+        $constraintViolationList = $this->validator->validate($input);
 
         return $this->render('admin/competition/input/index.html.twig', [
             'input' => $input,
+            'inputConstraints' => $constraintViolationList,
         ]);
     }
 }

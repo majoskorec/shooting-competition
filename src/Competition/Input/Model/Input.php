@@ -6,6 +6,7 @@ namespace App\Competition\Input\Model;
 
 use App\Entity\Competition;
 
+#[\App\Validator\Input]
 final class Input
 {
     /**

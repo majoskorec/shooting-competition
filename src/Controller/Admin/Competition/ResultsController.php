@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 #[AdminRoute('/competition')]
@@ -23,6 +24,7 @@ final class ResultsController extends AbstractController
     public function __construct(
         private readonly CategoryProvider $categoriesProvider,
         private readonly ResultsFactory $resultsFactory,
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
@@ -48,10 +50,12 @@ final class ResultsController extends AbstractController
         }
 
         $results = $this->resultsFactory->create($competition, $category);
+        $resultConstraints = $this->validator->validate($results);
 
         return $this->render('admin/competition/results/index.html.twig', [
             'categories' => $categories,
             'results' => $results,
+            'resultConstraints' => $resultConstraints,
         ]);
     }
 }

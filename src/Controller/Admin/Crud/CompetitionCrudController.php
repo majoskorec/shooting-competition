@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -27,10 +28,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CompetitionCrudController extends AbstractCrudController
 {
+    private const string SAVE_AND_GO_TO_PRESENTATION = 'saveAndGoToPresentation';
+
     public function __construct(
         private readonly TargetSnapshotFactory $snapshotFactory,
         private readonly TranslatorInterface $translator,
@@ -166,7 +170,42 @@ final class CompetitionCrudController extends AbstractCrudController
                     ],
                 ),
         );
+        $actions->add(
+            Crud::PAGE_EDIT,
+            Action::new(self::SAVE_AND_GO_TO_PRESENTATION, 'Uložiť a ísť na prezentáciu')
+                ->renderAsButton()
+                ->setHtmlAttributes([
+                    'name' => 'ea[newForm][btn]',
+                    'value' => self::SAVE_AND_GO_TO_PRESENTATION,
+                ])
+                // toto sice ea vyzaduje ale ak som spravne pochopil nikde sa to napouzije
+                ->linkToRoute(
+                    PresentationController::ROUTE_NAME,
+                    static fn  (Competition $competition): array => [
+                        'entityId' => $competition->getId(),
+                    ],
+                )
+                ->asPrimaryAction(),
+        );
 
         return $actions;
+    }
+
+    #[Override]
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'] ?? null;
+        if (self::SAVE_AND_GO_TO_PRESENTATION !== $submitButtonName) {
+            return parent::getRedirectResponseAfterSave($context, $action);
+        }
+
+        $competitor = $context->getEntity()->getInstance();
+        if (!$competitor instanceof Competition) {
+            return parent::getRedirectResponseAfterSave($context, $action);
+        }
+
+        return $this->redirectToRoute(PresentationController::ROUTE_NAME, [
+            'entityId' => $competitor->getId(),
+        ]);
     }
 }
