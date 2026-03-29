@@ -14,6 +14,8 @@ final class Presentation extends Constraint
     public string $shooterAlreadyInCompetitionMessage = 'Strelec {{ shooter }} je uz zaregistovaný na {{ competition }}.';
     public string $shooterAlreadyExistsMessage = 'Strelec {{ firstName }} {{ lastName }} už existuje.';
     public string $teamAlreadyExistsMessage = 'Družstvo {{ teamName }} už existuje na {{ competition }}.';
+    public string $competitionTeamIsFullMessage = 'Družstvo {{ teamName }} je už plné.';
+    public string $competitionTeamIsDisabled = 'Súťaž nepodporuje družstvá. Počet členov je nastavený na 0';
     public string $missingValuesMessage = 'Táto hodnota musí byť vyplnená.';
 
     #[Override]

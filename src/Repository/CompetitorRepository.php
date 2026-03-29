@@ -22,6 +22,21 @@ final class CompetitorRepository extends ServiceEntityRepository
         parent::__construct($registry, Competitor::class);
     }
 
+    /**
+     * @return array<int>
+     */
+    public function findRegisteredShooterIdsForCompetition(Competition $competition): array
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('IDENTITY(c.shooter) AS shooterId')
+            ->andWhere('c.competition = :competition')
+            ->setParameter('competition', $competition)
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'shooterId');
+    }
+
     public function findForCompetitionAndCategory(Competition $competition, Category $category): array
     {
         $qb = $this->createQueryBuilder('c');

@@ -24,7 +24,7 @@
             {{ form_start(form, {
                 attr: {
                     'id': 'jury-entry-form',
-                    'data-action': 'submit->results-jury-entry-modal#submit',
+                    ...stimulus_action('results-jury-entry-modal', 'submit', 'submit'),
                 },
             }) }}
             {{ form_row(form.points) }}

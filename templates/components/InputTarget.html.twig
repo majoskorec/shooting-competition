@@ -36,8 +36,8 @@
                 'style': 'width: ' ~ this.itemWidth ~ '%',
                 'tabindex': this.getTabIndex(loop.index0),
                 'class': form[formName].vars.errors|length > 0 ? 'is-invalid',
-                'data-controller': 'clear-zero-input',
-                'data-action': 'focus->clear-zero-input#clearZeroOnFocus',
+                ...stimulus_controller('clear-zero-input'),
+                ...stimulus_action('clear-zero-input', 'clearZeroOnFocus', 'focus'),
             }
         }) }}
 

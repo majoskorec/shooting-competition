@@ -79,3 +79,8 @@ body[style*="color-scheme: dark"] table.input-table tr:focus-within td {
     padding-left: .25rem !important;
     padding-right: .25rem !important;
 }
+
+.input-group-button {
+    block-size: 2rem !important;;
+    margin-block-start: 0;
+}

@@ -76,7 +76,7 @@ class CompetitionTeam implements Stringable
         return $this->members;
     }
 
-    public function choiceLabel(): string
+    public function presentationChoiceLabel(): string
     {
         return sprintf('%s [%d]', $this->name, $this->members->count());
     }

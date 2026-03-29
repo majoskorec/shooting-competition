@@ -46,6 +46,10 @@ final class PresentationValidator extends ConstraintValidator
         if ($value->competitionTeam === null && $value->teamName !== null) {
             $this->validateTeamAlreadyExists($value->teamName, $value->competition, $constraint);
         }
+
+        if ($value->competitionTeam !== null) {
+            $this->validateCompetitionTeamHasCapacity($value->competitionTeam, $value->competition, $constraint);
+        }
     }
 
     private function validateShooterFields(PresentationDto $value, Presentation $constraint): void
@@ -120,6 +124,29 @@ final class PresentationValidator extends ConstraintValidator
             ->atPath('shooter')
             ->setParameter('{{ shooter }}', $shooter->getFullName())
             ->setParameter('{{ competition }}', $competition->getName())
+            ->addViolation();
+    }
+
+    private function validateCompetitionTeamHasCapacity(
+        CompetitionTeam $competitionTeam,
+        Competition $competition,
+        Presentation $constraint,
+    ): void {
+        if ($competition->getTeamMemberCount() < 2) {
+            $this->context->buildViolation($constraint->competitionTeamIsDisabled)
+                ->atPath('competitionTeam')
+                ->addViolation();
+
+            return;
+        }
+
+        if ($competitionTeam->getMembers()->count() < $competition->getTeamMemberCount()) {
+            return;
+        }
+
+        $this->context->buildViolation($constraint->competitionTeamIsFullMessage)
+            ->atPath('competitionTeam')
+            ->setParameter('{{ teamName }}', $competitionTeam->getName())
             ->addViolation();
     }
 }

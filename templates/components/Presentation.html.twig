@@ -8,20 +8,33 @@
             'data-model': 'debounce(100)|*',
         }
     }) }}
-    <div class="row">
+    <div class="row" style="min-height: 15rem;">
         <div class="col-6">
-            {{ form_row(form.lastName) }}
-            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName, {
+                attr: {
+                    ...stimulus_target('presentation-form', 'lastName'),
+                },
+            }) }}
+            {{ form_row(form.firstName, {
+                'attr': {
+                    ...stimulus_target('presentation-form', 'firstName'),
+                },
+            }) }}
         </div>
         <div class="col-6">
-            {{ form_row(form.shooter) }}
+            {{ form_row(form.shooter, {
+                'attr': {
+                    ...stimulus_action('presentation-form', 'toggleShooterNameFields', 'change'),
+                    ...stimulus_target('presentation-form', 'shooter'),
+                },
+            }) }}
         </div>
     </div>
     <div class="row">
         <div class="col-6">
             {{ form_row(form.club, {
                 'attr': {
-                    'data-presentation-form-target': 'club',
+                    ...stimulus_target('presentation-form', 'club'),
                 }
             }) }}
             {{ form_row(form.email) }}
@@ -32,36 +45,57 @@
         </div>
     </div>
     <hr />
-    <div class="row">
-        {% if this.competition.teamMemberCount > 1 %}
-            <div class="col-6">
-                {{ form_row(form.teamName, {
-                    'attr': {
-                        'data-presentation-form-target': 'teamName',
-                    }
-                }) }}
-                <button
-                    {{ stimulus_action('presentation-form', 'setTeamFromClub') }}
-                    class="btn btn-secondary"
-                >
-                    Použi Klub / PZ
-                </button>
-            </div>
-            <div class="col-6">
-                {{ form_row(form.competitionTeam) }}
-            </div>
 
+    {% if this.competition.teamMemberCount > 1 %}
+        <div class="row" style="min-height: 13rem;">
+            <div class="col-6">
+                <div class="mb-3">
+                    {{ form_label(form.teamName) }}
+                    <div class="input-group">
+                        <button
+                            {{ stimulus_action('presentation-form', 'setTeamFromClub') }}
+                            {{ stimulus_target('presentation-form', 'useClubButton') }}
+                            class="btn btn-secondary"
+                            type="button"
+                        >
+                            Použi Klub / PZ
+                            {{ ux_icon('bi:chevron-right') }}
+                        </button>
+                        {{ form_widget(form.teamName, {
+                            'attr': {
+                                ...stimulus_target('presentation-form', 'teamName'),
+                            }
+                        }) }}
+                        {{ form_errors(form.teamName) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                {{ form_row(form.competitionTeam, {
+                    'attr': {
+                        ...stimulus_action('presentation-form', 'toggleTeamNameFields', 'change'),
+                        ...stimulus_target('presentation-form', 'competitionTeam'),
+                    },
+                }) }}
+            </div>
+        </div>
     {% else %}
-        <div class="col-12 text-center">
-            Bez Družstiev
+        <div class="row">
+            <div class="col-12 text-center">
+                Bez Družstiev
+            </div>
         </div>
     {% endif %}
-    </div>
 
     {{ form_errors(form) }}
 
-    <button class="btn btn-primary">
-        Ulož
-    </button>
+    <div class="row mt-1">
+        <div class="col">
+            <button class="btn btn-primary px-5">
+                Ulož
+            </button>
+        </div>
+    </div>
+
     {{ form_end(form) }}
 </div>

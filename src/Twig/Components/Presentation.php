@@ -137,16 +137,16 @@ final class Presentation extends AbstractController
         $this->formValues['teamName'] = $teamEntity->getName();
     }
 
-    private function fetchShooterData(): ?string
+    private function fetchShooterData(): ?Shooter
     {
         $shooter = $this->formValues['shooter'] ?? null;
         if (trim($shooter ?? '') === '') {
-            return $shooter;
+            return null;
         }
 
         $shooterEntity = $this->entityManager->getRepository(Shooter::class)->find($shooter);
         if ($shooterEntity === null) {
-            return $shooter;
+            return null;
         }
 
         $this->formValues['firstName'] = $shooterEntity->getFirstName();
@@ -154,6 +154,6 @@ final class Presentation extends AbstractController
         $this->formValues['email'] = $shooterEntity->getEmail();
         $this->formValues['club'] = $shooterEntity->getClub();
 
-        return $shooter;
+        return $shooterEntity;
     }
 }
