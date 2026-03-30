@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Crud;
 
+use App\Admin\Filter\AssociationEntityFilter;
+use App\Entity\Competition;
 use App\Entity\Competitor;
+use App\Entity\Shooter;
 use App\Entity\TargetResult;
 use App\Form\Type\JsonCodeEditorType;
 use Doctrine\ORM\QueryBuilder;
@@ -102,6 +105,8 @@ final class TargetResultCrudController extends AbstractCrudController
     #[Override]
     public function configureFilters(Filters $filters): Filters
     {
+        $filters->add(AssociationEntityFilter::new(Competition::class, 'competitor.competition', 'Súťaž', 'name'));
+        $filters->add(AssociationEntityFilter::new(Shooter::class, 'competitor.shooter', 'Strelec', 'fullName'));
         $filters->add('targetName');
 
         return $filters;

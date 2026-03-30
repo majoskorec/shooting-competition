@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Crud;
 
 use App\Entity\Shooter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -52,5 +53,15 @@ final class ShooterCrudController extends AbstractCrudController
 
         yield EmailField::new('email', 'E-mail')
             ->setRequired(false);
+    }
+
+    #[Override]
+    public function configureFilters(Filters $filters): Filters
+    {
+        $filters->add('firstName');
+        $filters->add('lastName');
+        $filters->add('club');
+
+        return $filters;
     }
 }

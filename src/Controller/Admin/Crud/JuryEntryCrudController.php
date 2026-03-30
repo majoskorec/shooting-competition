@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Crud;
 
+use App\Admin\Filter\AssociationEntityFilter;
+use App\Entity\Competition;
 use App\Entity\CompetitionCategory;
 use App\Entity\Competitor;
 use App\Entity\JuryEntry;
+use App\Entity\Shooter;
 use App\Repository\CompetitionCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -19,6 +23,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use Error;
 use Override;
 
@@ -51,6 +57,9 @@ final class JuryEntryCrudController extends AbstractCrudController
     {
         yield IdField::new('id')
             ->hideOnForm();
+
+        yield TextField::new('competitor.competition', 'Súťaž')
+            ->onlyOnIndex();
 
         yield AssociationField::new('competitor', 'Súťažiaci')
             ->setFormTypeOption('choice_label', static fn (Competitor $competitor): string => sprintf(
@@ -115,5 +124,15 @@ final class JuryEntryCrudController extends AbstractCrudController
         $qb = $qb->addSelect('category');
 
         return $qb;
+    }
+
+    #[Override]
+    public function configureFilters(Filters $filters): Filters
+    {
+        $filters->add(AssociationEntityFilter::new(Competition::class, 'competitor.competition', 'Súťaž', 'name'));
+        $filters->add(AssociationEntityFilter::new(Shooter::class, 'competitor.shooter', 'Strelec', 'fullName'));
+        $filters->add(EntityFilter::new('category', 'Kategória'));
+
+        return $filters;
     }
 }

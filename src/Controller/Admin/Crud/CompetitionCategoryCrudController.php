@@ -6,10 +6,13 @@ namespace App\Controller\Admin\Crud;
 
 use App\Entity\CompetitionCategory;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Override;
 
 /**
@@ -50,5 +53,14 @@ final class CompetitionCategoryCrudController extends AbstractCrudController
 
         yield AssociationField::new('competitors', 'Súťažiaci')
             ->onlyOnIndex();
+    }
+
+    #[Override]
+    public function configureFilters(Filters $filters): Filters
+    {
+        $filters->add(EntityFilter::new('competition', 'Súťaž'));
+        $filters->add(TextFilter::new('name', 'Názov'));
+
+        return $filters;
     }
 }
