@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ input.competition.name }}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .fw-bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        {% for configuration in input.competition.targetConfigurationSnapshot %}
+            <th colspan="{{ configuration.pointsSchema|length + 2 }}">
+                {{ targetShortName(configuration.name) }}
+            </th>
+        {% endfor %}
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        {% for category in input.competition.categories %}
+            <th></th>
+        {% endfor %}
+        <th></th>
+    </tr>
+    <tr>
+        <th>
+            Štartovné
+            číslo
+        </th>
+        <th>
+            Runda
+        </th>
+        <th class="text-left">
+            Meno
+        </th>
+        <th class="text-left">
+            Priezvisko
+        </th>
+        {% for configuration in input.competition.targetConfigurationSnapshotOrdered %}
+            <th>
+                Počet
+                striel
+            </th>
+            {% for points in configuration.pointsSchema %}
+                <th>{{ points }}</th>
+            {% endfor %}
+            <th>Spolu</th>
+        {% endfor %}
+        <th>
+            Spolu
+            všetko
+        </th>
+        <th class="text-left">
+            Klub / PZ
+        </th>
+        <th class="text-left">
+            Družstvo
+        </th>
+        <th>
+            Spoločná
+            zbraň
+        </th>
+        {% for category in input.competition.categories %}
+            <th>{{ category.name }}</th>
+        {% endfor %}
+        <th class="text-left">
+            Stav
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for input_competitor in input.inputCompetitors %}
+        <tr>
+            <td>{{ input_competitor.competitor.startNumber }}</td>
+            <td>{{ roundNumber(input_competitor.competitor.startNumber, input.competition.shootersInRound) }}</td>
+            <td class="text-left">{{ input_competitor.competitor.shooter.firstName }}</td>
+            <td class="text-left">{{ input_competitor.competitor.shooter.lastName }}</td>
+            {% for input_target in input_competitor.inputTargets %}
+                <td>{{ input_target.targetResult.hitBreakdown|reduce((carry, value) => carry + value, 0) }}</td>
+                {% for points in input_target.targetSnapshot.pointsSchema %}
+                    <td>{{ input_target.targetResult.hitBreakdown[points]|default(0) }}</td>
+                {% endfor %}
+                <td>{{ input_target.targetResult.subtotal }}</td>
+            {% endfor %}
+            <td class="fw-bold">{{ input_competitor.totalScore }}</td>
+            <td class="text-left">{{ input_competitor.competitor.shooter.club }}</td>
+            <td class="text-left">{{ input_competitor.competitor.competitionTeam is not null ? input_competitor.competitor.competitionTeam.name }}</td>
+            <td>{{ input_competitor.competitor.sharedWeaponCode }}</td>
+            {% for category in input.competition.categories %}
+                <td>{{ input_competitor.competitor.categories.contains(category) ? 'ANO' : '' }}</td>
+            {% endfor %}
+            <td class="text-left">{{ input_competitor.competitor.status|trans }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

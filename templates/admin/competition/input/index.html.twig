@@ -19,12 +19,24 @@
     <div
         {{ stimulus_controller('table-column') }}
     >
-        <button
-            {{ stimulus_action('table-column', 'toggle', 'click') }}
-            class="btn btn-secondary"
-        >
-            Skryť stĺpce
-        </button>
+        <div class="d-flex gap-2 mb-3">
+            <button
+                {{ stimulus_action('table-column', 'toggle', 'click') }}
+                class="btn btn-secondary"
+            >
+                Skryť stĺpce
+            </button>
+
+            <a
+                href="{{ path(constant('App\\Controller\\Admin\\Competition\\InputExportController::ROUTE_NAME'), {
+                    entityId: input.competition.id,
+                }) }}"
+                class="btn btn-success"
+                target="_blank"
+            >
+                Export do XLS
+            </a>
+        </div>
 
         <table
             class="table input-table table-striped"
