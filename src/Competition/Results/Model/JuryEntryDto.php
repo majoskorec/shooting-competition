@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
+use App\Competition\Model\Exception\InvalidFieldValueException;
 use App\Entity\JuryEntry;
 
 final class JuryEntryDto
@@ -17,15 +18,15 @@ final class JuryEntryDto
     public static function create(JuryEntry $entry): self
     {
         return new self(
-            id: $entry->getId(),
+            id: $entry->getId() ?? throw InvalidFieldValueException::create($entry, 'id'),
             points: $entry->getPoints(),
         );
     }
 
     public static function compare(?self $left, ?self $right): int
     {
-        $leftPoints = $left?->points ?? 0;
-        $rightPoints = $right?->points ?? 0;
+        $leftPoints = $left->points ?? 0;
+        $rightPoints = $right->points ?? 0;
 
         return $leftPoints <=> $rightPoints;
     }

@@ -34,37 +34,40 @@ final class PresentationValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, PresentationDto::class);
         }
 
-        if ($value->shooter !== null) {
-            $this->validateShooterAlreadyInCompetition($value->shooter, $value->competition, $constraint);
-        }
-
-        if ($value->shooter === null) {
-            $this->validateShooterAlreadyExists($value, $constraint);
-            $this->validateShooterFields($value, $constraint);
-        }
+        $this->validateShooterAlreadyInCompetition($value->shooter, $value->competition, $constraint);
+        $this->validateShooterAlreadyExists($value, $constraint);
+        $this->validateShooterFields($value, $constraint);
 
         if ($value->competitionTeam === null && $value->teamName !== null) {
             $this->validateTeamAlreadyExists($value->teamName, $value->competition, $constraint);
         }
 
-        if ($value->competitionTeam !== null) {
-            $this->validateCompetitionTeamHasCapacity($value->competitionTeam, $value->competition, $constraint);
+        if ($value->competitionTeam === null) {
+            return;
         }
+
+        $this->validateCompetitionTeamHasCapacity($value->competitionTeam, $value->competition, $constraint);
     }
 
     private function validateShooterFields(PresentationDto $value, Presentation $constraint): void
     {
+        if ($value->shooter !== null) {
+            return;
+        }
+
         if ($value->firstName === null || trim($value->firstName) === '') {
             $this->context->buildViolation($constraint->missingValuesMessage)
                 ->atPath('firstName')
                 ->addViolation();
         }
 
-        if ($value->lastName === null || trim($value->lastName) === '') {
-            $this->context->buildViolation($constraint->missingValuesMessage)
-                ->atPath('lastName')
-                ->addViolation();
+        if ($value->lastName !== null && trim($value->lastName) !== '') {
+            return;
         }
+
+        $this->context->buildViolation($constraint->missingValuesMessage)
+            ->atPath('lastName')
+            ->addViolation();
     }
 
     private function validateTeamAlreadyExists(
@@ -90,6 +93,10 @@ final class PresentationValidator extends ConstraintValidator
 
     private function validateShooterAlreadyExists(PresentationDto $value, Presentation $constraint): void
     {
+        if ($value->shooter !== null) {
+            return;
+        }
+
         $exists = $this->entityManager->getRepository(Shooter::class)->findOneBy([
             'firstName' => $value->firstName,
             'lastName' => $value->lastName,
@@ -101,19 +108,23 @@ final class PresentationValidator extends ConstraintValidator
 
         $this->context->buildViolation($constraint->shooterAlreadyExistsMessage)
             ->atPath('lastName')
-            ->setParameter('{{ firstName }}', $value->firstName)
-            ->setParameter('{{ lastName }}', $value->lastName)
+            ->setParameter('{{ firstName }}', $value->firstName ?? '')
+            ->setParameter('{{ lastName }}', $value->lastName ?? '')
             ->addViolation();
     }
 
     private function validateShooterAlreadyInCompetition(
-        Shooter $shooter,
+        ?Shooter $shooter,
         Competition $competition,
         Presentation $constraint,
     ): void {
+        if ($shooter === null) {
+            return;
+        }
+
         $exists = $this->entityManager->getRepository(Competitor::class)->findOneBy([
+            'competition' => $competition,
             'shooter' => $shooter,
-            'competition' => $competition
         ]);
 
         if ($exists === null) {
@@ -123,7 +134,6 @@ final class PresentationValidator extends ConstraintValidator
         $this->context->buildViolation($constraint->shooterAlreadyInCompetitionMessage)
             ->atPath('shooter')
             ->setParameter('{{ shooter }}', $shooter->getFullName())
-            ->setParameter('{{ competition }}', $competition->getName())
             ->addViolation();
     }
 

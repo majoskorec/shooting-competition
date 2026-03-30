@@ -25,6 +25,11 @@ final class InputTargetValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, InputTargetDto::class);
         }
 
+        $this->validateHitValue($value, $constraint);
+    }
+
+    private function validateHitValue(InputTargetDto $value, InputTarget $constraint): void
+    {
         foreach ($value->points as $points => $hits) {
             $intHits = (int) $hits;
             if ((string) $intHits === $hits && $hits >= $intHits) {

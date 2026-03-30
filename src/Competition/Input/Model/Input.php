@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Competition\Input\Model;
 
 use App\Entity\Competition;
+use App\Validator as AppAssert;
 
-#[\App\Validator\Input]
+#[AppAssert\Input]
 final class Input
 {
     /**

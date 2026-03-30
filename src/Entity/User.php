@@ -10,10 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'uniq_user_email', columns: ['email'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,10 +26,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var non-empty-string
+     */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     #[ORM\Column(length: 180)]
     private string $email;
 
-    /** @var list<string> */
+    /**
+     * @var list<string>
+     */
     #[ORM\Column(type: Types::JSON)]
     private array $roles;
 
@@ -44,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+    /**
+     * @param non-empty-string $email
+     */
     public function setEmail(string $email): void
     {
         $this->email = mb_strtolower($email);

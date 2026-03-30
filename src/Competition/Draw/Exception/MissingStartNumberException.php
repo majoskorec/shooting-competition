@@ -8,5 +8,4 @@ use RuntimeException;
 
 final class MissingStartNumberException extends RuntimeException
 {
-
 }

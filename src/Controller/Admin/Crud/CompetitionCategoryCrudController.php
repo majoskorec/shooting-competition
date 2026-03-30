@@ -12,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 
+/**
+ * @extends AbstractCrudController<CompetitionCategory>
+ */
 final class CompetitionCategoryCrudController extends AbstractCrudController
 {
     #[Override]

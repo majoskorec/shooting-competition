@@ -32,7 +32,7 @@
         {% for category in categories.categories %}
             <li class="nav-item">
                 <a
-                {% if results.category.slug === category.slug %}
+                {% if results.category.slug == category.slug %}
                     class="nav-link active"
                     aria-current="page"
                     href="#"
@@ -65,11 +65,16 @@
             </thead>
             <tbody>
                 {% for competitors_results_with_rank in results.competitorsResultsWithRank %}
-                    {# @var competitors_results_with_rank \App\Competition\Results\Model\CompetitorResultWithRank #}
                     {% if results.category.categoryType == enum('App\\Competition\\Results\\Model\\CategoryType').Teams %}
-                        {% include 'admin/competition/results/_team_data.html.twig' %}
+                        {% include 'admin/competition/results/_team_data.html.twig' with {
+                            competitors_results_with_rank: competitors_results_with_rank,
+                            results: results,
+                        } %}
                     {% else %}
-                        {% include 'admin/competition/results/_individual_data.html.twig' %}
+                        {% include 'admin/competition/results/_individual_data.html.twig' with {
+                            competitors_results_with_rank: competitors_results_with_rank,
+                            results: results,
+                        } %}
                     {% endif %}
                 {% endfor %}
             </tbody>

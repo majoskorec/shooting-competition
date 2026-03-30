@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block main %}
-    {% set qrData = absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
+    {% set qr_data = absolute_url(path(constant('App\\Controller\\Public\\PresentationController::ROUTE_NAME'), {
         id: competition.id,
     })) %}
     <div>
@@ -38,7 +38,7 @@
             </div>
             <div style="margin-top: 4rem;">
                 <img
-                    src="{{ qr_code_path(qrData) }}"
+                    src="{{ qr_code_path(qr_data) }}"
                     alt="prezentacia"
                 />
             </div>

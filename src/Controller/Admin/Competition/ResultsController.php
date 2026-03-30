@@ -44,8 +44,8 @@ final class ResultsController extends AbstractController
         $category = $categories->getByText($categorySlug ?? '');
         if ($category->slug !== $categorySlug) {
             return $this->redirectToRoute(self::ROUTE_NAME, [
-                'entityId' => $competition->getId(),
                 'categorySlug' => $category->slug,
+                'entityId' => $competition->getId(),
             ]);
         }
 
@@ -54,8 +54,8 @@ final class ResultsController extends AbstractController
 
         return $this->render('admin/competition/results/index.html.twig', [
             'categories' => $categories,
-            'results' => $results,
             'resultConstraints' => $resultConstraints,
+            'results' => $results,
         ]);
     }
 }

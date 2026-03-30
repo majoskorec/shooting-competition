@@ -17,6 +17,9 @@ use Override;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * @extends AbstractCrudController<User>
+ */
 final class UserCrudController extends AbstractCrudController
 {
     public function __construct(
@@ -78,26 +81,22 @@ final class UserCrudController extends AbstractCrudController
     }
 
     #[Override]
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void
     {
-        if ($entityInstance instanceof User) {
-            $plainPassword = $this->getSubmittedPassword();
-            if ($plainPassword !== null) {
-                $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $plainPassword));
-            }
+        $plainPassword = $this->getSubmittedPassword();
+        if ($plainPassword !== null) {
+            $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $plainPassword));
         }
 
         parent::persistEntity($entityManager, $entityInstance);
     }
 
     #[Override]
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function updateEntity(EntityManagerInterface $entityManager, object $entityInstance): void
     {
-        if ($entityInstance instanceof User) {
-            $plainPassword = $this->getSubmittedPassword();
-            if ($plainPassword !== null) {
-                $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $plainPassword));
-            }
+        $plainPassword = $this->getSubmittedPassword();
+        if ($plainPassword !== null) {
+            $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $plainPassword));
         }
 
         parent::updateEntity($entityManager, $entityInstance);

@@ -6,17 +6,20 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Override;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260328221724 extends AbstractMigration
+final class Version20260330095912 extends AbstractMigration
 {
+    #[Override]
     public function getDescription(): string
     {
         return '';
     }
 
+    #[Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -150,7 +153,7 @@ final class Version20260328221724 extends AbstractMigration
               id INT AUTO_INCREMENT NOT NULL,
               target_name VARCHAR(255) NOT NULL,
               hit_breakdown JSON NOT NULL,
-              subtotal INT DEFAULT NULL,
+              subtotal INT NOT NULL,
               competitor_id INT NOT NULL,
               INDEX IDX_1A6026A378A5D405 (competitor_id),
               UNIQUE INDEX uniq_idx (competitor_id, target_name),
@@ -278,6 +281,7 @@ final class Version20260328221724 extends AbstractMigration
         SQL);
     }
 
+    #[Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

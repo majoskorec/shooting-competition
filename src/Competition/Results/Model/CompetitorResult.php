@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Results\Model;
 
+use App\Competition\Draw\Exception\MissingStartNumberException;
 use RuntimeException;
 
 final readonly class CompetitorResult
@@ -43,7 +44,7 @@ final readonly class CompetitorResult
             ?? throw new RuntimeException('Competitor result has no sub results');
         assert($first instanceof CompetitorSubResults);
 
-        return $first->competitor->getStartNumber();
+        return $first->competitor->getStartNumber() ?? throw new MissingStartNumberException();
     }
 
     public function compare(self $other): int

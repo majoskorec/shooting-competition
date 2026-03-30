@@ -6,7 +6,7 @@ namespace App\Competition\Results\Model;
 
 enum CategoryType
 {
-    case General;
+    case Main;
     case Teams;
     case Custom;
 }

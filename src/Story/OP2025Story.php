@@ -24,11 +24,13 @@ use Override;
 use RuntimeException;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
+
 use function Zenstruck\Foundry\Persistence\save;
 
 #[AsFixture(name: 'op2025')]
 final class OP2025Story extends Story
 {
+    // phpcs:disable SlevomatCodingStandard.Arrays.AlphabeticallySortedByKeys.IncorrectKeyOrder
     private const array COMPETITORS = [
         [
             'startNumber' => 1,
@@ -4486,6 +4488,7 @@ final class OP2025Story extends Story
             ],
         ],
     ];
+    // phpcs:enable SlevomatCodingStandard.Arrays.AlphabeticallySortedByKeys.IncorrectKeyOrder
 
     public function __construct(
         private readonly TargetSnapshotFactory $targetSnapshotFactory,
@@ -4498,16 +4501,16 @@ final class OP2025Story extends Story
         $competitionType = $this->getOrCreateM400CompetitionType();
 
         $competition = CompetitionFactory::createOne([
-            'competitionType' => $competitionType,
-            'name' => 'Majstrovstvá okresu 2025',
             'competitionStart' => new DateTimeImmutable('2025-05-24 07:00:00'),
+            'competitionType' => $competitionType,
             'location' => 'Strelnica Dovalovo',
+            'mainCategoryName' => 'Memoriál Antona Krištofa',
+            'name' => 'Majstrovstvá okresu 2025',
             'organizer' => 'OPK LM',
+            'shootersInRound' => 9,
             'status' => CompetitionStatus::Finished,
             'targetConfigurationSnapshot' => $this->targetSnapshotFactory->createFromCompetitionType($competitionType),
             'teamMemberCount' => 3,
-            'shootersInRound' => 9,
-            'mainCategoryName' => 'Memoriál Antona Krištofa',
         ]);
 
         $veteranCategory = $this->createCategory($competition, 'Veteráni');
@@ -4520,18 +4523,18 @@ final class OP2025Story extends Story
 
             $competitor = CompetitorFactory::createOne([
                 'competition' => $competition,
+                'competitionTeam' => $this->getOrCreateTeam($competition, $competitorData['teamName'], $teams),
                 'shooter' => $shooter,
                 'startNumber' => $competitorData['startNumber'],
                 'status' => CompetitorStatus::Registered,
-                'competitionTeam' => $this->getOrCreateTeam($competition, $competitorData['teamName'], $teams),
             ]);
 
             if ($competitorData['veteran']) {
                 $competitor->addCategory($veteranCategory);
-            } else {
+            }
+            if (!$competitorData['veteran']) {
                 $competitor->addCategory($seniorCategory);
             }
-
             if ($competitorData['woman']) {
                 $competitor->addCategory($womanCategory);
             }
@@ -4540,8 +4543,8 @@ final class OP2025Story extends Story
             foreach ($competitorData['targetResults'] as $targetResultData) {
                 TargetResultFactory::createOne([
                     'competitor' => $competitor,
-                    'targetName' => $targetResultData['targetName'],
                     'hitBreakdown' => $targetResultData['hitBreakdown'],
+                    'targetName' => $targetResultData['targetName'],
                 ]);
             }
 
@@ -4585,10 +4588,10 @@ final class OP2025Story extends Story
 
         if (!$shooter instanceof Shooter) {
             return ShooterFactory::createOne([
-                'firstName' => $firstName,
-                'lastName' => $lastName,
                 'club' => $club,
                 'email' => null,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
             ]);
         }
 

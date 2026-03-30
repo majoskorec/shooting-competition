@@ -8,10 +8,14 @@ use App\Repository\TargetResultRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: TargetResultRepository::class)]
 #[ORM\Table(name: 'target_result')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competitor_id', 'target_name'])]
 #[ORM\HasLifecycleCallbacks]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class TargetResult
 {
     #[ORM\Id]
@@ -26,12 +30,14 @@ class TargetResult
     #[ORM\Column(length: 255)]
     private string $targetName;
 
-    /** @var array<int, int> */
+    /**
+     * @var array<int, int>
+     */
     #[ORM\Column(type: Types::JSON)]
     private array $hitBreakdown = [];
 
-    #[ORM\Column(nullable: true)]
-    private ?int $subtotal = null;
+    #[ORM\Column]
+    private int $subtotal;
 
     public function getId(): ?int
     {
@@ -70,14 +76,9 @@ class TargetResult
         $this->hitBreakdown = $hitBreakdown;
     }
 
-    public function getSubtotal(): ?int
+    public function getSubtotal(): int
     {
         return $this->subtotal;
-    }
-
-    public function setSubtotal(?int $subtotal): void
-    {
-        $this->subtotal = $subtotal;
     }
 
     #[ORM\PreFlush]

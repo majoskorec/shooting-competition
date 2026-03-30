@@ -12,9 +12,13 @@ use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Traversable;
 
+/**
+ * @extends AbstractType<InputTargetDto>
+ */
 final class InputTargetType extends AbstractType implements DataMapperInterface
 {
     public const string FIELD_PREFIX = 'point_';
@@ -30,9 +34,9 @@ final class InputTargetType extends AbstractType implements DataMapperInterface
 
         foreach ($targetSnapshot->pointsSchema as $point) {
             $builder->add(self::FIELD_PREFIX . $point, TextType::class, [
+                'empty_data' => 0,
                 'label' => false,
                 'required' => false,
-                'empty_data' => 0,
             ]);
         }
 
@@ -51,6 +55,7 @@ final class InputTargetType extends AbstractType implements DataMapperInterface
 
     /**
      * @inheritDoc
+     * @param Traversable<FormInterface<mixed>> $forms
      */
     #[Override]
     public function mapDataToForms(mixed $viewData, Traversable $forms): void
@@ -65,13 +70,14 @@ final class InputTargetType extends AbstractType implements DataMapperInterface
 
         foreach ($forms as $form) {
             $name = $form->getName();
-            $points = str_replace(self::FIELD_PREFIX, '', $name);
+            $points = (int) str_replace(self::FIELD_PREFIX, '', $name);
             $form->setData($viewData->points[$points] ?? 0);
         }
     }
 
     /**
      * @inheritDoc
+     * @param Traversable<FormInterface<mixed>> $forms
      */
     #[Override]
     public function mapFormsToData(Traversable $forms, mixed &$viewData): void
@@ -79,8 +85,10 @@ final class InputTargetType extends AbstractType implements DataMapperInterface
         $points = [];
         foreach ($forms as $form) {
             $name = $form->getName();
-            $point = str_replace(self::FIELD_PREFIX, '', $name);
-            $points[$point] = $form->getData();
+            $point = (int) str_replace(self::FIELD_PREFIX, '', $name);
+            $hits = $form->getData();
+            assert(is_string($hits));
+            $points[$point] = $hits;
         }
 
         assert($viewData instanceof InputTargetDto);

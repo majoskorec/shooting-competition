@@ -12,9 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: CompetitionTypeRepository::class)]
 #[ORM\Table(name: 'competition_type')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['name'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class CompetitionType implements Stringable
 {
     #[ORM\Id]
@@ -31,7 +35,9 @@ class CompetitionType implements Stringable
     )]
     private ?string $description = null;
 
-    /** @var Collection<int, CompetitionTypeTarget> */
+    /**
+     * @var Collection<int, CompetitionTypeTarget>
+     */
     #[ORM\OneToMany(
         targetEntity: CompetitionTypeTarget::class,
         mappedBy: 'competitionType',

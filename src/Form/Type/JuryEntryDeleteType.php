@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\JuryEntry;
+use App\Form\Dto\JuryEntryDeleteDto;
 use Override;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @extends AbstractType<JuryEntry>
+ * @extends AbstractType<JuryEntryDeleteDto>
  */
-final class JuryEntryType extends AbstractType
+final class JuryEntryDeleteType extends AbstractType
 {
     /**
      * @inheritDoc
@@ -23,20 +23,15 @@ final class JuryEntryType extends AbstractType
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('points', IntegerType::class, [
-            'label' => 'Body',
-        ]);
-        $builder->add('description', TextareaType::class, [
-            'label' => 'Popis',
-            'required' => false,
-        ]);
+        $builder->add('id', HiddenType::class);
     }
 
     #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => JuryEntry::class,
+            'data_class' => JuryEntryDeleteDto::class,
+            'method' => Request::METHOD_DELETE,
         ]);
     }
 }

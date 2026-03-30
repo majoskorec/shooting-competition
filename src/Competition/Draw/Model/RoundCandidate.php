@@ -40,10 +40,15 @@ final class RoundCandidate
         }
 
         if ($this->withSharedWeapon) {
-            return array_first($randomizer->shuffleArray($this->candidates));
-        }
+            $first = array_first($randomizer->shuffleArray($this->candidates));
+            assert($first instanceof Round || $first === null);
 
-        return array_first($this->candidates);
+            return $first;
+        }
+        $first = array_first($this->candidates);
+        assert($first instanceof Round || $first === null);
+
+        return $first;
     }
 
     private function addIfNotSet(Round $round): void
@@ -64,6 +69,7 @@ final class RoundCandidate
         }
 
         $first = array_first($this->candidates);
+        assert($first instanceof Round);
         if ($first->fillCount() > $round->fillCount()) {
             $this->candidates = [$round];
 

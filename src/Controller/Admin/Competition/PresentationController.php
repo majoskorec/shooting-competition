@@ -33,18 +33,7 @@ final class PresentationController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        $competitors = $this->entityManager->getRepository(Competitor::class)
-            ->createQueryBuilder('c')
-            ->select(['c', 's', 't', 'cat'])
-            ->join('c.shooter', 's')
-            ->leftJoin('c.competitionTeam', 't')
-            ->leftJoin('c.categories', 'cat')
-            ->andWhere('c.competition = :competition')
-            ->setParameter('competition', $competition)
-            ->addOrderBy('s.lastName', 'ASC')
-            ->addOrderBy('s.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $competitors = $this->entityManager->getRepository(Competitor::class)->findForPresentation($competition);
 
         return $this->render('admin/competition/presentation/index.html.twig', [
             'competition' => $competition,

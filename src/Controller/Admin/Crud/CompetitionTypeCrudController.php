@@ -11,14 +11,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Override;
 
+/**
+ * @extends AbstractCrudController<CompetitionType>
+ */
 final class CompetitionTypeCrudController extends AbstractCrudController
 {
+    #[Override]
     public static function getEntityFqcn(): string
     {
         return CompetitionType::class;
     }
 
+    #[Override]
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -30,6 +36,7 @@ final class CompetitionTypeCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_DETAIL, 'Detail typu súťaže');
     }
 
+    #[Override]
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')

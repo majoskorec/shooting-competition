@@ -1,4 +1,6 @@
 {
+    "name": "majoskorec/shooting-competition",
+    "description": "Shooting competition management system",
     "license": "proprietary",
     "type": "project",
     "require": {
@@ -50,13 +52,26 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.50",
+        "friendsofphp/php-cs-fixer": "^3.94.2",
+        "friendsoftwig/twigcs": "^6.6.1",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpro/grumphp": "^2.19",
+        "phpstan/phpstan": "^2.1.44",
+        "phpstan/phpstan-doctrine": "^2.0.20",
+        "phpstan/phpstan-symfony": "^2.0.15",
         "phpunit/phpunit": "^13.0.5",
+        "pixelfederation/coding-standards": "^5.5.1",
+        "psalm/plugin-symfony": "^5.3",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^4.0.1",
         "symfony/browser-kit": "~8.0.4",
         "symfony/css-selector": "~8.0.6",
         "symfony/debug-bundle": "~8.0.7",
         "symfony/maker-bundle": "^1.67",
         "symfony/stopwatch": "~8.0.0",
         "symfony/web-profiler-bundle": "~8.0.7",
+        "vimeo/psalm": "^6.16.1",
+        "weirdan/doctrine-psalm-plugin": "^2.10",
         "zenstruck/foundry": "^2.9.2"
     },
     "replace": {
@@ -88,9 +103,11 @@
     },
     "config": {
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "endroid/installer": true,
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
+            "phpro/grumphp": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },

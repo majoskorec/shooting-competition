@@ -25,7 +25,6 @@ final class M400TypeStory extends Story
 
         $foxTarget = TargetDefinitionFactory::createOne([
             'name' => 'Líška - Terč medzinárodný redukovaný na 50m',
-            'shortName' => 'Líška',
             'pointsSchema' => [
                 10,
                 9,
@@ -34,6 +33,7 @@ final class M400TypeStory extends Story
                 1,
                 0,
             ],
+            'shortName' => 'Líška',
         ]);
         $foxTypeTarget = CompetitionTypeTargetFactory::createOne([
             'competitionType' => $type,
@@ -46,7 +46,6 @@ final class M400TypeStory extends Story
 
         $roeBuckTarget = TargetDefinitionFactory::createOne([
             'name' => 'Srnec - Terč medzinárodný redukovaný na 50m',
-            'shortName' => 'Srnec',
             'pointsSchema' => [
                 10,
                 9,
@@ -55,6 +54,7 @@ final class M400TypeStory extends Story
                 1,
                 0,
             ],
+            'shortName' => 'Srnec',
         ]);
         $roeBuckTypeTarget = CompetitionTypeTargetFactory::createOne([
             'competitionType' => $type,
@@ -67,7 +67,6 @@ final class M400TypeStory extends Story
 
         $chamoisTarget = TargetDefinitionFactory::createOne([
             'name' => 'Kamzík - Terč medzinárodný redukovaný na 50m',
-            'shortName' => 'Kamzík',
             'pointsSchema' => [
                 10,
                 9,
@@ -76,6 +75,7 @@ final class M400TypeStory extends Story
                 1,
                 0,
             ],
+            'shortName' => 'Kamzík',
         ]);
         $chamoisTypeTarget = CompetitionTypeTargetFactory::createOne([
             'competitionType' => $type,
@@ -88,7 +88,6 @@ final class M400TypeStory extends Story
 
         $boarTarget = TargetDefinitionFactory::createOne([
             'name' => 'Diviak - Terč medzinárodný redukovaný na 50m',
-            'shortName' => 'Diviak',
             'pointsSchema' => [
                 10,
                 9,
@@ -97,6 +96,7 @@ final class M400TypeStory extends Story
                 3,
                 0,
             ],
+            'shortName' => 'Diviak',
         ]);
         $boarTypeTarget = CompetitionTypeTargetFactory::createOne([
             'competitionType' => $type,

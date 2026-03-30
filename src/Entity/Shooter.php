@@ -11,9 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: ShooterRepository::class)]
 #[ORM\Table(name: 'shooter')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['last_name', 'first_name'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class Shooter implements Stringable
 {
     #[ORM\Id]
@@ -33,7 +37,9 @@ class Shooter implements Stringable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
-    /** @var Collection<int, Competitor> */
+    /**
+     * @var Collection<int, Competitor>
+     */
     #[ORM\OneToMany(targetEntity: Competitor::class, mappedBy: 'shooter')]
     private Collection $competitors;
 

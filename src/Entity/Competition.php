@@ -17,8 +17,12 @@ use Override;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: CompetitionRepository::class)]
 #[ORM\Table(name: 'competition')]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class Competition implements Stringable
 {
     #[ORM\Id]
@@ -60,11 +64,15 @@ class Competition implements Stringable
     #[ORM\Column(enumType: CompetitionStatus::class)]
     private CompetitionStatus $status;
 
-    /** @var array<TargetSnapshot> */
+    /**
+     * @var array<TargetSnapshot>
+     */
     #[ORM\Column(type: TargetSnapshotsType::TYPE)]
     private array $targetConfigurationSnapshot = [];
 
-    /** @var Collection<int, Competitor> */
+    /**
+     * @var Collection<int, Competitor>
+     */
     #[ORM\OneToMany(
         targetEntity: Competitor::class,
         mappedBy: 'competition',
@@ -73,7 +81,9 @@ class Competition implements Stringable
     )]
     private Collection $competitors;
 
-    /** @var Collection<int, CompetitionCategory> */
+    /**
+     * @var Collection<int, CompetitionCategory>
+     */
     #[ORM\OneToMany(
         targetEntity: CompetitionCategory::class,
         mappedBy: 'competition',

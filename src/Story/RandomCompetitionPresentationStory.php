@@ -19,6 +19,7 @@ use Random\Randomizer;
 use Symfony\Component\Clock\DatePoint;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
+
 use function Zenstruck\Foundry\faker;
 use function Zenstruck\Foundry\Persistence\save;
 
@@ -76,25 +77,27 @@ final class RandomCompetitionPresentationStory extends Story
             $categories = array_filter($categories);
 
             $competitors[] = CompetitorFactory::createOne([
+                'categories' => $categories,
                 'competition' => $competition,
+                'competitionTeam' => $maxTeamMemberCount === 0 ? null : $competitionTeam,
                 'shooter' => $shooter,
                 'status' => CompetitorStatus::Registered,
-                'competitionTeam' => $maxTeamMemberCount === 0 ? null : $competitionTeam,
-                'categories' => $categories,
             ]);
             $teamMemberCount++;
-            if ($teamMemberCount === $maxTeamMemberCount) {
-                $competitionTeam = null;
-                $teamMemberCount = 0;
+            if ($teamMemberCount !== $maxTeamMemberCount) {
+                continue;
             }
+
+            $competitionTeam = null;
+            $teamMemberCount = 0;
         }
 
         /** @var array<Competitor> $competitors */
         $competitors = $this->randomizer->shuffleArray($competitors);
-        $sharedWeaponCode = 'a';
+        $sharedWeaponCode = 1;
         $sharedWeaponCount = faker()->numberBetween(2, 5);
         foreach ($competitors as $competitor) {
-            $competitor->setSharedWeaponCode($sharedWeaponCode);
+            $competitor->setSharedWeaponCode((string) $sharedWeaponCode);
             save($competitor);
             $sharedWeaponCount--;
             if ($sharedWeaponCount === 0) {
@@ -102,7 +105,7 @@ final class RandomCompetitionPresentationStory extends Story
                 $sharedWeaponCode++;
             }
 
-            if ($sharedWeaponCode === 'f') {
+            if ($sharedWeaponCode >= 6) {
                 return;
             }
         }

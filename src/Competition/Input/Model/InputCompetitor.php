@@ -9,7 +9,7 @@ use App\Entity\Competitor;
 final class InputCompetitor
 {
     /**
-     * @param array<int, InputTarget> $inputTargets
+     * @param array<string, InputTarget> $inputTargets
      */
     public function __construct(
         public readonly Competitor $competitor,
@@ -20,7 +20,7 @@ final class InputCompetitor
     public function getTotalScore(): int
     {
         return array_sum(array_map(
-            fn (InputTarget $inputTarget) => $inputTarget->targetResult->getSubtotal(),
+            static fn (InputTarget $inputTarget) => $inputTarget->targetResult->getSubtotal(),
             $this->inputTargets,
         ));
     }

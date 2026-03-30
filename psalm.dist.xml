@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<psalm
+  errorLevel="1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://getpsalm.org/schema/config"
+  xsi:schemaLocation="https://getpsalm.org/schema/config https://psalm.dev/schema/config"
+  autoloader="./vendor/autoload.php"
+  findUnusedCode="false"
+  phpVersion="8.5"
+>
+    <projectFiles>
+        <ignoreFiles allowMissingFiles="true">
+            <directory name="vendor"/>
+            <directory name="var"/>
+            <directory name="config"/>
+            <file name="public/index.php"/>
+            <file name="src/Kernel.php"/>
+        </ignoreFiles>
+        <directory name="src"/>
+        <directory name="migrations"/>
+    </projectFiles>
+    <issueHandlers>
+        <MixedAssignment errorLevel="suppress"/>
+        <MissingConstructor errorLevel="suppress"/>
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
+            <containerXml>var/cache/dev/App_KernelDevDebugContainer.xml</containerXml>
+        </pluginClass>
+    </plugins>
+</psalm>

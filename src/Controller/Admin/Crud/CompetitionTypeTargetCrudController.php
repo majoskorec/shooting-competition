@@ -10,14 +10,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use Override;
 
+/**
+ * @extends AbstractCrudController<CompetitionTypeTarget>
+ */
 final class CompetitionTypeTargetCrudController extends AbstractCrudController
 {
+    #[Override]
     public static function getEntityFqcn(): string
     {
         return CompetitionTypeTarget::class;
     }
 
+    #[Override]
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -30,6 +36,7 @@ final class CompetitionTypeTargetCrudController extends AbstractCrudController
             ->setDefaultSort(['competitionType' => 'ASC', 'displayOrder' => 'ASC']);
     }
 
+    #[Override]
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')

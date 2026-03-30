@@ -112,30 +112,30 @@
             </tr>
             </thead>
             <tbody>
-            {% for inputCompetitor in input.inputCompetitors %}
+            {% for input_competitor in input.inputCompetitors %}
                 <tr
-                    class="{{ lastInRound(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
+                    class="{{ lastInRound(input_competitor.competitor.startNumber, input.competition.shootersInRound) ? 'border-bottom border-secondary-subtle  border-2 border-top-0 border-start-0 border-end-0' }}"
                     {{ stimulus_controller('input-total') }}
                 >
                     <td class="text-center min-width">
-                        {{ inputCompetitor.competitor.startNumber }}
+                        {{ input_competitor.competitor.startNumber }}
                     </td>
                     <td class="text-center min-width">
-                        {{ roundNumber(inputCompetitor.competitor.startNumber, input.competition.shootersInRound) }}
+                        {{ roundNumber(input_competitor.competitor.startNumber, input.competition.shootersInRound) }}
                     </td>
                     <td data-hiddable="true">
-                        {{ inputCompetitor.competitor.shooter.firstName }}
+                        {{ input_competitor.competitor.shooter.firstName }}
                     </td>
                     <td data-hiddable="true">
-                        {{ inputCompetitor.competitor.shooter.lastName }}
+                        {{ input_competitor.competitor.shooter.lastName }}
                     </td>
-                    {% for inputTarget in inputCompetitor.inputTargets %}
+                    {% for input_target in input_competitor.inputTargets %}
                         <td
-                            colspan="{{ inputTarget.targetResult.hitBreakdown|length + 2 }}"
+                            colspan="{{ input_target.targetResult.hitBreakdown|length + 2 }}"
                             class="text-center position-relative p-0"
                         >
                             <twig:InputTarget
-                                data="{{ inputTarget }}"
+                                data="{{ input_target }}"
                             />
                         </td>
                     {% endfor %}
@@ -143,30 +143,30 @@
                         class="text-center fw-bold"
                         {{ stimulus_target('input-total', 'grandTotal') }}
                     >
-                        {{ inputCompetitor.totalScore }}
+                        {{ input_competitor.totalScore }}
                     </td>
                     <td data-hiddable="true">
-                        {{ inputCompetitor.competitor.shooter.club }}
+                        {{ input_competitor.competitor.shooter.club }}
                     </td>
                     <td data-hiddable="true">
-                        {{ inputCompetitor.competitor.competitionTeam is not null ? inputCompetitor.competitor.competitionTeam.name }}
+                        {{ input_competitor.competitor.competitionTeam is not null ? input_competitor.competitor.competitionTeam.name }}
                     </td>
                     <td
                         data-hiddable="true"
                         class="text-center min-width"
                     >
-                        {{ inputCompetitor.competitor.sharedWeaponCode }}
+                        {{ input_competitor.competitor.sharedWeaponCode }}
                     </td>
                     {% for category in input.competition.categories %}
                         <td
                             data-hiddable="true"
                             class="text-center min-width"
                         >
-                            {{ inputCompetitor.competitor.categories.contains(category)|checkCircle }}
+                            {{ input_competitor.competitor.categories.contains(category)|checkCircle }}
                         </td>
                     {% endfor %}
                     <td data-hiddable="true">
-                        {{ inputCompetitor.competitor.status|trans }}
+                        {{ input_competitor.competitor.status|trans }}
                     </td>
                 </tr>
             {% endfor %}

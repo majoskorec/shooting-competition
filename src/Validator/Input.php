@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Input extends Constraint
 {
+    // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
     public string $lessShots = 'Strelec <b>{{ shooter }}</b> na terči <b>{{ targetName }}</b> nastrielal menej rán ako by mal mať.';
     public string $moreShots = 'Strelec <b>{{ shooter }}</b> na terči <b>{{ targetName }}</b> nastrielal viac rán ako by mal mať.';
+    // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
 
     #[Override]
     public function getTargets(): string

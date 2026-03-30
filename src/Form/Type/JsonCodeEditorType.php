@@ -12,6 +12,9 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @extends AbstractType<array<mixed>>
+ */
 final class JsonCodeEditorType extends AbstractType
 {
     #[Override]
@@ -24,7 +27,10 @@ final class JsonCodeEditorType extends AbstractType
                 }
 
                 if (!is_array($value)) {
-                    throw new TransformationFailedException(sprintf('Expected an array, got "%s".', get_debug_type($value)));
+                    throw new TransformationFailedException(sprintf(
+                        'Expected an array, got "%s".',
+                        get_debug_type($value),
+                    ));
                 }
 
                 try {
@@ -39,7 +45,10 @@ final class JsonCodeEditorType extends AbstractType
                 }
 
                 if (!is_string($value)) {
-                    throw new TransformationFailedException(sprintf('Expected a JSON string, got "%s".', get_debug_type($value)));
+                    throw new TransformationFailedException(sprintf(
+                        'Expected a JSON string, got "%s".',
+                        get_debug_type($value),
+                    ));
                 }
 
                 try {

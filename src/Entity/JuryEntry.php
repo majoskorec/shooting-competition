@@ -9,10 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: JuryEntryRepository::class)]
 #[ORM\Table(name: 'jury_entry')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competitor_id', 'category_id'])]
 #[UniqueEntity(fields: ['competitor', 'category'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class JuryEntry
 {
     #[ORM\Id]

@@ -54,6 +54,7 @@ final class Rounds
     {
         $startNumber = 1;
         foreach ($this->rounds as $round) {
+            /** @var array<Competitor> $competitors */
             $competitors = $randomizer->shuffleArray($round->getCompetitors());
             foreach ($competitors as $competitor) {
                 $competitor->setStartNumber($startNumber++);

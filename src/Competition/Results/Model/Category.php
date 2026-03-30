@@ -12,7 +12,7 @@ final readonly class Category
         public string $title,
         public string $slug,
         public CategoryType $categoryType,
-        public bool $sortByRank
+        public bool $sortByRank,
     ) {
     }
 

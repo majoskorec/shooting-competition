@@ -92,7 +92,7 @@
                 style="max-height: 2rem; overflow: hidden;"
                 {{ stimulus_target('presentation-form', 'sharedWeaponsList') }}
             >
-            {% for code,competitors in this.sharedWeapons %}
+            {% for code, competitors in this.sharedWeapons %}
                 <div
                     class="p-1 border border rounded-2 bg-secondary-subtle cursor-pointer"
                     {{ stimulus_action('presentation-form', 'selectSharedWeapon', 'click') }}

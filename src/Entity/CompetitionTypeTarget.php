@@ -10,9 +10,13 @@ use Override;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: CompetitionTypeTargetRepository::class)]
 #[ORM\Table(name: 'competition_type_target')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_type_id', 'target_definition_id', 'display_order'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class CompetitionTypeTarget implements Stringable
 {
     #[ORM\Id]

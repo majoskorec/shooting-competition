@@ -7,11 +7,12 @@ namespace App\Controller\Admin\Competition\JuryEntryModal;
 use App\Competition\Results\CategorySluggerInterface;
 use App\Controller\Admin\Competition\ResultsController;
 use App\Entity\JuryEntry;
+use App\Form\Dto\JuryEntryDeleteDto;
+use App\Form\Type\JuryEntryDeleteType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,14 +52,15 @@ final class DeleteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $id = $data['id'] ?? null;
+            assert($data instanceof JuryEntryDeleteDto);
+            $id = $data->id;
             if ($id === (string) $juryEntry->getId()) {
                 $this->entityManager->remove($juryEntry);
                 $this->entityManager->flush();
 
                 return $this->redirectToRoute(ResultsController::ROUTE_NAME, [
-                    'entityId' => $competitionId,
                     'categorySlug' => $slug,
+                    'entityId' => $competitionId,
                 ]);
             }
 
@@ -66,21 +68,24 @@ final class DeleteController extends AbstractController
         }
 
         return $this->redirectToRoute(ResultsController::ROUTE_NAME, [
-            'entityId' => $competitionId,
             'categorySlug' => $slug,
+            'entityId' => $competitionId,
         ]);
     }
 
+    /**
+     * @psalm-return FormInterface
+     * @phpstan-return FormInterface<JuryEntryDeleteDto>
+     */
     private function createDeleteForm(JuryEntry $juryEntry): FormInterface
     {
-        $formBuilder = $this->createFormBuilder(['id' => $juryEntry->getId()], [
+        $dto = new JuryEntryDeleteDto();
+        $dto->id = $juryEntry->getId();
+
+        return $this->createForm(JuryEntryDeleteType::class, $dto, [
             'action' => $this->generateUrl(self::ROUTE_NAME, [
                 'juryEntryId' => $juryEntry->getId(),
             ]),
-            'method' => Request::METHOD_DELETE,
         ]);
-        $formBuilder->add('id', HiddenType::class);
-
-        return $formBuilder->getForm();
     }
 }

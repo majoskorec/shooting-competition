@@ -11,9 +11,13 @@ use Override;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: TargetDefinitionRepository::class)]
 #[ORM\Table(name: 'target_definition')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['name'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class TargetDefinition implements Stringable
 {
     #[ORM\Id]
@@ -31,7 +35,9 @@ class TargetDefinition implements Stringable
     #[ORM\Column(length: 32)]
     private string $shortName;
 
-    /** @var array<int, int> */
+    /**
+     * @var array<int, int>
+     */
     #[ORM\Column(type: Types::JSON)]
     private array $pointsSchema;
 

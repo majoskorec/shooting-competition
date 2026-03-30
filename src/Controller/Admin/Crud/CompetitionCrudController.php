@@ -31,6 +31,9 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractCrudController<Competition>
+ */
 final class CompetitionCrudController extends AbstractCrudController
 {
     private const string SAVE_AND_GO_TO_PRESENTATION = 'saveAndGoToPresentation';
@@ -123,18 +126,17 @@ final class CompetitionCrudController extends AbstractCrudController
     }
 
     #[Override]
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void
     {
-        if ($entityInstance instanceof Competition) {
-            $entityInstance->setTargetConfigurationSnapshot(
-                $this->snapshotFactory->createFromCompetitionType($entityInstance->getCompetitionType()),
-            );
-        }
+        $entityInstance->setTargetConfigurationSnapshot(
+            $this->snapshotFactory->createFromCompetitionType($entityInstance->getCompetitionType()),
+        );
 
         parent::persistEntity($entityManager, $entityInstance);
     }
 
     #[Override]
+    // phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     public function configureActions(Actions $actions): Actions
     {
         $actions->add(
@@ -181,7 +183,7 @@ final class CompetitionCrudController extends AbstractCrudController
                 // toto sice ea vyzaduje ale ak som spravne pochopil nikde sa to napouzije
                 ->linkToRoute(
                     PresentationController::ROUTE_NAME,
-                    static fn  (Competition $competition): array => [
+                    static fn (Competition $competition): array => [
                         'entityId' => $competition->getId(),
                     ],
                 )
@@ -191,9 +193,14 @@ final class CompetitionCrudController extends AbstractCrudController
         return $actions;
     }
 
+    /**
+     * @psalm-param AdminContext $context
+     * @phpstan-param AdminContext<Competition> $context
+     */
     #[Override]
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
+        // @phpstan-ignore offsetAccess.nonOffsetAccessible
         $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'] ?? null;
         if (self::SAVE_AND_GO_TO_PRESENTATION !== $submitButtonName) {
             return parent::getRedirectResponseAfterSave($context, $action);

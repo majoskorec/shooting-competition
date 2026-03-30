@@ -14,10 +14,14 @@ use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: CompetitorRepository::class)]
 #[ORM\Table(name: 'competitor')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'shooter_id'])]
 #[UniqueEntity(fields: ['competition', 'shooter'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class Competitor implements Stringable
 {
     #[ORM\Id]
@@ -43,7 +47,9 @@ class Competitor implements Stringable
     #[ORM\Column(nullable: true)]
     private ?int $startNumber = null;
 
-    /** @var Collection<int, CompetitionCategory> */
+    /**
+     * @var Collection<int, CompetitionCategory>
+     */
     #[ORM\ManyToMany(
         targetEntity: CompetitionCategory::class,
         mappedBy: 'competitors',
@@ -57,7 +63,9 @@ class Competitor implements Stringable
     #[ORM\Column(enumType: CompetitorStatus::class)]
     private CompetitorStatus $status;
 
-    /** @var Collection<int, TargetResult> */
+    /**
+     * @var Collection<int, TargetResult>
+     */
     #[ORM\OneToMany(
         targetEntity: TargetResult::class,
         mappedBy: 'competitor',
@@ -66,7 +74,9 @@ class Competitor implements Stringable
     )]
     private Collection $targetResults;
 
-    /** @var Collection<int, JuryEntry> */
+    /**
+     * @var Collection<int, JuryEntry>
+     */
     #[ORM\OneToMany(
         targetEntity: JuryEntry::class,
         mappedBy: 'competitor',
@@ -155,10 +165,12 @@ class Competitor implements Stringable
 
     public function addTargetResult(TargetResult $targetResult): void
     {
-        if (!$this->targetResults->contains($targetResult)) {
-            $this->targetResults->add($targetResult);
-            $targetResult->setCompetitor($this);
+        if ($this->targetResults->contains($targetResult)) {
+            return;
         }
+
+        $this->targetResults->add($targetResult);
+        $targetResult->setCompetitor($this);
     }
 
     public function removeTargetResult(TargetResult $targetResult): void
@@ -174,10 +186,12 @@ class Competitor implements Stringable
 
     public function addJuryEntry(JuryEntry $juryEntry): void
     {
-        if (!$this->juryEntries->contains($juryEntry)) {
-            $this->juryEntries->add($juryEntry);
-            $juryEntry->setCompetitor($this);
+        if ($this->juryEntries->contains($juryEntry)) {
+            return;
         }
+
+        $this->juryEntries->add($juryEntry);
+        $juryEntry->setCompetitor($this);
     }
 
     public function removeJuryEntry(JuryEntry $juryEntry): void
@@ -187,17 +201,8 @@ class Competitor implements Stringable
 
     public function findJuryEntriesByCategoryName(string $categoryName): ?JuryEntry
     {
-        $mainCategoryName = $this->getCompetition()->getMainCategoryName();
-        $isMain = $mainCategoryName === $categoryName;
         foreach ($this->juryEntries as $juryEntry) {
-            $category = $juryEntry->getCategory();
-            if ($isMain && $category === null) {
-                return $juryEntry;
-            }
-            if ($isMain || $category === null) {
-                continue;
-            }
-            if ($category->getName() === $categoryName) {
+            if ($juryEntry->getCategoryName() === $categoryName) {
                 return $juryEntry;
             }
         }
@@ -213,17 +218,21 @@ class Competitor implements Stringable
 
     public function addCategory(CompetitionCategory $category): void
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-            $category->addCompetitor($this);
+        if ($this->categories->contains($category)) {
+            return;
         }
+
+        $this->categories->add($category);
+        $category->addCompetitor($this);
     }
 
     public function removeCategory(CompetitionCategory $category): void
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removeCompetitor($this);
+        if (!$this->categories->removeElement($category)) {
+            return;
         }
+
+        $category->removeCompetitor($this);
     }
 
     #[Override]

@@ -33,17 +33,7 @@ final class StartingListPrintController extends AbstractController
         #[MapEntity(id: 'entityId')]
         Competition $competition,
     ): Response {
-        $competitors = $this->entityManager->getRepository(Competitor::class)
-            ->createQueryBuilder('c')
-            ->select(['c', 's', 't', 'cat'])
-            ->join('c.shooter', 's')
-            ->leftJoin('c.competitionTeam', 't')
-            ->leftJoin('c.categories', 'cat')
-            ->andWhere('c.competition = :competition')
-            ->setParameter('competition', $competition)
-            ->addOrderBy('c.startNumber', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $competitors = $this->entityManager->getRepository(Competitor::class)->findForStartingList($competition);
 
         return $this->render('admin/competition/stating_list_print/index.html.twig', [
             'competition' => $competition,

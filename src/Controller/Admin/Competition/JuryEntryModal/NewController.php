@@ -63,14 +63,16 @@ final class NewController extends AbstractController
             $this->entityManager->flush();
 
             return $this->redirectToRoute(ResultsController::ROUTE_NAME, [
-                'entityId' => $competitor->getCompetition()->getId(),
                 'categorySlug' => $categorySlug,
+                'entityId' => $competitor->getCompetition()->getId(),
             ]);
         }
 
-        return $this->render('admin/competition/jury_entry_modal/new/index.html.twig', [
-                'jury_entry' => $juryEntry,
+        return $this->render(
+            'admin/competition/jury_entry_modal/new/index.html.twig',
+            [
                 'form' => $form,
+                'jury_entry' => $juryEntry,
             ],
             new Response(
                 status: $form->isSubmitted() && !$form->isValid()
@@ -82,7 +84,8 @@ final class NewController extends AbstractController
 
     private function resolveCompetitionCategory(Competitor $competitor, string $categorySlug): ?CompetitionCategory
     {
-        if ($categorySlug === $this->categorySlugger->slugCategoryName($competitor->getCompetition()->getMainCategoryName())) {
+        $mainCategoryName = $competitor->getCompetition()->getMainCategoryName();
+        if ($categorySlug === $this->categorySlugger->slugCategoryName($mainCategoryName)) {
             return null;
         }
 

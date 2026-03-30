@@ -12,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 
+/**
+ * @extends AbstractCrudController<Shooter>
+ */
 final class ShooterCrudController extends AbstractCrudController
 {
     #[Override]

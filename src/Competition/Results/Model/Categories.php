@@ -24,12 +24,17 @@ final class Categories
             }
         }
 
+        return $this->getMainCategory();
+    }
+
+    private function getMainCategory(): Category
+    {
         foreach ($this->categories as $category) {
-            if ($category->categoryType === CategoryType::General) {
+            if ($category->categoryType === CategoryType::Main) {
                 return $category;
             }
         }
 
-        throw new RuntimeException(sprintf('Category with text "%s" not found', $text));
+        throw new RuntimeException('Missing main category');
     }
 }

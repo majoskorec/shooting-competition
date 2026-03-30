@@ -40,7 +40,8 @@ final class InputTarget extends AbstractController
     public function getItemWidth(): string
     {
         if ($this->itemWidth === null) {
-            $this->itemWidth = (string) (floor(10000 / (count($this->data->targetResult->getHitBreakdown()) + 2.5)) / 100);
+            $count = (float) count($this->data->targetResult->getHitBreakdown());
+            $this->itemWidth = (string) (floor(10000.0 / ($count + 2.5)) / 100.0);
         }
 
         return $this->itemWidth;
@@ -80,15 +81,18 @@ final class InputTarget extends AbstractController
             return;
         }
 
-
         $inputTargetDto = $this->getForm()->getData();
         assert($inputTargetDto instanceof InputTargetDto);
 
         $targetResult = $this->data->targetResult;
-        $targetResult->setHitBreakdown($inputTargetDto->points);
+        $targetResult->setHitBreakdown($inputTargetDto->toHitBreakdown());
         $this->entityManager->flush();
     }
 
+    /**
+     * @psalm-return FormInterface
+     * @phpstan-return FormInterface<InputTargetDto>
+     */
     #[Override]
     protected function instantiateForm(): FormInterface
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Competition\Results;
 
+use App\Competition\Model\Exception\InvalidFieldValueException;
 use App\Competition\Results\Model\Category;
 use App\Competition\Results\Model\CategoryType;
 use App\Competition\Results\Model\CompetitorResult;
@@ -110,7 +111,7 @@ final class ResultsFactory
         $result = [];
         foreach ($competitorSubResults as $competitorSubResult) {
             $team = $competitorSubResult->competitor->getCompetitionTeam()
-                ?? throw new RuntimeException('Competitor team not found ' . $competitorSubResult->competitor->getId());
+                ?? throw InvalidFieldValueException::create($competitorSubResult->competitor, 'competitionTeam');
             $competitorResult = $result[$team->getName()] ?? null;
             if ($competitorResult === null) {
                 $result[$team->getName()] = new CompetitorResult(
@@ -167,7 +168,7 @@ final class ResultsFactory
             $result[] = new CompetitorSubResults(
                 competitor: $competitor,
                 subResults: $this->createSubResults($competitor, $targetTieBreakPriority),
-                juryEntryDto: $juryEntry === null ? null: JuryEntryDto::create($juryEntry),
+                juryEntryDto: $juryEntry === null ? null : JuryEntryDto::create($juryEntry),
             );
         }
 
@@ -176,7 +177,7 @@ final class ResultsFactory
 
     /**
      * @param TargetTieBreakPriority $targetTieBreakPriority
-     * @return array<SubResult>
+     * @return array<string, SubResult>
      */
     private function createSubResults(
         Competitor $competitor,

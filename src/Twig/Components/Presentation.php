@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use App\Competition\Model\CompetitorStatus;
+use App\Competition\Model\Exception\InvalidFieldValueException;
 use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
@@ -32,6 +33,9 @@ final class Presentation extends AbstractController
     #[LiveProp]
     public Competition $competition;
 
+    /**
+     * @var array<string, array<Competitor>>|null
+     */
     private ?array $sharedWeapons = null;
 
     public function __construct(
@@ -95,6 +99,7 @@ final class Presentation extends AbstractController
         return $this->sharedWeapons;
     }
 
+    // phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     public function getNewWeaponCode(): string
     {
         $lastWeaponCode = array_key_first($this->getSharedWeapons());
@@ -105,7 +110,10 @@ final class Presentation extends AbstractController
         $lastChar = substr($lastWeaponCode, -1);
         $prefix = substr($lastWeaponCode, 0, -1);
         if ($lastChar >= 'a' && $lastChar <= 'y') {
-            return $prefix . chr(ord($lastChar) + 1);
+            $ord = ord($lastChar);
+            assert($ord >= 97 && $ord <= 121);
+
+            return $prefix . chr($ord + 1);
         }
 
         if ($lastChar === 'z') {
@@ -123,6 +131,10 @@ final class Presentation extends AbstractController
         return $lastWeaponCode . 'a';
     }
 
+    /**
+     * @psalm-return FormInterface
+     * @phpstan-return FormInterface<PresentationDto>
+     */
     #[Override]
     protected function instantiateForm(): FormInterface
     {
@@ -133,10 +145,10 @@ final class Presentation extends AbstractController
         $teamName = $this->formValues['teamName'] ?? null;
 
         return $this->createForm(PresentationDtoType::class, new PresentationDto($this->competition), [
+            'competition' => $this->competition,
             'first_name_filter' => $firstName,
             'last_name_filter' => $lastName,
             'team_name_filter' => $teamName,
-            'competition' => $this->competition,
         ]);
     }
 
@@ -164,8 +176,14 @@ final class Presentation extends AbstractController
         $shooter = $presentationDto->shooter;
         if ($shooter === null) {
             $shooter = new Shooter();
-            $shooter->setFirstName($presentationDto->firstName);
-            $shooter->setLastName($presentationDto->lastName);
+            $shooter->setFirstName(
+                $presentationDto->firstName
+                    ?? throw InvalidFieldValueException::create($presentationDto, 'firstName'),
+            );
+            $shooter->setLastName(
+                $presentationDto->lastName
+                    ?? throw InvalidFieldValueException::create($presentationDto, 'lastName'),
+            );
 
             $this->entityManager->persist($shooter);
         }
@@ -178,8 +196,9 @@ final class Presentation extends AbstractController
 
     private function fetchTeamData(): void
     {
-        $competitionTeam = $this->formValues['competitionTeam'] ?? null;
-        if (trim($competitionTeam ?? '') === '') {
+        $competitionTeam = $this->formValues['competitionTeam'] ?? '';
+        assert(is_string($competitionTeam));
+        if (trim($competitionTeam) === '') {
             return;
         }
 
@@ -193,8 +212,9 @@ final class Presentation extends AbstractController
 
     private function fetchShooterData(): ?Shooter
     {
-        $shooter = $this->formValues['shooter'] ?? null;
-        if (trim($shooter ?? '') === '') {
+        $shooter = $this->formValues['shooter'] ?? '';
+        assert(is_string($shooter));
+        if (trim($shooter) === '') {
             return null;
         }
 

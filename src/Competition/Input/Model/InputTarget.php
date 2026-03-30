@@ -20,7 +20,7 @@ final class InputTarget
         TargetResult $targetResult,
         int $competitorStartNumber,
         int $targetIndex,
-        int $competitionId
+        int $competitionId,
     ): self {
         $self = new self();
         $self->targetSnapshot = $targetSnapshot;

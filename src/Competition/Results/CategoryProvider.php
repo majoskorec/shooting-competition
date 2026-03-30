@@ -33,7 +33,7 @@ final class CategoryProvider implements CategorySluggerInterface
         $results[] = Category::create(
             title: $competition->getMainCategoryName(),
             slugger: $this,
-            categoryType: CategoryType::General,
+            categoryType: CategoryType::Main,
             sortByRank: $isFinished,
         );
         if ($isFinished && $competition->getTeamMemberCount() > 0) {
@@ -62,7 +62,7 @@ final class CategoryProvider implements CategorySluggerInterface
         $results[] = Category::create(
             title: $competition->getMainCategoryName(),
             slugger: $this,
-            categoryType: CategoryType::General,
+            categoryType: CategoryType::Main,
             sortByRank: true,
         );
         if ($competition->getTeamMemberCount() > 0) {

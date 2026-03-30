@@ -17,8 +17,8 @@ use App\Controller\Admin\Crud\CompetitionTypeTargetCrudController;
 use App\Controller\Admin\Crud\CompetitorCrudController;
 use App\Controller\Admin\Crud\JuryEntryCrudController;
 use App\Controller\Admin\Crud\ShooterCrudController;
-use App\Controller\Admin\Crud\TargetResultCrudController;
 use App\Controller\Admin\Crud\TargetDefinitionCrudController;
+use App\Controller\Admin\Crud\TargetResultCrudController;
 use App\Controller\Admin\Crud\UserCrudController;
 use App\Controller\Public\DefaultController;
 use App\Entity\Competition;
@@ -53,6 +53,7 @@ final class DashboardController extends AbstractDashboardController
     ) {
     }
 
+    #[Override]
     public function index(): Response
     {
         $competitions = $this->entityManager->getRepository(Competition::class)->findBy(
@@ -66,6 +67,7 @@ final class DashboardController extends AbstractDashboardController
         ]);
     }
 
+    #[Override]
     public function configureDashboard(): Dashboard
     {
         $dashboard = Dashboard::new();
@@ -76,9 +78,15 @@ final class DashboardController extends AbstractDashboardController
         return $dashboard;
     }
 
+    #[Override]
+    // phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh, SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToUrl('Web', 'fa-solid fa-globe', $this->urlGenerator->generate(DefaultController::ROUTE_NAME))
+        yield MenuItem::linkToUrl(
+            'Web',
+            'fa-solid fa-globe',
+            $this->urlGenerator->generate(DefaultController::ROUTE_NAME),
+        )
             ->setLinkTarget('_blank');
 
         yield MenuItem::linkToDashboard('Tu začni', 'internal:home');
@@ -99,7 +107,11 @@ final class DashboardController extends AbstractDashboardController
             MenuItem::linkTo(TargetResultCrudController::class, 'Výsledky na terčoch', 'fa-solid fa-table-cells'),
             MenuItem::linkTo(JuryEntryCrudController::class, 'Rozstrely', 'fa-solid fa-scale-balanced'),
             MenuItem::linkTo(CompetitionTeamCrudController::class, 'Družstvá', 'fa-solid fa-people-group'),
-            MenuItem::linkTo(CompetitionCategoryCrudController::class, 'Kategórie', 'fa-solid fa-arrows-down-to-people'),
+            MenuItem::linkTo(
+                CompetitionCategoryCrudController::class,
+                'Kategórie',
+                'fa-solid fa-arrows-down-to-people',
+            ),
         ]);
 
         yield $competitions;
@@ -114,6 +126,7 @@ final class DashboardController extends AbstractDashboardController
         $request = $this->requestStack->getCurrentRequest();
         $requestRoute = $request?->attributes->get('_route');
         $entityId = $request?->attributes->get('entityId');
+        assert(is_string($entityId) || $entityId === null);
 
         foreach ($activeCompetitions as $competition) {
             yield MenuItem::section($competition->getName(), 'fa-solid fa-arrows-to-dot');
@@ -123,32 +136,37 @@ final class DashboardController extends AbstractDashboardController
                 PresentationController::ROUTE_NAME,
                 ['entityId' => $competition->getId()],
             );
-            if ($competition->getStatus() !== CompetitionStatus::Presentation) {
-                yield MenuItem::linkToRoute(
-                    'Štartová listina',
-                    '',
-                    StartingListController::ROUTE_NAME,
-                    ['entityId' => $competition->getId()],
-                );
-                yield MenuItem::linkToRoute(
-                    'Zadávanie výsledkov',
-                    '',
-                    InputController::ROUTE_NAME,
-                    ['entityId' => $competition->getId()],
-                );
-                yield MenuItem::linkToRoute(
-                    'Výsledky',
-                    '',
-                    ResultsController::ROUTE_NAME,
-                    [
-                        'entityId' => $competition->getId(),
-                    ],
-                )->setCssClass(
-                    $requestRoute === ResultsController::ROUTE_NAME && (int) $entityId === $competition->getId()
-                        ? 'active'
-                        : '',
-                );
+
+            if ($competition->getStatus() === CompetitionStatus::Presentation) {
+                continue;
             }
+
+            yield MenuItem::linkToRoute(
+                'Štartová listina',
+                '',
+                StartingListController::ROUTE_NAME,
+                ['entityId' => $competition->getId()],
+            );
+
+            yield MenuItem::linkToRoute(
+                'Zadávanie výsledkov',
+                '',
+                InputController::ROUTE_NAME,
+                ['entityId' => $competition->getId()],
+            );
+
+            yield MenuItem::linkToRoute(
+                'Výsledky',
+                '',
+                ResultsController::ROUTE_NAME,
+                [
+                    'entityId' => $competition->getId(),
+                ],
+            )->setCssClass(
+                $requestRoute === ResultsController::ROUTE_NAME && (int) $entityId === $competition->getId()
+                    ? 'active'
+                    : '',
+            );
         }
     }
 
@@ -173,6 +191,7 @@ final class DashboardController extends AbstractDashboardController
         return $actions;
     }
 
+    #[Override]
     public function configureAssets(): Assets
     {
         $assets = parent::configureAssets();

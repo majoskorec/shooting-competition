@@ -9,6 +9,9 @@ use App\Entity\CompetitionTypeTarget;
 final class TargetSnapshot
 {
     public string $name;
+    /**
+     * @var array<int, int>
+     */
     public array $pointsSchema;
     public int $displayOrder;
     public int $shotCount;

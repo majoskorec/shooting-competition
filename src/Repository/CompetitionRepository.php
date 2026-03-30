@@ -24,17 +24,12 @@ final class CompetitionRepository extends ServiceEntityRepository
      */
     public function findPublic(): array
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb = $qb->andWhere('c.status in (:activeStatuses)');
-        $qb = $qb->setParameter('activeStatuses', [
+        return $this->findWithStatuses([
             CompetitionStatus::Presentation,
             CompetitionStatus::InProgress,
             CompetitionStatus::ReadyForClosure,
             CompetitionStatus::Finished,
         ]);
-        $qb = $qb->addOrderBy('c.competitionStart', 'DESC');
-
-        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -42,15 +37,26 @@ final class CompetitionRepository extends ServiceEntityRepository
      */
     public function findActive(): array
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb = $qb->andWhere('c.status in (:activeStatuses)');
-        $qb = $qb->setParameter('activeStatuses', [
+        return $this->findWithStatuses([
             CompetitionStatus::Presentation,
             CompetitionStatus::InProgress,
             CompetitionStatus::ReadyForClosure,
         ]);
-        $qb = $qb->addOrderBy('c.competitionStart', 'DESC');
+    }
 
-        return $qb->getQuery()->getResult();
+    /**
+     * @param array<CompetitionStatus> $statuses
+     * @return array<Competition>
+     */
+    private function findWithStatuses(array $statuses): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb = $qb->andWhere('c.status in (:statuses)');
+        $qb = $qb->setParameter('statuses', $statuses);
+        $qb = $qb->addOrderBy('c.competitionStart', 'DESC');
+        /** @var array<Competition> $result */
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
     }
 }

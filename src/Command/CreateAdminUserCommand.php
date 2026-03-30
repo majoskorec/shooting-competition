@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,13 +29,22 @@ final class CreateAdminUserCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $email = mb_strtolower(trim($io->ask('Admin e-mail')));
-        $password = trim((string) $io->askHidden('Heslo'));
-        $fullName = trim((string) $io->ask('Celé meno'));
+        $email = $io->ask('Admin e-mail');
+        assert(is_string($email));
+        $email = mb_strtolower(trim($email));
+
+        $password = $io->askHidden('Heslo');
+        assert(is_string($password));
+        $password = trim($password);
+
+        $fullName = $io->ask('Celé meno');
+        assert(is_string($fullName));
+        $fullName = trim($fullName);
 
         if ($email === '' || $password === '' || $fullName === '') {
             $io->error('Email, password and full name are required.');

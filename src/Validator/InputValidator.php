@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Competition\Input\Model\Input as InputModel;
+use App\Competition\Input\Model\InputTarget;
 use App\Competition\Model\CompetitionStatus;
+use App\Entity\Shooter;
 use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -14,6 +16,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class InputValidator extends ConstraintValidator
 {
+    private const array FINAL_STATUSES = [
+        CompetitionStatus::ReadyForClosure,
+        CompetitionStatus::Finished,
+    ];
+
     #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
@@ -32,40 +39,54 @@ final class InputValidator extends ConstraintValidator
     {
         foreach ($value->inputCompetitors as $input) {
             foreach ($input->inputTargets as $inputTarget) {
-                $expectedShotCount = $inputTarget->targetSnapshot->shotCount;
-                $shotCount = array_sum($inputTarget->targetResult->getHitBreakdown());
-                if (
-                    $shotCount === 0
-                    && in_array($value->competition->getStatus(), [
-                        CompetitionStatus::ReadyForClosure,
-                        CompetitionStatus::Finished,
-                    ], true)
-                ) {
-                    $this->context->buildViolation($constraint->lessShots)
-                        ->setParameter('{{ shooter }}', $input->competitor->getShooter()->getFullName())
-                        ->setParameter('{{ targetName }}', $inputTarget->targetSnapshot->name)
-                        ->setCause('danger') // toto je hack
-                        ->addViolation();
-                }
+                $this->validateInputTargetShotCount(
+                    $constraint,
+                    $inputTarget,
+                    $value->competition->getStatus(),
+                    $input->competitor->getShooter(),
+                );
+            }
+        }
+    }
 
-                if ($shotCount !== 0 && $shotCount < $expectedShotCount) {
-                    $this->context->buildViolation($constraint->lessShots)
-                        ->setParameter('{{ shooter }}', $input->competitor->getShooter()->getFullName())
-                        ->setParameter('{{ targetName }}', $inputTarget->targetSnapshot->name)
-                        ->setCause('warning') // toto je hack
-                        ->addViolation();
-                }
+    private function validateInputTargetShotCount(
+        Input $constraint,
+        InputTarget $inputTarget,
+        CompetitionStatus $status,
+        Shooter $shooter,
+    ): void {
+        $expectedShotCount = $inputTarget->targetSnapshot->shotCount;
+        $shotCount = array_sum($inputTarget->targetResult->getHitBreakdown());
+        if ($shotCount === $expectedShotCount) {
+            return;
+        }
 
-                if ($shotCount === $expectedShotCount) {
-                    continue;
-                }
-
-                $this->context->buildViolation($constraint->moreShots)
-                    ->setParameter('{{ shooter }}', $input->competitor->getShooter()->getFullName())
+        if ($shotCount === 0) {
+            if (in_array($status, self::FINAL_STATUSES, true)) {
+                $this->context->buildViolation($constraint->lessShots)
+                    ->setParameter('{{ shooter }}', $shooter->getFullName())
                     ->setParameter('{{ targetName }}', $inputTarget->targetSnapshot->name)
                     ->setCause('danger') // toto je hack
                     ->addViolation();
             }
+
+            return;
         }
+
+        if ($shotCount < $expectedShotCount) {
+            $this->context->buildViolation($constraint->lessShots)
+                ->setParameter('{{ shooter }}', $shooter->getFullName())
+                ->setParameter('{{ targetName }}', $inputTarget->targetSnapshot->name)
+                ->setCause('warning') // toto je hack
+                ->addViolation();
+
+            return;
+        }
+
+        $this->context->buildViolation($constraint->moreShots)
+            ->setParameter('{{ shooter }}', $shooter->getFullName())
+            ->setParameter('{{ targetName }}', $inputTarget->targetSnapshot->name)
+            ->setCause('danger') // toto je hack
+            ->addViolation();
     }
 }

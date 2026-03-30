@@ -10,15 +10,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Override;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
+/**
+ * @extends AbstractCrudController<TargetDefinition>
+ */
 final class TargetDefinitionCrudController extends AbstractCrudController
 {
+    #[Override]
     public static function getEntityFqcn(): string
     {
         return TargetDefinition::class;
     }
 
+    #[Override]
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -30,6 +36,7 @@ final class TargetDefinitionCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_DETAIL, 'Detail definície terča');
     }
 
+    #[Override]
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')
@@ -45,12 +52,9 @@ final class TargetDefinitionCrudController extends AbstractCrudController
             ->allowAdd()
             ->allowDelete()
             ->renderExpanded()
-            ->formatValue(function ($value, $entity) {
-                if (is_array($value)) {
-                    return implode(', ', $value);
-                }
-
-                return $value;
-            });
+            ->formatValue(
+                /** @param array<string> $value */
+                static fn (array $value): string => implode(', ', $value), // @phpstan-ignore argument.type
+            );
     }
 }

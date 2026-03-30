@@ -22,6 +22,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
 
+/**
+ * @extends AbstractCrudController<TargetResult>
+ */
 final class TargetResultCrudController extends AbstractCrudController
 {
     #[Override]
@@ -110,9 +113,7 @@ final class TargetResultCrudController extends AbstractCrudController
             return '';
         }
 
-        if (!is_array($value)) {
-            return (string) $value;
-        }
+        assert(is_array($value));
 
         return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     }

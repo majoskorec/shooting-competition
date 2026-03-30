@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Presentation extends Constraint
 {
-    public string $shooterAlreadyInCompetitionMessage = 'Strelec {{ shooter }} je uz zaregistovaný na {{ competition }}.';
+    public string $shooterAlreadyInCompetitionMessage = 'Strelec {{ shooter }} je uz zaregistovaný.';
     public string $shooterAlreadyExistsMessage = 'Strelec {{ firstName }} {{ lastName }} už existuje.';
     public string $teamAlreadyExistsMessage = 'Družstvo {{ teamName }} už existuje na {{ competition }}.';
     public string $competitionTeamIsFullMessage = 'Družstvo {{ teamName }} je už plné.';

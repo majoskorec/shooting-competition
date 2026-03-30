@@ -11,9 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
+/**
+ * @final
+ */
 #[ORM\Entity(repositoryClass: CompetitionCategoryRepository::class)]
 #[ORM\Table(name: 'competition_category')]
 #[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['competition_id', 'name'])]
+// phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class CompetitionCategory implements Stringable
 {
     #[ORM\Id]
@@ -36,7 +40,9 @@ class CompetitionCategory implements Stringable
     )]
     private string $name;
 
-    /** @var Collection<int, Competitor> */
+    /**
+     * @var Collection<int, Competitor>
+     */
     #[ORM\ManyToMany(
         targetEntity: Competitor::class,
         inversedBy: 'categories',
@@ -81,9 +87,11 @@ class CompetitionCategory implements Stringable
 
     public function addCompetitor(Competitor $competitor): void
     {
-        if (!$this->competitors->contains($competitor)) {
-            $this->competitors->add($competitor);
+        if ($this->competitors->contains($competitor)) {
+            return;
         }
+
+        $this->competitors->add($competitor);
     }
 
     public function removeCompetitor(Competitor $competitor): void

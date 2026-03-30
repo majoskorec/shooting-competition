@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Competition\Results\Model;
 
 use App\Entity\Competition;
+use App\Validator as AppAssert;
 
-#[\App\Validator\Results]
+#[AppAssert\Results]
 final class Results
 {
     /**

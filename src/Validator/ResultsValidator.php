@@ -34,6 +34,37 @@ final class ResultsValidator extends ConstraintValidator
             return;
         }
 
+        $results = $this->prepareSameResultData($value);
+        foreach ($results as $ranks) {
+            if (count($ranks) < 2) {
+                continue;
+            }
+
+            $this->buildSameResultViolation($constraint, $ranks);
+        }
+    }
+
+    /**
+     * @param non-empty-array<int> $ranks
+     */
+    private function buildSameResultViolation(Results $constraint, array $ranks): void
+    {
+        sort($ranks);
+        $highestRank = min($ranks);
+        $cause = $highestRank <= 3 ? 'danger' : 'warning';
+        $rankLabel = implode(', ', $ranks);
+
+        $this->context->buildViolation($constraint->sameResult)
+            ->setParameter('{{ rank }}', $rankLabel)
+            ->setCause($cause) // toto je hack
+            ->addViolation();
+    }
+
+    /**
+     * @return array<int, array<int>>
+     */
+    private function prepareSameResultData(ResultsModel $value): array
+    {
         $results = [];
         foreach ($value->competitorsResultsWithRank as $competitorResult) {
             if ($competitorResult->rank > 6) {
@@ -43,20 +74,6 @@ final class ResultsValidator extends ConstraintValidator
             $results[$competitorResult->competitorResult->finalResult][] = $competitorResult->rank;
         }
 
-        foreach ($results as $ranks) {
-            if (count($ranks) < 2) {
-                continue;
-            }
-
-            sort($ranks);
-            $highestRank = min($ranks);
-            $cause = $highestRank <= 3 ? 'danger' : 'warning';
-            $rankLabel = implode(', ', $ranks);
-
-            $this->context->buildViolation($constraint->sameResult)
-                ->setParameter('{{ rank }}', $rankLabel)
-                ->setCause($cause) // toto je hack
-                ->addViolation();
-        }
+        return $results;
     }
 }

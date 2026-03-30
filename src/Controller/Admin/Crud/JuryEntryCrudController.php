@@ -22,6 +22,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use Error;
 use Override;
 
+/**
+ * @extends AbstractCrudController<JuryEntry>
+ */
 final class JuryEntryCrudController extends AbstractCrudController
 {
     #[Override]

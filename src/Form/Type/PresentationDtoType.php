@@ -8,9 +8,10 @@ use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
 use App\Entity\Shooter;
 use App\Form\Dto\PresentationDto;
-use App\Repository\CompetitorRepository;
 use App\Repository\CompetitionTeamRepository;
+use App\Repository\CompetitorRepository;
 use App\Repository\ShooterRepository;
+use Doctrine\DBAL\Types\Types;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<PresentationDto>
+ */
 final class PresentationDtoType extends AbstractType
 {
     public function __construct(
@@ -33,9 +37,15 @@ final class PresentationDtoType extends AbstractType
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $firstName = trim($options['first_name_filter'] ?? '');
-        $lastName = trim($options['last_name_filter'] ?? '');
-        $teamName = trim($options['team_name_filter'] ?? '');
+        $firstName = $options['first_name_filter'] ?? '';
+        assert(is_string($firstName));
+        $firstName = trim($firstName);
+        $lastName = $options['last_name_filter'] ?? '';
+        assert(is_string($lastName));
+        $lastName = trim($lastName);
+        $teamName = $options['team_name_filter'] ?? '';
+        assert(is_string($teamName));
+        $teamName = trim($teamName);
         $competition = $options['competition'];
         assert($competition instanceof Competition);
         $registeredShooterIds = array_fill_keys(
@@ -53,11 +63,14 @@ final class PresentationDtoType extends AbstractType
         ]);
 
         $builder->add('shooter', EntityType::class, [
-            'class' => Shooter::class,
-            'expanded' => true,
-            'label' => 'Strelec',
-            'placeholder' => 'Nový strelec',
-            'required' => false,
+            'choice_attr' => static function (Shooter $shooter) use ($registeredShooterIds): array {
+                $shooterId = $shooter->getId();
+                if ($shooterId !== null && isset($registeredShooterIds[$shooterId])) {
+                    return ['disabled' => 'disabled'];
+                }
+
+                return [];
+            },
             'choice_label' => static function (Shooter $shooter) use ($registeredShooterIds): string {
                 $label = $shooter->getFullName();
                 $shooterId = $shooter->getId();
@@ -67,15 +80,11 @@ final class PresentationDtoType extends AbstractType
 
                 return $label;
             },
-            'choice_attr' => static function (Shooter $shooter) use ($registeredShooterIds): array {
-                $shooterId = $shooter->getId();
-                if ($shooterId !== null && isset($registeredShooterIds[$shooterId])) {
-                    return ['disabled' => 'disabled'];
-                }
-
-                return [];
-            },
-            'query_builder' => function (ShooterRepository $repo) use ($lastName, $firstName) {
+            'class' => Shooter::class,
+            'expanded' => true,
+            'label' => 'Strelec',
+            'placeholder' => 'Nový strelec',
+            'query_builder' => static function (ShooterRepository $repo) use ($lastName, $firstName) {
                 $qb = $repo->createQueryBuilder('s');
                 $qb = $qb->orderBy('s.lastName', 'ASC');
                 $qb = $qb->addOrderBy('s.firstName', 'ASC');
@@ -94,6 +103,7 @@ final class PresentationDtoType extends AbstractType
 
                 return $qb;
             },
+            'required' => false,
         ]);
 
         $builder->add('club', TextType::class, [
@@ -109,52 +119,55 @@ final class PresentationDtoType extends AbstractType
             'required' => false,
         ]);
         $builder->add('categories', ChoiceType::class, [
-            'expanded' => true,
-            'multiple' => true,
             'choices' => $competition->getCategories()->toArray(),
             'choice_label' => 'name',
+            'expanded' => true,
             'label' => 'Kategórie',
+            'multiple' => true,
             'required' => false,
         ]);
 
         $teamMemberCount = $competition->getTeamMemberCount();
-        if ($teamMemberCount > 1) {
-            $builder->add('teamName', TextType::class, [
-                'label' => 'Družstvo',
-                'required' => false,
-            ]);
+        if ($teamMemberCount <= 1) {
+            return;
+        }
 
-            $builder->add('competitionTeam', EntityType::class, [
-                'class' => CompetitionTeam::class,
-                'label' => 'Vyber družstvo',
-                'placeholder' => 'Nové družstvo',
-                'expanded' => true,
-                'choice_label' => 'presentationChoiceLabel',
-                'required' => false,
-                'attr' => [
-                    'size' => 5,
-                ],
-                'choice_attr' => static fn (CompetitionTeam $competitionTeam): array => $competitionTeam->getMembers()->count() >= $teamMemberCount
+        $builder->add('teamName', TextType::class, [
+            'label' => 'Družstvo',
+            'required' => false,
+        ]);
+
+        $builder->add('competitionTeam', EntityType::class, [
+            'attr' => [
+                'size' => 5,
+            ],
+            'choice_attr' => static fn (CompetitionTeam $competitionTeam): array
+                => $competitionTeam->getMembers()->count() >= $teamMemberCount
                     ? ['disabled' => 'disabled']
                     : [],
-                'query_builder' => function (CompetitionTeamRepository $repo) use ($teamName, $competition) {
-                    $qb = $repo->createQueryBuilder('t');
-                    $qb = $qb->orderBy('t.name', 'ASC');
-                    $qb = $qb->andWhere('t.competition = :competition');
-                    $qb = $qb->setParameter('competition', $competition);
-                    $qb = $qb->setMaxResults(5);
-                    if ($teamName !== '') {
-                        $qb = $qb->andWhere('t.name LIKE :teamName');
-                        $qb = $qb->setParameter('teamName', '%' . $teamName . '%');
-                    }
-                    if ($teamName === '') {
-                        $qb = $qb->andWhere('1 = 0');
-                    }
+            'choice_label' => 'presentationChoiceLabel',
+            'class' => CompetitionTeam::class,
+            'expanded' => true,
+            'label' => 'Vyber družstvo',
+            'placeholder' => 'Nové družstvo',
+            'query_builder' => static function (CompetitionTeamRepository $repo) use ($teamName, $competition) {
+                $qb = $repo->createQueryBuilder('t');
+                $qb = $qb->orderBy('t.name', 'ASC');
+                $qb = $qb->andWhere('t.competition = :competition');
+                $qb = $qb->setParameter('competition', $competition->getId(), Types::INTEGER);
+                $qb = $qb->setMaxResults(5);
+                if ($teamName !== '') {
+                    $qb = $qb->andWhere('t.name LIKE :teamName');
+                    $qb = $qb->setParameter('teamName', '%' . $teamName . '%');
+                }
+                if ($teamName === '') {
+                    $qb = $qb->andWhere('1 = 0');
+                }
 
-                    return $qb;
-                },
-            ]);
-        }
+                return $qb;
+            },
+            'required' => false,
+        ]);
     }
 
     #[Override]

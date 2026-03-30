@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\UX\Icons\IconRendererInterface;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
-use Twig\Markup;
 
 final class CompetitionExtension
 {
@@ -52,9 +51,9 @@ final class CompetitionExtension
     public function rankIcon(int $rank): string
     {
         return match ($rank) {
-            1 => sprintf('1. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #d4af37;"])),
-            2 => sprintf('2. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #9aa4b2;"])),
-            3 => sprintf('3. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => "color: #b87333;"])),
+            1 => sprintf('1. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => 'color: #d4af37;'])),
+            2 => sprintf('2. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => 'color: #9aa4b2;'])),
+            3 => sprintf('3. %s', $this->iconRenderer->renderIcon('fa6-solid:medal', ['style' => 'color: #b87333;'])),
             default => (string) $rank,
         };
     }

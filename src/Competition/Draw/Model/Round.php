@@ -34,7 +34,7 @@ final class Round
 
         return array_any(
             $this->competitors,
-            fn (Competitor $competitor): bool => $competitor->getSharedWeaponCode() === $sharedWeaponCode,
+            static fn (Competitor $competitor): bool => $competitor->getSharedWeaponCode() === $sharedWeaponCode,
         );
     }
 

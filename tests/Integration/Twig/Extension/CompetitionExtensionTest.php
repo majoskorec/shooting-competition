@@ -6,6 +6,7 @@ namespace App\Tests\Integration\Twig\Extension;
 
 use App\Twig\Extension\CompetitionExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
 use function Zenstruck\Foundry\faker;
 
 final class CompetitionExtensionTest extends KernelTestCase

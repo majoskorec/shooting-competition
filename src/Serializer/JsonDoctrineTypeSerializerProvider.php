@@ -26,9 +26,7 @@ final class JsonDoctrineTypeSerializerProvider
         }
 
         $serializer = self::$container->get(self::SERVICE_ID);
-        if (!$serializer instanceof SerializerInterface) {
-            throw new RuntimeException('The retrieved service is not a SerializerInterface instance.');
-        }
+        assert($serializer instanceof SerializerInterface);
 
         return $serializer;
     }

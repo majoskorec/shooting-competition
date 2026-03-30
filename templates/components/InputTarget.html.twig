@@ -29,19 +29,19 @@
     >
         {{ this.shotsCount }}
     </div>
-    {% for points in this.data.targetSnapshot.pointsSchema  %}
-        {% set formName = constant('App\\Form\\Type\\InputTargetType::FIELD_PREFIX') ~ points %}
-        {{ form_widget(form[formName], {
+    {% for points in this.data.targetSnapshot.pointsSchema %}
+        {% set form_name = constant('App\\Form\\Type\\InputTargetType::FIELD_PREFIX') ~ points %}
+        {{ form_widget(form[form_name], {
             'attr': {
                 'style': 'width: ' ~ this.itemWidth ~ '%',
                 'tabindex': this.getTabIndex(loop.index0),
-                'class': form[formName].vars.errors|length > 0 ? 'is-invalid',
+                'class': form[form_name].vars.errors|length > 0 ? 'is-invalid',
                 ...stimulus_controller('clear-zero-input'),
                 ...stimulus_action('clear-zero-input', 'clearZeroOnFocus', 'focus'),
             }
         }) }}
 
-        {{ form_errors(form[formName]) }}
+        {{ form_errors(form[form_name]) }}
     {% endfor %}
     <div
         class="text-center flex-fill fw-bolder"

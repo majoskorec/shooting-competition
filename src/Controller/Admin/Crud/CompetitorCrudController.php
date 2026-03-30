@@ -9,10 +9,10 @@ use App\Controller\Admin\Competition\PresentationController;
 use App\Entity\Competitor;
 use App\Repository\CompetitionCategoryRepository;
 use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -28,6 +28,9 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractCrudController<Competitor>
+ */
 final class CompetitorCrudController extends AbstractCrudController
 {
     private const string SAVE_AND_GO_TO_PRESENTATION = 'saveAndGoToPresentation';
@@ -114,7 +117,7 @@ final class CompetitorCrudController extends AbstractCrudController
                 // toto sice ea vyzaduje ale ak som spravne pochopil nikde sa to napouzije
                 ->linkToRoute(
                     PresentationController::ROUTE_NAME,
-                    static fn  (Competitor $competitor): array => [
+                    static fn (Competitor $competitor): array => [
                         'entityId' => $competitor->getCompetition()->getId(),
                     ],
                 )
@@ -142,9 +145,14 @@ final class CompetitorCrudController extends AbstractCrudController
         return $qb;
     }
 
+    /**
+     * @psalm-param AdminContext $context
+     * @phpstan-param AdminContext<Competitor> $context
+     */
     #[Override]
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
+        // @phpstan-ignore offsetAccess.nonOffsetAccessible
         $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'] ?? null;
         if (self::SAVE_AND_GO_TO_PRESENTATION !== $submitButtonName) {
             return parent::getRedirectResponseAfterSave($context, $action);

@@ -38,8 +38,8 @@ final class ResultsController extends AbstractController
         $category = $categories->getByText($categorySlug ?? '');
         if ($category->slug !== $categorySlug) {
             return $this->redirectToRoute(self::ROUTE_NAME, [
-                'id' => $competition->getId(),
                 'categorySlug' => $category->slug,
+                'id' => $competition->getId(),
             ]);
         }
 
