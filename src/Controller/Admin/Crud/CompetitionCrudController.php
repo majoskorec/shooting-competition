@@ -10,6 +10,7 @@ use App\Controller\Admin\Competition\PresentationController;
 use App\Controller\Admin\Competition\ResultsController;
 use App\Controller\Admin\Competition\StartingListController;
 use App\Entity\Competition;
+use App\Form\Type\CompetitionCategoryEmbeddedType;
 use App\Form\Type\JsonCodeEditorType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -122,7 +123,9 @@ final class CompetitionCrudController extends AbstractCrudController
                 return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
             });
 
-        yield CollectionField::new('categories', 'Kategórie');
+        yield CollectionField::new('categories', 'Kategórie')
+            ->setEntryType(CompetitionCategoryEmbeddedType::class)
+            ->setEntryIsComplex();
     }
 
     #[Override]
