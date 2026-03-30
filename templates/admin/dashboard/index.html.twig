@@ -53,4 +53,104 @@
             </tbody>
         </table>
     </div>
+
+    <div class="content-panel mt-4">
+        <h2 class="h4 mb-3">
+            Ako postupovať počas súťaže
+        </h2>
+
+        <div class="mb-4">
+            <h3 class="h5">
+                1. Založenie súťaže
+            </h3>
+            <p class="mb-2">
+                Klikni na <strong>Nová súťaž</strong> a vytvor novú súťaž z existujúceho typu súťaže.
+                Po uložení sa pripraví snapshot terčov podľa zvoleného typu a súťaž sa zobrazí v zozname nižšie.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="h5">
+                2. Ako vyplniť polia súťaže
+            </h3>
+            <ul class="mb-0">
+                <li><strong>Názov</strong>: názov konkrétnej súťaže, ktorý sa bude zobrazovať aj verejne.</li>
+                <li><strong>Typ súťaže</strong>: zvolený formát, napríklad M400. Pri vytvorení sa z neho načíta konfigurácia terčov.</li>
+                <li><strong>Začiatok súťaže</strong>: dátum a čas začiatku.</li>
+                <li><strong>Miesto</strong> a <strong>Organizátor</strong>: informačné údaje pre administráciu aj verejné zobrazenie.</li>
+                <li><strong>Názov hlavnej kategórie</strong>: názov hlavného poradia, napríklad Memoriál Antona Krištofa.</li>
+                <li><strong>Počet členov družstva</strong>: zadaj 0, ak družstvá nepoužívaš. Ak ich používaš, zadaj minimálne 2.</li>
+                <li><strong>Počet strelcov v runde</strong>: koľko strelcov môže strieľať naraz. Podľa toho sa robí rozlosovanie a štartová listina.</li>
+                <li><strong>Status</strong>: určuje fázu súťaže. Bežný postup je prezentácia, priebeh súťaže, pripravené na uzatvorenie, finálne výsledky.</li>
+                <li><strong>Kategórie</strong>: doplnkové kategórie mimo hlavnej kategórie.</li>
+            </ul>
+            <div class="mt-3">
+                <strong>Verejná sekcia podľa statusu:</strong>
+                <ul class="mb-0 mt-2">
+                    <li><strong>Draft</strong>: súťaž nie je verejne viditeľná.</li>
+                    <li><strong>Presentation</strong>, <strong>In progress</strong> a <strong>Ready for closure</strong>: verejne je dostupná prezentácia súťažiacich aj priebežné výsledky.</li>
+                    <li><strong>Finished</strong>: verejne sú dostupné finálne výsledky a export výsledkov.</li>
+                    <li><strong>Closed</strong>: súťaž už nie je verejne publikovaná.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="h5">
+                3. Prezentácia súťažiacich
+            </h3>
+            <p class="mb-2">
+                Po vytvorení súťaže otvor <strong>Prezentácia</strong>. Tu pridávaš strelcov do súťaže, vyberáš existujúceho strelca alebo zakladáš nového,
+                nastavuješ klub, kategórie, družstvo a prípadne spoločnú zbraň.
+            </p>
+            <p class="mb-0">
+                Kým je súťaž v stave <strong>Prezentácia</strong>, dopĺňaš a upravuješ štartové pole.
+                V tomto kroku ešte nie sú pridelené štartové čísla.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="h5">
+                4. Rozlosovanie a štartová listina
+            </h3>
+            <p class="mb-2">
+                Keď je prezentácia hotová a v súťaži sú aspoň dvaja súťažiaci, v obrazovke <strong>Prezentácia</strong> sa zobrazí tlačidlo <strong>Rozlosovanie</strong>.
+                Toto tlačidlo pridelí štartové čísla a rozdelí súťažiacich do behov podľa poľa <strong>Počet strelcov v runde</strong>.
+            </p>
+            <p class="mb-0">
+                Po úspešnom rozlosovaní sa súťaž presunie do priebehu a môžeš otvoriť <strong>Štartovnú listinu</strong>, kde si skontroluješ alebo vytlačíš výsledné poradie štartov.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="h5">
+                5. Zadávanie výsledkov
+            </h3>
+            <p class="mb-2">
+                Po rozlosovaní otvor <strong>Zadávanie výsledkov</strong>. Výsledky sa zadávajú po jednotlivých terčoch cez rozpis zásahov.
+                Systém priebežne dopočítava subtotal za terč aj celkový súčet.
+            </p>
+            <p class="mb-0">
+                Ak niektorý strelec nemá štartové číslo, systém ťa vráti späť na prezentáciu, aby si to najprv opravil.
+                Pri nekonzistentných vstupoch zobrazí upozornenia, ale dáta vie uložiť aj priebežne.
+            </p>
+        </div>
+
+        <div class="mb-0">
+            <h3 class="h5">
+                6. Výsledky a uzatvorenie súťaže
+            </h3>
+            <p class="mb-2">
+                Priebežné aj finálne poradie nájdeš v časti <strong>Výsledky</strong>. Tu vidíš hlavnú kategóriu, prípadné kategórie a družstvá,
+                vrátane upozornení na rovnosť výsledkov alebo neúplné dáta.
+            </p>
+            <p class="mb-2">
+                Ak treba riešiť rozstrel alebo rozhodnutie poroty, robí sa to práve vo výsledkoch cez rozstrel.
+            </p>
+            <p class="mb-0">
+                Súťaž uzatváraj až keď sú všetci strelci doplnení, rozlosovanie je hotové, výsledky sú zadané a poradie je skontrolované.
+                Potom v úprave súťaže zmeň <strong>Status</strong> na finálny stav podľa potreby, typicky <strong>Ready for closure</strong> a následne <strong>Finished</strong>.
+            </p>
+        </div>
+    </div>
 {% endblock %}
