@@ -82,6 +82,20 @@ class CompetitionTeam implements Stringable
         return $this->members;
     }
 
+    public function addMember(Competitor $competitor): void
+    {
+        if ($this->members->contains($competitor)) {
+            return;
+        }
+
+        $this->members->add($competitor);
+    }
+
+    public function removeMember(Competitor $competitor): void
+    {
+        $this->members->removeElement($competitor);
+    }
+
     public function presentationChoiceLabel(): string
     {
         return sprintf('%s [%d]', $this->name, $this->members->count());
