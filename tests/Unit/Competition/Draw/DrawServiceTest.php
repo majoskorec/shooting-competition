@@ -10,6 +10,7 @@ use App\Competition\Model\CompetitionStatus;
 use App\Entity\Competition;
 use App\Entity\Competitor;
 use App\Entity\Shooter;
+use App\Entity\ShooterGender;
 use PHPUnit\Framework\TestCase;
 use Random\Randomizer;
 
@@ -83,7 +84,9 @@ final class DrawServiceTest extends TestCase
         ?string $sharedWeaponCode = null,
     ): Competitor {
         $shooter = new Shooter();
+        $shooter->setBirthYear(1990);
         $shooter->setFirstName($firstName);
+        $shooter->setGender(ShooterGender::Male);
         $shooter->setLastName($lastName);
 
         $competitor = new Competitor();

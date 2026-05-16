@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Crud;
 
 use App\Entity\Shooter;
+use App\Entity\ShooterGender;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Override;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 /**
  * @extends AbstractCrudController<Shooter>
@@ -51,6 +55,17 @@ final class ShooterCrudController extends AbstractCrudController
         yield TextField::new('club', 'Klub / PZ')
             ->setRequired(false);
 
+        yield IntegerField::new('birthYear', 'Rok narodenia');
+
+        yield ChoiceField::new('gender', 'Pohlavie')
+            ->setFormType(EnumType::class)
+            ->setFormTypeOption('class', ShooterGender::class)
+            ->setFormTypeOption(
+                'choice_label',
+                static fn (ShooterGender $choice): string => $choice->label(),
+            )
+            ->formatValue(static fn (mixed $value): string => $value instanceof ShooterGender ? $value->label() : '');
+
         yield EmailField::new('email', 'E-mail')
             ->setRequired(false);
     }
@@ -61,6 +76,8 @@ final class ShooterCrudController extends AbstractCrudController
         $filters->add('firstName');
         $filters->add('lastName');
         $filters->add('club');
+        $filters->add('birthYear');
+        $filters->add('gender');
 
         return $filters;
     }

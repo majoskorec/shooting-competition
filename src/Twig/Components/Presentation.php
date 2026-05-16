@@ -189,6 +189,14 @@ final class Presentation extends AbstractController
         }
 
         $shooter->setClub($presentationDto->club);
+        $shooter->setBirthYear(
+            $presentationDto->birthYear
+                ?? throw InvalidFieldValueException::create($presentationDto, 'birthYear'),
+        );
+        $shooter->setGender(
+            $presentationDto->gender
+                ?? throw InvalidFieldValueException::create($presentationDto, 'gender'),
+        );
         $shooter->setEmail($presentationDto->email);
 
         return $shooter;
@@ -227,6 +235,8 @@ final class Presentation extends AbstractController
         $this->formValues['lastName'] = $shooterEntity->getLastName();
         $this->formValues['email'] = $shooterEntity->getEmail();
         $this->formValues['club'] = $shooterEntity->getClub();
+        $this->formValues['birthYear'] = $shooterEntity->getBirthYear();
+        $this->formValues['gender'] = $shooterEntity->getGender()->value;
 
         return $shooterEntity;
     }

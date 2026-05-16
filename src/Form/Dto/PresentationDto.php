@@ -8,6 +8,7 @@ use App\Entity\Competition;
 use App\Entity\CompetitionCategory;
 use App\Entity\CompetitionTeam;
 use App\Entity\Shooter;
+use App\Entity\ShooterGender;
 use App\Validator\Presentation;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +23,8 @@ final class PresentationDto
         public ?string $firstName = null,
         public ?string $lastName = null,
         public ?string $club = null,
+        public ?int $birthYear = null,
+        public ?ShooterGender $gender = null,
         #[Assert\Email]
         public ?string $email = null,
         public ?Shooter $shooter = null,

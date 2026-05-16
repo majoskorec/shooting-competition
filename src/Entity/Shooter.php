@@ -16,7 +16,7 @@ use Stringable;
  */
 #[ORM\Entity(repositoryClass: ShooterRepository::class)]
 #[ORM\Table(name: 'shooter')]
-#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['last_name', 'first_name'])]
+#[ORM\UniqueConstraint(name: 'uniq_idx', columns: ['last_name', 'first_name', 'birth_year', 'gender'])]
 // phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class Shooter implements Stringable
 {
@@ -36,6 +36,12 @@ class Shooter implements Stringable
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
+
+    #[ORM\Column]
+    private int $birthYear;
+
+    #[ORM\Column(length: 8, enumType: ShooterGender::class)]
+    private ShooterGender $gender;
 
     /**
      * @var Collection<int, Competitor>
@@ -91,6 +97,26 @@ class Shooter implements Stringable
     public function setEmail(?string $email): void
     {
         $this->email = $email;
+    }
+
+    public function getBirthYear(): int
+    {
+        return $this->birthYear;
+    }
+
+    public function setBirthYear(int $birthYear): void
+    {
+        $this->birthYear = $birthYear;
+    }
+
+    public function getGender(): ShooterGender
+    {
+        return $this->gender;
+    }
+
+    public function setGender(ShooterGender $gender): void
+    {
+        $this->gender = $gender;
     }
 
     /** @return Collection<int, Competitor> */

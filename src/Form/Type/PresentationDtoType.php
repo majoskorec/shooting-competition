@@ -7,6 +7,7 @@ namespace App\Form\Type;
 use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
 use App\Entity\Shooter;
+use App\Entity\ShooterGender;
 use App\Form\Dto\PresentationDto;
 use App\Repository\CompetitionTeamRepository;
 use App\Repository\CompetitorRepository;
@@ -17,6 +18,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -72,7 +75,12 @@ final class PresentationDtoType extends AbstractType
                 return [];
             },
             'choice_label' => static function (Shooter $shooter) use ($registeredShooterIds): string {
-                $label = $shooter->getFullName();
+                $label = sprintf(
+                    '%s (%d, %s)',
+                    $shooter->getFullName(),
+                    $shooter->getBirthYear(),
+                    $shooter->getGender()->label(),
+                );
                 $shooterId = $shooter->getId();
                 if ($shooterId !== null && isset($registeredShooterIds[$shooterId])) {
                     return sprintf('%s (registrovaný)', $label);
@@ -109,6 +117,17 @@ final class PresentationDtoType extends AbstractType
         $builder->add('club', TextType::class, [
             'label' => 'Klub / PZ',
             'required' => false,
+        ]);
+        $builder->add('birthYear', IntegerType::class, [
+            'label' => 'Rok narodenia',
+            'required' => true,
+        ]);
+        $builder->add('gender', EnumType::class, [
+            'choice_label' => static fn (ShooterGender $choice): string => $choice->label(),
+            'class' => ShooterGender::class,
+            'expanded' => true,
+            'label' => 'Pohlavie',
+            'required' => true,
         ]);
         $builder->add('email', EmailType::class, [
             'label' => 'E-mail',
