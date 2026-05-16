@@ -130,6 +130,11 @@ class Shooter implements Stringable
         return trim(sprintf('%s %s', $this->firstName, $this->lastName));
     }
 
+    public function getIdAsString(): string
+    {
+        return (string) $this->id;
+    }
+
     #[Override]
     public function __toString(): string
     {

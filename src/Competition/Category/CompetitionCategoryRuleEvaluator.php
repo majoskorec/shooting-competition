@@ -31,7 +31,9 @@ final class CompetitionCategoryRuleEvaluator
 
         return match ($rule) {
             CompetitionCategoryRule::Juniors => $ageInCompetitionYear <= 20,
-            CompetitionCategoryRule::MenSeniors => $gender === ShooterGender::Male && $ageInCompetitionYear >= 21,
+            CompetitionCategoryRule::MenSeniors => $gender === ShooterGender::Male
+                && $ageInCompetitionYear >= 21
+                && $ageInCompetitionYear <= 60,
             CompetitionCategoryRule::MenVeterans => $gender === ShooterGender::Male && $ageInCompetitionYear >= 61,
             CompetitionCategoryRule::Women => $gender === ShooterGender::Female && $ageInCompetitionYear >= 21,
         };

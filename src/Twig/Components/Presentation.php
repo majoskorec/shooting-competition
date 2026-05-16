@@ -248,31 +248,21 @@ final class Presentation extends AbstractController
             return null;
         }
 
+        $shooterIdString = $shooterEntity->getIdAsString();
+        if ($this->lastInitializedShooterId === $shooterIdString) {
+            return $shooterEntity;
+        }
+
         $this->formValues['firstName'] = $shooterEntity->getFirstName();
         $this->formValues['lastName'] = $shooterEntity->getLastName();
         $this->formValues['email'] = $shooterEntity->getEmail();
         $this->formValues['club'] = $shooterEntity->getClub();
         $this->formValues['birthYear'] = $shooterEntity->getBirthYear();
         $this->formValues['gender'] = $shooterEntity->getGender()->value;
-        $this->initializeShooterCategories($shooterEntity);
+        $this->formValues['categories'] = $this->defaultCategoryValuesForShooter($shooterEntity);
+        $this->lastInitializedShooterId = $shooterIdString;
 
         return $shooterEntity;
-    }
-
-    private function initializeShooterCategories(Shooter $shooter): void
-    {
-        $shooterId = $shooter->getId();
-        if ($shooterId === null) {
-            return;
-        }
-
-        $shooterIdString = (string) $shooterId;
-        if ($this->lastInitializedShooterId === $shooterIdString) {
-            return;
-        }
-
-        $this->formValues['categories'] = $this->defaultCategoryValuesForShooter($shooter);
-        $this->lastInitializedShooterId = $shooterIdString;
     }
 
     /**
