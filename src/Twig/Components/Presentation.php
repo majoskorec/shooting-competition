@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
+use App\Competition\Category\CompetitionCategoryRuleEvaluator;
 use App\Competition\Model\CompetitorStatus;
 use App\Competition\Model\Exception\InvalidFieldValueException;
 use App\Controller\Admin\Competition\PresentationController;
@@ -34,6 +35,9 @@ final class Presentation extends AbstractController
     #[LiveProp]
     public Competition $competition;
 
+    #[LiveProp]
+    public ?string $lastInitializedShooterId = null;
+
     /**
      * @var array<string, array<Competitor>>|null
      */
@@ -41,6 +45,7 @@ final class Presentation extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly CompetitionCategoryRuleEvaluator $competitionCategoryRuleEvaluator,
     ) {
     }
 
@@ -231,11 +236,15 @@ final class Presentation extends AbstractController
         $shooter = $this->formValues['shooter'] ?? '';
         assert(is_string($shooter));
         if (trim($shooter) === '') {
+            $this->lastInitializedShooterId = null;
+
             return null;
         }
 
         $shooterEntity = $this->entityManager->getRepository(Shooter::class)->find($shooter);
         if ($shooterEntity === null) {
+            $this->lastInitializedShooterId = null;
+
             return null;
         }
 
@@ -245,8 +254,53 @@ final class Presentation extends AbstractController
         $this->formValues['club'] = $shooterEntity->getClub();
         $this->formValues['birthYear'] = $shooterEntity->getBirthYear();
         $this->formValues['gender'] = $shooterEntity->getGender()->value;
+        $this->initializeShooterCategories($shooterEntity);
 
         return $shooterEntity;
+    }
+
+    private function initializeShooterCategories(Shooter $shooter): void
+    {
+        $shooterId = $shooter->getId();
+        if ($shooterId === null) {
+            return;
+        }
+
+        $shooterIdString = (string) $shooterId;
+        if ($this->lastInitializedShooterId === $shooterIdString) {
+            return;
+        }
+
+        $this->formValues['categories'] = $this->defaultCategoryValuesForShooter($shooter);
+        $this->lastInitializedShooterId = $shooterIdString;
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function defaultCategoryValuesForShooter(Shooter $shooter): array
+    {
+        $categoryValues = [];
+        foreach (array_values($this->competition->getCategories()->toArray()) as $index => $category) {
+            if ($category->getRule() === null) {
+                continue;
+            }
+
+            if (
+                !$this->competitionCategoryRuleEvaluator->isApplicable(
+                    $category,
+                    $this->competition,
+                    $shooter->getBirthYear(),
+                    $shooter->getGender(),
+                )
+            ) {
+                continue;
+            }
+
+            $categoryValues[] = (string) $index;
+        }
+
+        return $categoryValues;
     }
 
     private function normalizeGender(mixed $gender): ?ShooterGender
