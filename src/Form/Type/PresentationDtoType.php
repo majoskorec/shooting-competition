@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Competition\Category\CompetitionCategoryRuleEvaluator;
 use App\Entity\Competition;
+use App\Entity\CompetitionCategory;
 use App\Entity\CompetitionTeam;
 use App\Entity\Shooter;
 use App\Entity\ShooterGender;
@@ -30,6 +32,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class PresentationDtoType extends AbstractType
 {
     public function __construct(
+        private readonly CompetitionCategoryRuleEvaluator $competitionCategoryRuleEvaluator,
         private readonly CompetitorRepository $competitorRepository,
     ) {
     }
@@ -49,8 +52,15 @@ final class PresentationDtoType extends AbstractType
         $teamName = $options['team_name_filter'] ?? '';
         assert(is_string($teamName));
         $teamName = trim($teamName);
+        $birthYear = $options['birth_year'] ?? null;
+        assert(is_int($birthYear) || $birthYear === null);
+        /** @var array<string> $categoryIds */
+        $categoryIds = $options['category_ids'] ?? [];
+        $gender = $options['gender'] ?? null;
+        assert($gender instanceof ShooterGender || $gender === null);
         $competition = $options['competition'];
         assert($competition instanceof Competition);
+        $categoryChoices = array_values($competition->getCategories()->toArray());
         $registeredShooterIds = array_fill_keys(
             $this->competitorRepository->findRegisteredShooterIdsForCompetition($competition),
             true,
@@ -138,7 +148,30 @@ final class PresentationDtoType extends AbstractType
             'required' => false,
         ]);
         $builder->add('categories', ChoiceType::class, [
-            'choices' => $competition->getCategories()->toArray(),
+            'choices' => $categoryChoices,
+            'choice_attr' => function (
+                CompetitionCategory $category,
+                mixed $key,
+                mixed $value,
+            ) use (
+                $birthYear,
+                $categoryIds,
+                $competition,
+                $gender,
+            ): array {
+                $warning = $this->categoryWarning(
+                    $category,
+                    $competition,
+                    $birthYear,
+                    $gender,
+                    $categoryIds,
+                    $value,
+                );
+
+                return $warning === null
+                    ? []
+                    : ['data-warning' => $warning];
+            },
             'choice_label' => 'name',
             'expanded' => true,
             'label' => 'Kategórie',
@@ -193,15 +226,56 @@ final class PresentationDtoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'birth_year' => null,
+            'category_ids' => [],
             'data_class' => PresentationDto::class,
             'first_name_filter' => null,
+            'gender' => null,
             'last_name_filter' => null,
             'team_name_filter' => null,
         ]);
+        $resolver->setAllowedTypes('birth_year', ['int', 'null']);
+        $resolver->setAllowedTypes('category_ids', ['array']);
         $resolver->setAllowedTypes('first_name_filter', ['null', 'string']);
+        $resolver->setAllowedTypes('gender', ['null', ShooterGender::class]);
         $resolver->setAllowedTypes('last_name_filter', ['null', 'string']);
         $resolver->setAllowedTypes('team_name_filter', ['null', 'string']);
         $resolver->setRequired('competition');
         $resolver->setAllowedTypes('competition', [Competition::class]);
+    }
+
+    /**
+     * @param array<string> $categoryIds
+     */
+    private function categoryWarning(
+        CompetitionCategory $category,
+        Competition $competition,
+        ?int $birthYear,
+        ?ShooterGender $gender,
+        array $categoryIds,
+        mixed $value,
+    ): ?string {
+        if ($birthYear === null || $gender === null || $category->getRule() === null) {
+            return null;
+        }
+
+        if (!is_string($value) && !is_int($value)) {
+            return null;
+        }
+
+        $isApplicable = $this->competitionCategoryRuleEvaluator->isApplicable(
+            $category,
+            $competition,
+            $birthYear,
+            $gender,
+        );
+        $isSelected = in_array((string) $value, $categoryIds, true);
+        if ($isApplicable === $isSelected) {
+            return null;
+        }
+
+        return $isApplicable
+            ? 'Strelec spĺňa podmienky tejto kategórie, ale nemá ju vybranú.'
+            : 'Strelec nespĺňa podmienky tejto kategórie.';
     }
 }

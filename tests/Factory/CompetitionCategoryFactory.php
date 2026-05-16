@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Entity\CompetitionCategory;
+use App\Entity\CompetitionCategoryRule;
 use Override;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
@@ -25,6 +26,7 @@ final class CompetitionCategoryFactory extends PersistentObjectFactory
         return [
             'competition' => CompetitionFactory::new(),
             'name' => self::faker()->unique()->city(),
+            'rule' => self::faker()->optional()->randomElement(CompetitionCategoryRule::cases()),
         ];
     }
 }

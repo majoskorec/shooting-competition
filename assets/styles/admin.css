@@ -88,3 +88,15 @@ body[style*="color-scheme: dark"] table.input-table tr:focus-within td {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.form-check:has(> input[data-warning]) {
+    background-color: var(--bs-warning-bg-subtle);
+    padding-bottom: 1.25rem;
+}
+
+input[data-warning]::after {
+    content: attr(data-warning);
+    display: block;
+    margin-top: 1rem;
+    width: 400px;
+}

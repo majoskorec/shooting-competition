@@ -11,6 +11,7 @@ use App\Entity\Competition;
 use App\Entity\CompetitionTeam;
 use App\Entity\Competitor;
 use App\Entity\Shooter;
+use App\Entity\ShooterGender;
 use App\Form\Dto\PresentationDto;
 use App\Form\Type\PresentationDtoType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -141,12 +142,19 @@ final class Presentation extends AbstractController
         $this->fetchShooterData();
         $firstName = $this->formValues['firstName'] ?? null;
         $lastName = $this->formValues['lastName'] ?? null;
+        $birthYear = $this->normalizeBirthYear($this->formValues['birthYear'] ?? null);
+        /** @var array<string> $categoryIds */
+        $categoryIds = $this->formValues['categories'] ?? [];
+        $gender = $this->normalizeGender($this->formValues['gender'] ?? null);
         $this->fetchTeamData();
         $teamName = $this->formValues['teamName'] ?? null;
 
         return $this->createForm(PresentationDtoType::class, new PresentationDto($this->competition), [
+            'birth_year' => $birthYear,
+            'category_ids' => $categoryIds,
             'competition' => $this->competition,
             'first_name_filter' => $firstName,
+            'gender' => $gender,
             'last_name_filter' => $lastName,
             'team_name_filter' => $teamName,
         ]);
@@ -239,5 +247,35 @@ final class Presentation extends AbstractController
         $this->formValues['gender'] = $shooterEntity->getGender()->value;
 
         return $shooterEntity;
+    }
+
+    private function normalizeGender(mixed $gender): ?ShooterGender
+    {
+        if ($gender instanceof ShooterGender) {
+            return $gender;
+        }
+
+        if (!is_string($gender) || trim($gender) === '') {
+            return null;
+        }
+
+        return ShooterGender::tryFrom($gender);
+    }
+
+    private function normalizeBirthYear(mixed $birthYear): ?int
+    {
+        if (is_int($birthYear)) {
+            return $birthYear;
+        }
+
+        if (!is_string($birthYear) || trim($birthYear) === '') {
+            return null;
+        }
+
+        if (!ctype_digit($birthYear)) {
+            return null;
+        }
+
+        return (int) $birthYear;
     }
 }

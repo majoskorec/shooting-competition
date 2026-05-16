@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\CompetitionCategory;
+use App\Entity\CompetitionCategoryRule;
 use Override;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +23,13 @@ final class CompetitionCategoryEmbeddedType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => 'Názov',
+        ]);
+        $builder->add('rule', EnumType::class, [
+            'choice_label' => static fn (CompetitionCategoryRule $choice): string => $choice->label(),
+            'class' => CompetitionCategoryRule::class,
+            'label' => 'Preddefinované pravidlo',
+            'placeholder' => 'Custom kategória bez pravidla',
+            'required' => false,
         ]);
     }
 
