@@ -39,7 +39,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AdminDashboard(
     routePath: '/admin',
-    routeName: DashboardController::ROUTE_NAME,
+    routeName: self::ROUTE_NAME,
 )]
 final class DashboardController extends AbstractDashboardController
 {

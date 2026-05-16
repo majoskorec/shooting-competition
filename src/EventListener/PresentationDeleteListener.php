@@ -21,12 +21,16 @@ final class PresentationDeleteListener
 
     public function __invoke(AfterCrudActionEvent $event): void
     {
-        $entity = $event->getAdminContext()?->getEntity()->getInstance();
+        $adminContext = $event->getAdminContext();
+        if ($adminContext === null) {
+            return;
+        }
+        $entity = $adminContext->getEntity()->getInstance();
         if (!$entity instanceof Competitor) {
             return;
         }
 
-        $fromPresentation = $event->getAdminContext()?->getRequest()->query->get('presentation');
+        $fromPresentation = $adminContext->getRequest()->query->get('presentation');
         if ($fromPresentation !== '1') {
             return;
         }
