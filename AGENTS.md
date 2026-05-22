@@ -360,6 +360,14 @@ Calculation services should be named by responsibility, not by generic utility w
 
 Any meaningful scoring-related implementation should be testable.
 
+For code quality and static validation, treat `grumphp.yml` as the authoritative entrypoint for repository checks. When implementing changes, also respect the detailed rules defined in:
+
+- `phpcs.xml.dist`
+- `phpstan.dist.neon`
+- `psalm.dist.xml`
+
+Code generated or modified by the agent should be written with these checks in mind by default, not adjusted only after the fact.
+
 Prioritize tests for:
 
 - subtotal calculation
@@ -372,6 +380,8 @@ Prioritize tests for:
 - competition closure conditions
 
 Prefer focused tests around business behavior over broad integration tests with weak assertions.
+
+Before finishing a meaningful code change, run the relevant validation commands for the touched surface so the change is expected to pass the local GrumPHP pipeline. When practical, prefer validating through the same tools configured by GrumPHP rather than relying only on ad hoc checks.
 
 ---
 

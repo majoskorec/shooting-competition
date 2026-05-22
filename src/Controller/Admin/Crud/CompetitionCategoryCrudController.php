@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Crud;
 
 use App\Entity\CompetitionCategory;
+use App\Entity\CompetitionCategoryRule;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Override;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 /**
  * @extends AbstractCrudController<CompetitionCategory>
@@ -50,6 +53,17 @@ final class CompetitionCategoryCrudController extends AbstractCrudController
             ->hideWhenUpdating();
 
         yield TextField::new('name', 'Názov');
+
+        yield ChoiceField::new('rule', 'Preddefinované pravidlo')
+            ->setFormType(EnumType::class)
+            ->setFormTypeOption(
+                'choice_label',
+                static fn (CompetitionCategoryRule $choice): string => $choice->label(),
+            )
+            ->setFormTypeOption('class', CompetitionCategoryRule::class)
+            ->formatValue(
+                static fn (mixed $value): string => $value instanceof CompetitionCategoryRule ? $value->label() : '',
+            );
 
         yield AssociationField::new('competitors', 'Súťažiaci')
             ->onlyOnIndex();

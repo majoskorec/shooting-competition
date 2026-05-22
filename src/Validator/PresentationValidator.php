@@ -55,19 +55,10 @@ final class PresentationValidator extends ConstraintValidator
             return;
         }
 
-        if ($value->firstName === null || trim($value->firstName) === '') {
-            $this->context->buildViolation($constraint->missingValuesMessage)
-                ->atPath('firstName')
-                ->addViolation();
-        }
-
-        if ($value->lastName !== null && trim($value->lastName) !== '') {
-            return;
-        }
-
-        $this->context->buildViolation($constraint->missingValuesMessage)
-            ->atPath('lastName')
-            ->addViolation();
+        $this->validateRequiredStringField($value->firstName, 'firstName', $constraint);
+        $this->validateRequiredStringField($value->lastName, 'lastName', $constraint);
+        $this->validateRequiredBirthYear($value, $constraint);
+        $this->validateRequiredGender($value, $constraint);
     }
 
     private function validateTeamAlreadyExists(
@@ -98,7 +89,9 @@ final class PresentationValidator extends ConstraintValidator
         }
 
         $exists = $this->entityManager->getRepository(Shooter::class)->findOneBy([
+            'birthYear' => $value->birthYear,
             'firstName' => $value->firstName,
+            'gender' => $value->gender,
             'lastName' => $value->lastName,
         ]);
 
@@ -157,6 +150,42 @@ final class PresentationValidator extends ConstraintValidator
         $this->context->buildViolation($constraint->competitionTeamIsFullMessage)
             ->atPath('competitionTeam')
             ->setParameter('{{ teamName }}', $competitionTeam->getName())
+            ->addViolation();
+    }
+
+    private function validateRequiredStringField(
+        ?string $value,
+        string $path,
+        Presentation $constraint,
+    ): void {
+        if ($value !== null && trim($value) !== '') {
+            return;
+        }
+
+        $this->context->buildViolation($constraint->missingValuesMessage)
+            ->atPath($path)
+            ->addViolation();
+    }
+
+    private function validateRequiredBirthYear(PresentationDto $value, Presentation $constraint): void
+    {
+        if ($value->birthYear !== null) {
+            return;
+        }
+
+        $this->context->buildViolation($constraint->missingValuesMessage)
+            ->atPath('birthYear')
+            ->addViolation();
+    }
+
+    private function validateRequiredGender(PresentationDto $value, Presentation $constraint): void
+    {
+        if ($value->gender !== null) {
+            return;
+        }
+
+        $this->context->buildViolation($constraint->missingValuesMessage)
+            ->atPath('gender')
             ->addViolation();
     }
 }

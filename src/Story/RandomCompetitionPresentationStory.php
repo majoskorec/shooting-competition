@@ -7,6 +7,7 @@ namespace App\Story;
 use App\Competition\Model\CompetitionStatus;
 use App\Competition\Model\CompetitorStatus;
 use App\Competition\Target\TargetSnapshotFactory;
+use App\Entity\CompetitionCategoryRule;
 use App\Entity\Competitor;
 use App\Tests\Factory\CompetitionCategoryFactory;
 use App\Tests\Factory\CompetitionFactory;
@@ -46,14 +47,17 @@ final class RandomCompetitionPresentationStory extends Story
         $categoryWomen = CompetitionCategoryFactory::createOne([
             'competition' => $competition,
             'name' => 'Ženy',
+            'rule' => CompetitionCategoryRule::Women,
         ]);
         $categorySeniors = CompetitionCategoryFactory::createOne([
             'competition' => $competition,
             'name' => 'Seniori',
+            'rule' => CompetitionCategoryRule::MenSeniors,
         ]);
         $categoryVeterans = CompetitionCategoryFactory::createOne([
             'competition' => $competition,
             'name' => 'Veteráni',
+            'rule' => CompetitionCategoryRule::MenVeterans,
         ]);
 
         $maxTeamMemberCount = $competition->getTeamMemberCount();

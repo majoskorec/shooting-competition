@@ -16,7 +16,7 @@ final class LogoutController extends AbstractController
         path: '/logout',
         name: self::ROUTE_NAME,
     )]
-    public function logout(): never
+    public function __invoke(): never
     {
         throw new LogicException('Logout is handled by the firewall.');
     }

@@ -40,6 +40,9 @@ class CompetitionCategory implements Stringable
     )]
     private string $name;
 
+    #[ORM\Column(length: 32, enumType: CompetitionCategoryRule::class, nullable: true)]
+    private ?CompetitionCategoryRule $rule = null;
+
     /**
      * @var Collection<int, Competitor>
      */
@@ -77,6 +80,16 @@ class CompetitionCategory implements Stringable
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getRule(): ?CompetitionCategoryRule
+    {
+        return $this->rule;
+    }
+
+    public function setRule(?CompetitionCategoryRule $rule): void
+    {
+        $this->rule = $rule;
     }
 
     /** @return Collection<int, Competitor> */

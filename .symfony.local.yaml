@@ -1,0 +1,6 @@
+proxy:
+    domains:
+        - shooting-competition
+
+http:
+    port: 8000

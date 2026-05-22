@@ -9,6 +9,7 @@ use App\Competition\Model\CompetitorStatus;
 use App\Competition\Target\TargetSnapshotFactory;
 use App\Entity\Competition;
 use App\Entity\CompetitionCategory;
+use App\Entity\CompetitionCategoryRule;
 use App\Entity\CompetitionTeam;
 use App\Entity\CompetitionType;
 use App\Entity\Shooter;
@@ -3693,9 +3694,17 @@ final class OP2024Story extends Story
 
     private function createCategory(Competition $competition, string $name): CompetitionCategory
     {
+        $rule = match ($name) {
+            'Seniori' => CompetitionCategoryRule::MenSeniors,
+            'Veteráni' => CompetitionCategoryRule::MenVeterans,
+            'Ženy' => CompetitionCategoryRule::Women,
+            default => null,
+        };
+
         return CompetitionCategoryFactory::createOne([
             'competition' => $competition,
             'name' => $name,
+            'rule' => $rule,
         ]);
     }
 
